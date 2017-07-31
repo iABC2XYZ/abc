@@ -1,0 +1,9 @@
+function M=Quadrupole(l,k)
+if k>0
+K=sqrt(k)*l;
+Mx=[cos(K),1/sqrt(k)*sin(K);
+    -sqrt(k)*sin(K),cos(K)];
+My=[cosh(K),1/sqrt(k)*sinh(K);
+    -sqrt(k)*sinh(K),cosh(K)];
+Mo=zeros(2);
+M=[Mx,Mo;Mo,My];

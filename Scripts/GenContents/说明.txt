@@ -1,0 +1,96 @@
+商业程序   
+    TraceWin 
+    Vsim     
+    rfqgenxin
+自主开发程序 
+    其他代码    
+        Buncher踢轨数据处理                                   
+        LINACOPT                                        
+        Ottf                                            
+        PTOPO                                           
+        RMS计算                                           
+        TOPOPIC                                         
+        TTFGen                                          
+        TTF计算                                           
+        pso                                             
+        python调用Tracewin-模拟ADS低能传输线与RFQ之间的匹配关系          
+        利用python调用Tracewin模拟ADS低能传输线与RFQ之间的匹配关系         
+        利用python调用Tracewin，模拟ADS中能传输线中buncherQWR对束流踢轨的影响
+        利用python调用Tracewin，研究LEBT入口低能束流（35KeV）在空间电荷效应影响 
+        失配计算                                            
+        扫描模拟                                            
+        直线加速器优化设计算法研究及程序开发                              
+        稳定图                                             
+        运行程序                                            
+    后处理程序   
+        BPM测量横向发射度    
+        Buncher踢轨数据处理 
+        CST电场导出VBA    
+        FFC纵向发射度      
+        Track后处理      
+        buncher扫相拟合   
+        单丝狭缝测量横向发射度   
+        发射度重构         
+        四极铁与二极铁标定BPM  
+        带空间电荷效应反推入口发射度
+        直接发射度         
+        螺线管拟合标定BPM    
+        间接法测量横向发射度    
+    程序测试代码  
+        6d_waterbag           
+        FFT去噪                 
+        LaserCoolTest         
+        Python-束流动力学          
+        RFQVane               
+        RR测试                  
+        cuda矩阵相乘              
+        finite-difference_cuda
+        vector继承：transform    
+        传输线小程序                
+        发射度测试                 
+        基本处理                  
+        泊松方程                  
+        生成目录                  
+        荧光靶图片饱和复原模拟程序-matlab  
+        超导直线加速器费用优化           
+    程序输入转换脚本
+        TRACEWIN_INT_PYTHON        
+        matlab-vba-cst             
+        partran-to-track           
+        tracewin to impact         
+        tracewin-track phase       
+        tracewin——track的twiss 参数转换 
+        tracewin——track的输入文件的转换    
+        tracewin到impact物理模型转化      
+        tracewin的初始粒子分布—track输出粒子分布
+        track输出粒子分布—tracewin的初始粒子分布
+        腔体及螺线管场文件转化程序              
+    调束相关程序  
+        auto-phase-scan 
+        phasescan python
+自由程序   
+    ASTRA_From_Dhruva           
+    BEAMPATH                    
+    DYNAC                       
+    FNALtools                   
+    Ionization_Matrix           
+    LINACPOST-调用版               
+    Labview-linacpost的基础软件      
+    Linacpost                   
+    MAD8-MADX_use               
+    ORBIT                       
+    PBO-Lab                     
+    SixTrack Frank              
+    SuperCode_gcc_4.4_10_16_2009
+    TRACK                       
+    Toutatis                    
+    Trace3D                     
+    TraceP-yamada               
+    Winagile                    
+    atzip                       
+    mad                         
+    olog                        
+    openxal                     
+    transport_v1_6_source_only  
+    trfq                        
+说明.docx

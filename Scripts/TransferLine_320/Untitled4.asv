@@ -1,0 +1,29 @@
+clear;
+clc;
+clear all;
+close;
+
+Lattice=xlsread('Changjj.xlsx','Lattice','A2:F26')
+[LatticeM,LatticeN]=size(Lattice);
+for iLatticeM=1:LatticeM
+    Para=Lattice(iLatticeM,:);
+    switch Para(1)
+        case 1
+            M=Drift(Para(2));
+        case 2
+            M=Quadrupole(Para(4),Para(3));
+         
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
