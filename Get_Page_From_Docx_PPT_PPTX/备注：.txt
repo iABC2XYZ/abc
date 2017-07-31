@@ -1,0 +1,4 @@
+python3.6 + pywin32-221.win-amd64-py3.6
+
+建议安装： anaconda3.6 + pywin32-221.win-amd64-py3.6 ，然后使用spyder打开即可。
+注意里面需要填写绝对路径。
