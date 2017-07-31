@@ -1,0 +1,114 @@
+a@A ~ $ git config --global user.name "iABC2XYZ"
+a@A ~ $ git config --global user.email "jiangpeiyong10@mails.ucas.ac.cn"
+a@A ~ $ git config --lis
+user.name=iABC2XYZ
+user.email=jiangpeiyong10@mails.ucas.ac.cn
+a@A ~ $ pwd
+/home/a
+a@A ~ $ ssh-keygen -t rsa -C "jiangpeiyong10@mails.ucas.ac.cn"
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/a/.ssh/id_rsa): 
+Created directory '/home/a/.ssh'.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/a/.ssh/id_rsa.
+Your public key has been saved in /home/a/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:p4c9EhBqVYwB0iTAey6XDbgWmo0ikW+t2gJKfKJyXhU jiangpeiyong10@mails.ucas.ac.cn
+The key's randomart image is:
++---[RSA 2048]----+
+|o.ooo.+=.        |
+| . o.o...        |
+| .o o E          |
+|o+ +   o         |
+|o*=.+ . S .      |
+|BB+=.o   *       |
+|O.=..   + +      |
+|=.o.     o .     |
+|o=o              |
++----[SHA256]-----+
+a@A ~ $ ssh-add ~/.s
+.sogouinput/               .sudo_as_admin_successful
+.ssh/                      
+a@A ~ $ ssh-add ~/.ssh/id_rsa
+Identity added: /home/a/.ssh/id_rsa (/home/a/.ssh/id_rsa)
+a@A ~ $ cat 
+.adobe/                                .kde/
+Anaconda3-4.4.0-Linux-x86_64.sh        .kingsoft/
+Anaconda3-4.4.0-Linux-x86_64.sh.aria2  .linuxmint/
+.atom/                                 .local/
+.bash_history                          .macromedia/
+.bash_logout                           .mozilla/
+.bashrc                                Music/
+.bashrc-anaconda3.bak                  .nv/
+.cache/                                .pam_environment
+.cinnamon/                             Pictures/
+.config/                               .pki/
+.conky/                                .presage/
+.dbus/                                 .profile
+.deepinwine/                           Public/
+Desktop/                               .sogouinput/
+.dmrc                                  .ssh/
+Documents/                             .sudo_as_admin_successful
+Downloads/                             SW/
+.face                                  Templates/
+.fontconfig/                           .themes/
+.fonts/                                Videos/
+.gconf/                                .wget-hsts
+.gitconfig                             .Xauthority
+a@A ~ $ cat ~/.s
+.sogouinput/               .sudo_as_admin_successful
+.ssh/                      
+a@A ~ $ cat ~/.ssh/id_rsa
+id_rsa      id_rsa.pub  
+a@A ~ $ cat ~/.ssh/id_rsa
+id_rsa      id_rsa.pub  
+a@A ~ $ cat ~/.ssh/id_rsa.pub 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQChFtwjXvZHJSx9w4Xq7Upvhj9aWfusv5eyLhL0SnqD2AsJX5AlhbkZNGySsdLgDFJWILD7Ixc6gW/FPwzqQQ2/BgxVBy/wkXszFUT3uXZjPuckV2Sk7engLLGxf820XaChxZWa1oArRNKj+odsDvKG2ePLQ87EOPF8S9geFkNEOaElph0mA2+YwqNkfJQNR0qijHdBHyz68E9VigctuhUl9dhlcon5gOFfLwfen+oqgtg/HWLRTH3NdW1phS7vwVnfDVCvKaXTjs2Rlofj3aHVGkv8Fy+QfNrL3MM8JfSfJXBnEgjjTqRO0Iuy0vRYWtFo9Hi4Ym3Tj0YbiIML6Y1l jiangpeiyong10@mails.ucas.ac.cn
+a@A ~ $ ssh git@github.com
+The authenticity of host 'github.com (192.30.255.113)' can't be established.
+RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added 'github.com,192.30.255.113' (RSA) to the list of known hosts.
+PTY allocation request failed on channel 0
+Hi iABC2XYZ! You've successfully authenticated, but GitHub does not provide shell access.
+Connection to github.com closed.
+a@A ~ $ cd /media/a/工作/ABC
+a@A /media/a/工作/ABC $ ls
+mirror_China
+a@A /media/a/工作/ABC $ rm -fr *
+a@A /media/a/工作/ABC $ ls
+a@A /media/a/工作/ABC $ git clone git@github.com:iABC2XYZ/abc.git
+Cloning into 'abc'...
+Warning: Permanently added the RSA host key for IP address '192.30.255.112' to the list of known hosts.
+remote: Counting objects: 4, done.
+remote: Compressing objects: 100% (3/3), done.
+remote: Total 4 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (4/4), 12.13 KiB | 0 bytes/s, done.
+Checking connectivity... done.
+a@A /media/a/工作/ABC $ ls
+abc
+a@A /media/a/工作/ABC $ cd abc/
+a@A /media/a/工作/ABC/abc $ ls
+LICENSE  README.md
+a@A /media/a/工作/ABC/abc $ ls
+LICENSE  README.md  TEST
+a@A /media/a/工作/ABC/abc $ vi TEST
+a@A /media/a/工作/ABC/abc $ ls
+LICENSE  README.md  TEST
+a@A /media/a/工作/ABC/abc $ git add TEST 
+a@A /media/a/工作/ABC/abc $ ls
+LICENSE  README.md  TEST
+a@A /media/a/工作/ABC/abc $ git commit -m "TEST"
+[master 86f34ec] TEST
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 TEST
+a@A /media/a/工作/ABC/abc $ git push origin master 
+Counting objects: 3, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 313 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:iABC2XYZ/abc.git
+   edfdbeb..86f34ec  master -> master
+
