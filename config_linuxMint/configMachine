@@ -1,0 +1,82 @@
+# update the system
+sudo apt-get update 
+sudo apt-get upgrade
+
+# Install the Primary wallpaper
+sudo apt-get install mint-backgrounds-*
+
+# Install web browser： Chronium
+
+sudo apt-get install chromium-browser 
+
+# install Flash Player
+sudo apt-get install pepperflashplugin-nonfree 
+
+
+# install media
+
+sudo apt-get install ubuntu-restricted-extras 
+
+# install Dropbox
+
+sudo apt-get install dropbox python-gpgme
+
+# install Skype
+
+sudo apt-get install skype 
+
+# install rar and others:
+
+sudo apt-get install unace p7zip-rar sharutils rar arj lunzip lzip
+
+#  Install clipboard manager
+
+sudo apt-get install glipper
+sudo apt-get install clipit 
+
+# install uGet
+
+sudo apt-get install uget 
+
+# Install Hardinfo to get the hard information
+sudo apt-get install hardinfo 
+
+
+# install Mate:
+
+sudo apt-get install mint-meta-mate
+
+# use other ext partition for reading and writing
+#gksudo nemo 
+
+
+# install Conky
+
+sudo apt-add-repository -y ppa:teejee2008/ppa 
+sudo apt-get update 
+sudo apt-get install conky-manager 
+
+# install gedit
+sudo apr-get install gedit
+
+# install vim
+sudo apr-get install vim
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
