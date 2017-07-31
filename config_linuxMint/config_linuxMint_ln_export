@@ -1,0 +1,6 @@
+ln -s /media/a/工作/ABC/abc /home/a/Desktop/abc
+rm -f /home/a/Desktop/abc/abc
+
+
+export iABC="/media/a/工作/ABC/abc"
+
