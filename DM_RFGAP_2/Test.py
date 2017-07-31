@@ -38,19 +38,48 @@ test=tf.multiply(alphaT,emitT)
 
 x,xp,y,xp,phi,Ek=APF(wETLMV,wLenCellM,x,xp,y,xp,phi,Ek)
 
-xNan=tf.is_nan(x)
+def IDNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy):
+    xNan=tf.is_nan(disX)
+    xpNan=tf.is_nan(disXP)
+    yNan=tf.is_nan(disY)
+    ypNan=tf.is_nan(disYP)
+    phiNan=tf.is_nan(disPhiPi)
+    energyNan=tf.is_nan(disEnergy)
+    
+    idXNan=tf.transpose(tf.where(~xNan))
+    idXpNan=tf.transpose(tf.where(~xpNan))
+    idYNan=tf.transpose(tf.where(~yNan))
+    idYpNan=tf.transpose(tf.where(~ypNan))
+    idPhiNan=tf.transpose(tf.where(~phiNan))
+    idEnergyNan=tf.transpose(tf.where(~energyNan))
+    
+    idNonNanAll=tf.concat([idXNan,idXpNan,idYNan,idYpNan,idPhiNan,idEnergyNan],1)
+    
+    idNonNan,idNonNanAllTmp=tf.unique(idNonNanAll[0,:])
 
-#xNanPrint=x[xNan]
+    return idNonNan
+
+def PartNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy):
+    idNonNan=IDNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy)
+    x=tf.gather(disX,idNonNan)
+    xp=tf.gather(disXP,idNonNan)
+    y=tf.gather(disY,idNonNan)
+    yp=tf.gather(disYP,idNonNan)
+    phi=tf.gather(disPhiPi,idNonNan)
+    energy=tf.gather(disEnergy,idNonNan)
+    numNonNan=tf.shape(idNonNan)
+    return x,xp,y,yp,phi,energy,numNonNan
+    
+ 
+x2,xp2,y2,yp2,phi2,energy2,numNonNan=PartNonNan6D(x,xp,y,xp,phi,Ek)
+
+
 
 init=tf.global_variables_initializer()
 
-
-
 with tf.Session() as sess:
     sess.run(init)
-    print(sess.run(x))
-    print(sess.run(xNan))
-    #print(sess.run(xNanPrint))
+    print(sess.run(x2))
 
 
     

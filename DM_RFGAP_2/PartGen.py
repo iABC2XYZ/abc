@@ -19,8 +19,8 @@ def GammaT2D(alphaT2D,betaT2D):
     return gammaT2D
 
 def PartGen2D(emitG2D,alphaT2D,betaT2D,numPart):
-    x=tf.random_normal([1,numPart])
-    xp=tf.random_normal([1,numPart])
+    x=tf.random_normal([numPart])
+    xp=tf.random_normal([numPart])
     
     gammaT2D=GammaT2D(alphaT2D,betaT2D)
     X=tf.sqrt(emitG2D/gammaT2D)*(x-alphaT2D*xp)
