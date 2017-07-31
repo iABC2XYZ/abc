@@ -9,8 +9,6 @@ Function:
 """
 
 
-
-
 import tensorflow as tf
 from Lambda import BetaLambdaM
 from Constants import pi
@@ -46,7 +44,6 @@ def PartGen6D(emitG6D,alphaT6D,betaT6D,numPart,energySyn,freqMHz):
     betaGammaCSyn=Energy2BetaGammaC(energySyn)
     betaGammaC=(1.+ZP/1000.)*betaGammaCSyn
     disEnergy=BetaGammaC2Energy(betaGammaC)
-    
 
     return disX,disXP,disY,disYP,disPhiPi,disEnergy
 

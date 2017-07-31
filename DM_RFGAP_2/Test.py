@@ -16,29 +16,48 @@ from Twiss import Twiss6D
 import matplotlib.pyplot as plt
 
 import tensorflow as tf
+from APF import * 
+from EmitNG import EmitG2N3D,EmitN2G3D
+
+wAlphaT=tf.Variable(tf.random_uniform(shape=[3],minval=-1.,maxval=1.))
+wBetaT=tf.Variable(tf.random_uniform(shape=[3],minval=0.1,maxval=4.))
+
+wETLMV=tf.Variable(tf.random_uniform(shape=[numCav],minval=0.001,maxval=0.3))
+wLenCellM=tf.Variable(tf.random_uniform(shape=[numCav+1],minval=0.001,maxval=0.3))
+
+##############################################################################
+
+emitG=EmitN2G3D(emitN,energyInMeV)
+
+x,xp,y,xp,phi,Ek= PartGen6D(emitG,wAlphaT,wBetaT,numPart,energyInMeV,freqMHz)
+
+emitT,alphaT,betaT,gammaT=Twiss6D(x,xp,y,xp,phi,Ek,energyOutMeV,freqMHz)
+
+test=tf.multiply(alphaT,emitT)
 
 
+x,xp,y,xp,phi,Ek=APF(wETLMV,wLenCellM,x,xp,y,xp,phi,Ek)
 
-WeightsAlphaT=tf.Variable(tf.random_uniform(shape=[3],minval=-1.,maxval=1.))
-WeightsBetaT=tf.Variable(tf.random_uniform(shape=[3],minval=0.1,maxval=4.))
+xNan=tf.is_nan(x)
 
-disX,disXP,disY,disYP,disPhiPi,disEnergy= PartGen6D(emitN,WeightsAlphaT,WeightsBetaT,numPart,energyInMeV,freqMHz)
-
-emitT,alphaT,betaT,gammaT=Twiss6D(disX,disXP,disY,disYP,disPhiPi,disEnergy,energyInMeV,freqMHz)
-
+#xNanPrint=x[xNan]
 
 init=tf.global_variables_initializer()
 
+
+
 with tf.Session() as sess:
     sess.run(init)
-    print sess.run(emitT)
-    print sess.run(alphaT)
-    print sess.run(WeightsAlphaT)
-    print sess.run(betaT)
-    print sess.run(WeightsBetaT)
+    print(sess.run(x))
+    print(sess.run(xNan))
+    #print(sess.run(xNanPrint))
+
+
     
-    plt.figure('x')
-    plt.plot(x,xp,'.')
+
+
+print('OK')
+
 
 
 
