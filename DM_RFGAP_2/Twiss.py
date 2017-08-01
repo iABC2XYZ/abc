@@ -12,6 +12,7 @@ import tensorflow as tf
 from Lambda import BetaLambdaM
 from Constants import pi
 from EP import dE2dP_energy
+from PartLimit import PartNonNan6D,PartLimitXY4D
 
 def Twiss2D(x,xp):
     xMean=tf.reduce_mean(x)
@@ -54,7 +55,16 @@ def Twiss6D(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz):
     return emitT,alphaT,betaT,gammaT
 
 
-
+def Emit3D_Nan_xyLimit(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz):
+    x,xp,y,yp,phi,Ek,numParNan=PartNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy)
+    x,xp,y,yp,numPartXYLoss=PartLimitXY4D(x,xp,y,yp)
+    
+    emitT,alphaT,betaT,gammaT= Twiss6D(x,xp,y,yp,phi,Ek,energySyn,freqMHz)
+    
+    coeEmit=1.+tf.to_float(numParNan+numPartXYLoss)
+    emitT=emitT*coeEmit
+    
+    return emitT
 
 
 

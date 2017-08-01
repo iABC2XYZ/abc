@@ -11,7 +11,7 @@ from InputBeam import *
 from InputLattice import *
 
 from PartGen import PartGen6D
-from Twiss import Twiss6D
+from Twiss import Twiss6D,Twiss2D,Emit3D_Nan_xyLimit
 
 import matplotlib.pyplot as plt
 
@@ -28,65 +28,33 @@ wETLMV=tf.Variable(tf.random_uniform(shape=[numCav],minval=0.001,maxval=0.3))
 wLenCellM=tf.Variable(tf.random_uniform(shape=[numCav+1],minval=0.001,maxval=0.3))
 
 ##############################################################################
-
+emitTNProd_bk=tf.reduce_prod(tf.pow(emitN,0.1))
 emitG=EmitN2G3D(emitN,energyInMeV)
 
 x,xp,y,xp,phi,Ek= PartGen6D(emitG,wAlphaT,wBetaT,numPart,energyInMeV,freqMHz)
 
-emitT,alphaT,betaT,gammaT=Twiss6D(x,xp,y,xp,phi,Ek,energyOutMeV,freqMHz)
-
-test=tf.multiply(alphaT,emitT)
-
-
 x,xp,y,xp,phi,Ek=APF(wETLMV,wLenCellM,x,xp,y,xp,phi,Ek)
 
+emitTG=Emit3D_Nan_xyLimit(x,xp,y,xp,phi,Ek,energyOutMeV,freqMHz)
+emitTN=EmitG2N3D(emitTG,energyOutMeV)
+emitTNProd=tf.reduce_prod(tf.pow(emitTN,0.1))
 
-def PartNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy):
-    xNonNan=~tf.is_nan(disX)
-    xpNonNan=~tf.is_nan(disXP)
-    yNonNan=~tf.is_nan(disY)
-    ypNonNan=~tf.is_nan(disYP)
-    phiNonNan=~tf.is_nan(disPhiPi)
-    energyNonNan=~tf.is_nan(disEnergy)
-    
-    xBoolNonNan=tf.logical_and(xNonNan,xpNonNan)
-    yBoolNonNan=tf.logical_and(yNonNan,ypNonNan)
-    zBoolNonNan=tf.logical_and(phiNonNan,energyNonNan)
-    xyBoolNonNan=tf.logical_and(xBoolNonNan,yBoolNonNan)
-    boolNonNan=tf.logical_and(xyBoolNonNan,zBoolNonNan)
-    
-    x=tf.boolean_mask(disX,boolNonNan)
-    xp=tf.boolean_mask(disXP,boolNonNan)
-    y=tf.boolean_mask(disY,boolNonNan)
-    yp=tf.boolean_mask(disYP,boolNonNan)
-    phi=tf.boolean_mask(disPhiPi,boolNonNan)
-    energy=tf.boolean_mask(disEnergy,boolNonNan)
-    
-    numParNon=tf.shape(energy)
-    numParNan=numPart-numParNon[0]
+EmitGrowth=tf.div(emitTNProd,emitTNProd_bk)
 
-    return x,xp,y,yp,phi,energy,numParNan
-    
-
-def Twiss6DNan(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz):
-    x,xp,y,xp,phi,Ek,numParNan=PartNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy)
-    emitT=tf.where(tf.is_inf(xp))
-    
-    
-
-    return emitT
-
-
-#x2,xp2,y2,yp2,phi2,Ek2,numParNon=PartNonNan6D(x,xp,y,xp,phi,Ek)
-
-emitT2=Twiss6DNan(x,xp,y,xp,phi,Ek,energyOutMeV,freqMHz)
-
+lossEmit=EmitGrowth
+optimizerEmit=tf.train.AdamOptimizer(0.000001)
+trainEmit=optimizerEmit.minimize(lossEmit)
 
 init=tf.global_variables_initializer()
 
 with tf.Session() as sess:
     sess.run(init)
-    print(sess.run(emitT2))
+    for _ in range(3):
+        print(sess.run(tf.reduce_mean(Ek)))
+        print(sess.run(lossEmit))
+        print(sess.run(emitTN))
+        sess.run(trainEmit)
+        
     
 
     
