@@ -18,6 +18,8 @@ import matplotlib.pyplot as plt
 import tensorflow as tf
 from APF import * 
 from EmitNG import EmitG2N3D,EmitN2G3D
+import numpy as np
+
 
 wAlphaT=tf.Variable(tf.random_uniform(shape=[3],minval=-1.,maxval=1.))
 wBetaT=tf.Variable(tf.random_uniform(shape=[3],minval=0.1,maxval=4.))
@@ -38,55 +40,72 @@ test=tf.multiply(alphaT,emitT)
 
 x,xp,y,xp,phi,Ek=APF(wETLMV,wLenCellM,x,xp,y,xp,phi,Ek)
 
-def IDNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy):
-    xNan=tf.is_nan(disX)
-    xpNan=tf.is_nan(disXP)
-    yNan=tf.is_nan(disY)
-    ypNan=tf.is_nan(disYP)
-    phiNan=tf.is_nan(disPhiPi)
-    energyNan=tf.is_nan(disEnergy)
-    
-    idXNan=tf.transpose(tf.where(~xNan))
-    idXpNan=tf.transpose(tf.where(~xpNan))
-    idYNan=tf.transpose(tf.where(~yNan))
-    idYpNan=tf.transpose(tf.where(~ypNan))
-    idPhiNan=tf.transpose(tf.where(~phiNan))
-    idEnergyNan=tf.transpose(tf.where(~energyNan))
-    
-    idNonNanAll=tf.concat([idXNan,idXpNan,idYNan,idYpNan,idPhiNan,idEnergyNan],1)
-    
-    idNonNan,idNonNanAllTmp=tf.unique(idNonNanAll[0,:])
-
-    return idNonNan
 
 def PartNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy):
-    idNonNan=IDNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy)
-    x=tf.gather(disX,idNonNan)
-    xp=tf.gather(disXP,idNonNan)
-    y=tf.gather(disY,idNonNan)
-    yp=tf.gather(disYP,idNonNan)
-    phi=tf.gather(disPhiPi,idNonNan)
-    energy=tf.gather(disEnergy,idNonNan)
-    numNonNan=tf.shape(idNonNan)
-    return x,xp,y,yp,phi,energy,numNonNan
+    xNonNan=~tf.is_nan(disX)
+    xpNonNan=~tf.is_nan(disXP)
+    yNonNan=~tf.is_nan(disY)
+    ypNonNan=~tf.is_nan(disYP)
+    phiNonNan=~tf.is_nan(disPhiPi)
+    energyNonNan=~tf.is_nan(disEnergy)
     
- 
-x2,xp2,y2,yp2,phi2,energy2,numNonNan=PartNonNan6D(x,xp,y,xp,phi,Ek)
+    xBoolNonNan=tf.logical_and(xNonNan,xpNonNan)
+    yBoolNonNan=tf.logical_and(yNonNan,ypNonNan)
+    zBoolNonNan=tf.logical_and(phiNonNan,energyNonNan)
+    xyBoolNonNan=tf.logical_and(xBoolNonNan,yBoolNonNan)
+    boolNonNan=tf.logical_and(xyBoolNonNan,zBoolNonNan)
+    
+    x=tf.boolean_mask(disX,boolNonNan)
+    xp=tf.boolean_mask(disXP,boolNonNan)
+    y=tf.boolean_mask(disY,boolNonNan)
+    yp=tf.boolean_mask(disYP,boolNonNan)
+    phi=tf.boolean_mask(disPhiPi,boolNonNan)
+    energy=tf.boolean_mask(disEnergy,boolNonNan)
+    
+    numParNon=tf.shape(energy)
+    numParNan=numPart-numParNon[0]
 
+    return x,xp,y,yp,phi,energy,numParNan
+    
+
+def Twiss6DNan(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz):
+    x,xp,y,xp,phi,Ek,numParNan=PartNonNan6D(disX,disXP,disY,disYP,disPhiPi,disEnergy)
+    emitT=tf.where(tf.is_inf(xp))
+    
+    
+
+    return emitT
+
+
+#x2,xp2,y2,yp2,phi2,Ek2,numParNon=PartNonNan6D(x,xp,y,xp,phi,Ek)
+
+emitT2=Twiss6DNan(x,xp,y,xp,phi,Ek,energyOutMeV,freqMHz)
 
 
 init=tf.global_variables_initializer()
 
 with tf.Session() as sess:
     sess.run(init)
-    print(sess.run(x2))
+    print(sess.run(emitT2))
+    
 
+    
+    #xp2T=sess.run(xp2)
+    #y2T=sess.run(y2)
+    #yp2T=sess.run(yp2)
+    #phi2T=sess.run(phi2)
+    #Ek2T=sess.run(Ek2)   
+    
+    #print(AllTestT.shape)
+    
+    
+
+    #print([len(x2T),len(xp2T),len(y2T),len(yp2T),len(phi2T),len(Ek2T)])
 
     
 
 
 print('OK')
-
 
 
 
