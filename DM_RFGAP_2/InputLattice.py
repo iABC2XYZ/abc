@@ -12,7 +12,7 @@ import numpy as np
 
 freqMHz=tf.constant([162.5])
 
-numCav=np.int32(60)
+numCav=np.int32(6)
 
 
 

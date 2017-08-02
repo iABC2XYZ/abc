@@ -16,7 +16,7 @@ numPart=np.int32(1e4)
 energyInMeV=tf.constant([0.6])
 energyOutMeV=tf.constant([4.])
 
-emitN=tf.constant([1.,1.,1.])
+emitTN_Input=tf.constant([1.,1.,1.])
 
 qParticle=tf.constant([1.])
 mParticle=tf.constant([1.])

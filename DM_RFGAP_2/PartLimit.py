@@ -84,16 +84,41 @@ def PartLimit6D(disX,disXP,disY,disYP,disPhiPi,disEnergy):
     phi=tf.boolean_mask(disPhiPi,allLimit)
     energy=tf.boolean_mask(disEnergy,allLimit)
     
-    '''
-    numPartDisX=tf.shape(disX)
-    numPartX=tf.shape(x)
-    numPartXYLoss=numPartDisX[0]-numPartX[0]
-    '''
     return x,xp,y,yp,phi,energy
 
 
+def PartMax1D(x):
+    boolFinite=tf.is_finite(x)
+    xFinite=tf.boolean_mask(x,boolFinite)
+    maxXFinite=tf.reduce_max(tf.abs(xFinite))
+    return maxXFinite
 
-
-
+def PartMax6D(disX,disXP,disY,disYP,disPhiPi,disEnergy):
+    maxX=PartMax1D(disX)
+    maxXP=PartMax1D(disXP)
+    maxY=PartMax1D(disY)
+    maxYP=PartMax1D(disYP)
+    maxPhi=PartMax1D(disPhiPi)
+    maxEnergy=PartMax1D(disEnergy)
+    return maxX,maxXP,maxY,maxYP,maxPhi,maxEnergy
+    
+def PartMaxPow6D(disX,disXP,disY,disYP,disPhiPi,disEnergy,coePow=0.15):
+    maxX,maxXP,maxY,maxYP,maxPhi,maxEnergy=PartMax6D(disX,disXP,disY,disYP,disPhiPi,disEnergy)
+    maxXPow=tf.pow(maxX,coePow)
+    maxXpPow=tf.pow(maxXP,coePow)
+    maxYPow=tf.pow(maxY,coePow)
+    maxYpPow=tf.pow(maxYP,coePow)
+    maxPhiPow=tf.pow(maxPhi,coePow)
+    maxEnergyPow=tf.pow(maxEnergy,coePow)
+    
+    xMaxEmit=maxXPow*maxXpPow
+    yMaxEmit=maxYPow*maxYpPow
+    zMaxEmit=maxPhiPow*maxEnergyPow
+    
+    return xMaxEmit,yMaxEmit,zMaxEmit
+    
+    
+    
+    
 
 

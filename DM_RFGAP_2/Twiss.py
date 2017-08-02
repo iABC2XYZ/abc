@@ -76,15 +76,16 @@ def Emit3DLimit(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz):
     numPartDisXTmp=tf.shape(disX)
     numPartDisX=numPartDisXTmp[0]
     
+    
     coeEmit=1.+tf.to_float(numPart-numPartDisX)
     
-    
-    #emitTOri=tf.cond(tf.less(numPartDisX,tf.constant([3])),SetEmitT(),GetEmitT(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz))
-
     numPartCut=tf.constant(3)
     
     emitTConstMax=tf.constant([1.e6,1.e6,6.e10])
     emitTOri,alphaT,betaT,gammaT= Twiss6D(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz)
+
+    emitTConstMax=tf.pow(emitTConstMax,0.01)
+    emitTOri=tf.pow(emitTOri,0.01)
 
     emitT = tf.cond(tf.less(numPartDisX, numPartCut), lambda: tf.multiply(emitTConstMax,coeEmit), lambda: tf.multiply(emitTOri, coeEmit))
 
