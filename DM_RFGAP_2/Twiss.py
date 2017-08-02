@@ -13,6 +13,7 @@ from Lambda import BetaLambdaM
 from Constants import pi
 from EP import dE2dP_energy
 from PartLimit import PartNonNan6D,PartLimitXY4D
+from InputBeam import numPart
 
 def Twiss2D(x,xp):
     xMean=tf.reduce_mean(x)
@@ -68,6 +69,27 @@ def Emit3D_Nan_xyLimit(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMH
 
 
 
+
+
+
+def Emit3DLimit(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz):
+    numPartDisXTmp=tf.shape(disX)
+    numPartDisX=numPartDisXTmp[0]
+    
+    coeEmit=1.+tf.to_float(numPart-numPartDisX)
+    
+    
+    #emitTOri=tf.cond(tf.less(numPartDisX,tf.constant([3])),SetEmitT(),GetEmitT(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz))
+
+    numPartCut=tf.constant(3)
+    
+    emitTConstMax=tf.constant([1.e6,1.e6,6.e10])
+    emitTOri,alphaT,betaT,gammaT= Twiss6D(disX,disXP,disY,disYP,disPhiPi,disEnergy,energySyn,freqMHz)
+
+    emitT = tf.cond(tf.less(numPartDisX, numPartCut), lambda: tf.multiply(emitTConstMax,coeEmit), lambda: tf.multiply(emitTOri, coeEmit))
+
+
+    return emitT
 
 
 
