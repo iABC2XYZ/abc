@@ -16,22 +16,26 @@ from NN_Layers import TwissOutputLayer
 import tensorflow as tf
 
 emitT=np.array([2.,2.,2.])
-numPart=np.int32(1)
+numPart=np.int32(5000)
 x,xp,y,yp,z,zp=PartGen(emitT,numPart)
 
-x=x[:,np.newaxis]
-xp=xp[:,np.newaxis]
-y=y[:,np.newaxis]
-yp=yp[:,np.newaxis]
-z=z[:,np.newaxis]
-zp=zp[:,np.newaxis]
+numPart_2=np.int32(numPart/2)
+x=x.reshape((numPart_2,2))
+xp=xp.reshape((numPart_2,2))
+y=y.reshape((numPart_2,2))
+yp=yp.reshape((numPart_2,2))
+z=z.reshape((numPart_2,2))
+zp=zp.reshape((numPart_2,2))
 
-xS=tf.placeholder(tf.float32,[None,1])
-xpS=tf.placeholder(tf.float32,[None,1])
-yS=tf.placeholder(tf.float32,[None,1])
-ypS=tf.placeholder(tf.float32,[None,1])
-zS=tf.placeholder(tf.float32,[None,1])
-zpS=tf.placeholder(tf.float32,[None,1])
+
+print(z.shape)
+
+xS=tf.placeholder(tf.float32,[None,2])
+xpS=tf.placeholder(tf.float32,[None,2])
+yS=tf.placeholder(tf.float32,[None,2])
+ypS=tf.placeholder(tf.float32,[None,2])
+zS=tf.placeholder(tf.float32,[None,2])
+zpS=tf.placeholder(tf.float32,[None,2])
 
 Prediction,wAlphaT,wBetaT=TwissOutputLayer(xS,xpS,yS,ypS,zS,zpS)
 
@@ -43,14 +47,25 @@ init=tf.global_variables_initializer()
 
 with tf.Session() as sess:
     sess.run(init)
-    for _ in range(1000):
-        sess.run(trainLoss,feed_dict={xS:x,xpS:xp,yS:y,ypS:yp,zS:z,zpS:zp})
-        #print(sess.run(loss,feed_dict={xS:x,xpS:xp,yS:y,ypS:yp,zS:z,zpS:zp}))
+    for _ in range(10):
         print(sess.run(wAlphaT))
         print(sess.run(wBetaT))
+        print(sess.run(Prediction))
+        #sess.run(trainLoss,feed_dict={xS:x,xpS:xp,yS:y,ypS:yp,zS:z,zpS:zp})
+        #print(sess.run(loss,feed_dict={xS:x,xpS:xp,yS:y,ypS:yp,zS:z,zpS:zp}))
         print('_____')
 
+
+
+
 print('OK')
+
+
+
+
+
+
+
 
 
 

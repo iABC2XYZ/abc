@@ -9,13 +9,15 @@ ______________________________________________________
 
 """
 from  numpy.random import multivariate_normal as npmvn
-from numpy import eye
+from numpy import diag
 
 
-def PartGen(emitT,energyIn,freqMHz):
-    meanPart=[0.,0.,0.,0.,0.]
-    covPart=np.diag([emitT[],emitT[],)
-    x,xp,y,yp,z,zp=
+def PartGen(emitT,numPart):
+    meanPart=[0.,0.,0.,0.,0.,0.]
+    covPart=diag([emitT[0],emitT[0],emitT[1],emitT[1],emitT[2],emitT[2]])
+    
+    x,xp,y,yp,z,zp=npmvn(meanPart,covPart,numPart).T
+    return  x,xp,y,yp,z,zp
 
 
 
