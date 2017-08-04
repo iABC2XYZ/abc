@@ -53,7 +53,7 @@ for iCav in range(numCav):
     
 emitX,emitY,emitZ=Emit3D(x,xp,y,yp,phi,Ek)
 
-lossEmit=emitX*emitY*emitZ                       #  should use n times other than emittance
+lossEmit=emitX                       #  should use n times other than emittance
 
 trainEmit=tf.train.GradientDescentOptimizer(0.01).minimize(lossEmit)
 
