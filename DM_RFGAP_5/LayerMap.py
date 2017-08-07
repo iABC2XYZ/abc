@@ -12,24 +12,28 @@ ______________________________________________________
 
 from Map import Drift3D,RFGap3D
 from RFGap import RFGap
-from ActionFunction import MyAct,MyZoomOut,MyZoomIn
+from ActionFunction import MyAct
+import tensorflow as tf
 
 
-def LayerMap(x,xp,y,yp,phi,energy,ETLMV,lenCellM,LastCellLen=0):
-    x,xp,y,yp,phi,energy=MyZoomOut(x,xp,y,yp,phi,energy)
+
+
+
+def LayerMap(x,xp,y,yp,z,betaC,ETLMV,lenCellM,LastCellLen=0):    
     
-    K,dE=RFGap(ETLMV,phi,energy)
-    x,xp,y,yp,phi,energy=Drift3D(lenCellM,x,xp,y,yp,phi,energy)
-    x,xp,y,yp,phi,energy=RFGap3D(K,dE,x,xp,y,yp,phi,energy)
+    
+    K,dBeta=RFGap(z,betaC,ETLMV)
+
+    x,xp,y,yp,z,betaC=Drift3D(x,xp,y,yp,z,betaC,lenCellM)
+    x,xp,y,yp,z,betaC=RFGap3D(x,xp,y,yp,z,betaC,K,dBeta)
+    
     if LastCellLen!=0:
-        x,xp,y,yp,phi,energy=Drift3D(LastCellLen,x,xp,y,yp,phi,energy)
+        x,xp,y,yp,z,betaC=Drift3D(x,xp,y,yp,z,betaC,LastCellLen)
         
+    x,xp,y,yp,z,betaC,numPartLost=MyAct(x,xp,y,yp,z,betaC)
+
     
-    
-    x,xp,y,yp,phi,energy=MyAct(x,xp,y,yp,phi,energy)
-    x,xp,y,yp,phi,energy=MyZoomIn(x,xp,y,yp,phi,energy)
-    
-    return x,xp,y,yp,phi,energy
+    return x,xp,y,yp,z,betaC,numPartLost
 
 
 

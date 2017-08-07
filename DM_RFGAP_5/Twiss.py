@@ -10,6 +10,7 @@ Function:
 
 import tensorflow as tf
 from InputBeam import energyOutMeV
+from BetaGammaC import Energy2BetaC
 
 def EmitXY(x,xp):
     xMean=0.
@@ -22,21 +23,21 @@ def EmitXY(x,xp):
 
     return emitT
 
-def EmitPhiEk(phi,Ek):
-    phiMean=0.
-    EkMean=energyOutMeV
-    phi_phi_Var=tf.reduce_mean(tf.square(phi-phiMean))
-    Ek_Ek_Var=tf.reduce_mean(tf.square(Ek-EkMean))
-    phi_Ek_Var=tf.reduce_mean((phi-phiMean)*(Ek-EkMean))
+def EmitPhiEk(z,betaC,energySyn):
+    zMean=0.
+    betaCMean=Energy2BetaC(energySyn)
+    z_z_Var=tf.reduce_mean(tf.square(z-zMean))
+    betaC_betaC_Var=tf.reduce_mean(tf.square(betaC-betaCMean))
+    z_betaC_Var=tf.reduce_mean((z-zMean)*(betaC-betaCMean))
 
-    emitT=tf.sqrt(phi_phi_Var*Ek_Ek_Var-phi_Ek_Var*phi_Ek_Var)
+    emitT=tf.sqrt(z_z_Var*betaC_betaC_Var-z_betaC_Var*z_betaC_Var)
     
     return emitT
 
-def Emit3D(x,xp,y,yp,phi,Ek):
+def Emit3D(x,xp,y,yp,z,betaC,energySyn=energyOutMeV):
     emitX=EmitXY(x,xp)
     emitY=EmitXY(y,yp)
-    emitZ=EmitPhiEk(phi,Ek)
+    emitZ=EmitPhiEk(z,betaC,energySyn)
     return emitX,emitY,emitZ
 
 

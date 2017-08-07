@@ -12,27 +12,33 @@ __________________________________________________
 
 from InputBeam import qParticle,massMeV,mParticle,energyInMeV
 from Constants import pi
-from BetaGammaC import Energy2BetaGammaC
 from InputLattice import freqMHz
-from Lambda import LambdaM
 import tensorflow as tf
-from Lambda import BetaLambdaM
+from BetaGammaC import Beta2GammaC
+from Lambda import LambdaM,BetaLambdaM
 
 
-def RFGap(ETLMV,phiPi,energyMeV):
+
+
+def RFGap(z,betaC,ETLMV):
     q_m_ETL=qParticle/mParticle*ETLMV
     pi_q_m_ETL=pi*q_m_ETL
-    betaGammaC=Energy2BetaGammaC(energyMeV)
-    betaGammaC3=tf.pow(betaGammaC,3)
+    
+    gammaC=Beta2GammaC(betaC)
+    
+    betaCGammaC3=betaC*gammaC**3
+    betaC2GammaC2=betaC**2*gammaC**2
+    
     lambdaM=LambdaM(freqMHz)
-    mc2_beta3_gamma3_lambda=massMeV*betaGammaC3*lambdaM
-    sinPhi=tf.sin(phiPi)
-    cosPhi=tf.cos(phiPi)
     
-    K=tf.multiply(tf.div(pi_q_m_ETL,mc2_beta3_gamma3_lambda),sinPhi)
-    dE=tf.multiply(q_m_ETL,cosPhi)
-    return K,dE
+    phi=2.*pi*z/(betaC*lambdaM)
     
+    K=pi_q_m_ETL/(betaC2GammaC2*lambdaM*massMeV)*tf.sin(phi)
+    dBeta=q_m_ETL/(betaCGammaC3*massMeV)*tf.cos(phi)
+    
+    return K,dBeta
+    
+
 
 def LengthCellM(wETLMV,wPhis):
     dE=qParticle/mParticle*wETLMV*tf.cos(wPhis)

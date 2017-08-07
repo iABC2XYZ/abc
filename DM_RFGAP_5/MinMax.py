@@ -13,25 +13,22 @@ import numpy as np
 from InputBeam import energyInMeV,energyOutMeV
 from InputLattice import numCav
 
-xMin=np.float32(-20.)
-xMax=np.float32(20.)
 
-xpMin=np.float32(-20.)
-xpMax=np.float32(20.)
+xMax=np.float32(1.)
 
 
-yMin=np.float32(-20.)
-yMax=np.float32(20.)
+xpMax=np.float32(1.)
 
-ypMin=np.float32(-20.)
-ypMax=np.float32(20.)
 
-phiMin=-np.pi
-phiMax=np.pi*(np.float32(numCav)/2+1.)
+yMax=np.float32(1.)
 
-energyMin=energyInMeV*0.95
-energyMax=energyOutMeV*1.05
 
+ypMax=np.float32(1.)
+
+zMax=np.float32(1.)
+
+betaCMin=1.e-5
+betaCMax=9.e-1
 
 
 

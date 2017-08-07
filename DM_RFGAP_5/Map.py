@@ -14,38 +14,38 @@ ______________________________________________________
 
 """
 import tensorflow as tf
-from Lambda import BetaLambdaM
+from Lambda import LambdaM
 from InputLattice import freqMHz
 from Constants import pi
 
 def DriftTrans(L,x,xp):
-    x=tf.add(x,xp*L)
+    x+=xp*L
     return x,xp
 
 def RFGapTrans(K,x,xp):
-    xp=tf.add(xp,-K*x)
+    xp+=-K*x
     return x,xp
 
-def DriftLongi(L,phiPi,energyMeV):
-    betaLambdaM=BetaLambdaM(energyMeV,freqMHz)
-    phiPi=phiPi+tf.div(2.*pi*L,betaLambdaM)-pi
-    return phiPi,energyMeV
+def DriftLongi(L,z,betaC):
+    lambdaM=LambdaM(freqMHz)
+    z+=betaC*lambdaM/2.-L
+    return z,betaC
 
-def RFGapLongi(dE,phiPi,energyMeV):
-    energyMeV=tf.add(dE,energyMeV)
-    return phiPi,energyMeV
+def RFGapLongi(dBeta,z,betaC):
+    betaC+=dBeta
+    return z,betaC
 
-def Drift3D(L,x,xp,y,yp,phiPi,energyMeV):
+def Drift3D(x,xp,y,yp,z,betaC,L):
     x,xp=DriftTrans(L,x,xp)
     y,yp=DriftTrans(L,y,yp)
-    phiPi,energyMeV=DriftLongi(L,phiPi,energyMeV)
-    return x,xp,y,yp,phiPi,energyMeV
+    z,betaC=DriftLongi(L,z,betaC)
+    return x,xp,y,yp,z,betaC
     
-def RFGap3D(K,dE,x,xp,y,yp,phiPi,energyMeV):
+def RFGap3D(x,xp,y,yp,z,betaC,K,dBeta):
     x,xp=RFGapTrans(K,x,xp)
     y,yp=RFGapTrans(K,y,yp)
-    phiPi,energyMeV= RFGapLongi(dE,phiPi,energyMeV)
-    return x,xp,y,yp,phiPi,energyMeV
+    z,betaC= RFGapLongi(dBeta,z,betaC)
+    return x,xp,y,yp,z,betaC
     
     
 

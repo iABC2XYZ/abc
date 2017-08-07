@@ -10,12 +10,9 @@ ______________________________________________________
 """
 
 import tensorflow as tf
-from ActionFunction import MyAct,MyZoomIn,MyZoomOut
 from InputBeam import energyInMeV
-from InputLattice import freqMHz 
-from Lambda import BetaLambdaM
-from Constants import pi
-from BetaGammaC import BetaGammaC2Energy,Energy2BetaGammaC
+from BetaGammaC import Energy2BetaGammaC,BetaGammaC2BetaC
+from ActionFunction import MyAct
 
 def TwissTrans(x,xp,emitT,alphaT,gammaT):
     X=tf.sqrt(emitT/gammaT)*(x-alphaT*xp)
@@ -27,18 +24,19 @@ def LayerTwiss(x,xp,y,yp,z,zp,emitT,alphaT,gammaT):
     Y,YP=TwissTrans(y,yp,emitT[1],alphaT[1],gammaT[1])
     Z,ZP=TwissTrans(z,zp,emitT[2],alphaT[2],gammaT[2])
     
-    betaLambdaM=BetaLambdaM(energyInMeV,freqMHz)
-    PHI=Z/1000./betaLambdaM*pi*2.
+    x=X/1000.    # m
+    xp=XP/1000.  # rad
+    y=Y/1000.  #m
+    yp=YP/1000.  #rad
     
+    z=Z/1000.    # m
     betaGammaCSyn=Energy2BetaGammaC(energyInMeV)
     betaGammaC=(1.+ZP/1000.)*betaGammaCSyn
-    ENERGY=BetaGammaC2Energy(betaGammaC)
-
-    x,xp,y,yp,phi,energy=MyAct(X,XP,Y,YP,PHI,ENERGY)
+    betaC=BetaGammaC2BetaC(betaGammaC)
     
-    x,xp,y,yp,phi,energy=MyZoomIn(x,xp,y,yp,phi,energy)
+    x,xp,y,yp,z,betaC,numPartLost=MyAct(x,xp,y,yp,z,betaC)
     
-    return x,xp,y,yp,phi,energy
+    return x,xp,y,yp,z,betaC,numPartLost
     
     
 
