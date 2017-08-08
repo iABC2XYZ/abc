@@ -68,6 +68,8 @@ for iCav in range(numCav):
     
     nEmitXYZ=tf.cond(isNan,lambda: tf.constant([1.]),lambda: emitX*emitY*emitZ)
     
+    nEmitXYZ*=tf.to_float(numPartLost+1)
+    
     emitN.append(nEmitXYZ/nEmitXYZ_0)
 
 
@@ -75,8 +77,6 @@ lossPart=tf.reduce_mean(emitN)
 
 optiPart=tf.train.GradientDescentOptimizer(0.01)
 trainPart=optiPart.minimize(lossPart)
-
-
 
 Test=[]
 Test.append(x)
@@ -98,7 +98,7 @@ sess.run(init)
 
 print(sess.run(lossPart))
 
-for _ in range(3):
+for _ in range(3000):
     sess.run(trainPart)
     
     print(sess.run(lossPart))
