@@ -17,6 +17,8 @@ import tensorflow as tf
 
 
 
+
+
 def LayerMap(x,xp,y,yp,z,betaC,ETLMV,lenCellM,LastCellLen=0):    
     
     

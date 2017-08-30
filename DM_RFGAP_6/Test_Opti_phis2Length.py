@@ -32,10 +32,10 @@ plt.close('all')
 wAlphaT=tf.Variable(tf.random_uniform(shape=[3],minval=-1.,maxval=1.))
 wGammaT=tf.Variable(tf.random_uniform(shape=[3],minval=0.1,maxval=4.))
 
-#wETLMV=tf.Variable(tf.random_uniform(shape=[numCav],minval=0.001,maxval=0.3))
-wETLMV=tf.constant(0.15,shape=[numCav])
+wETLMV=tf.Variable(tf.random_uniform(shape=[numCav],minval=0.001,maxval=0.3))
+#wETLMV=tf.constant(0.15,shape=[numCav])
 
-wPhis=tf.Variable(tf.random_uniform(shape=[numCav],minval=-np.pi/2.,maxval=np.pi/2))
+lenCellM=tf.Variable(tf.random_uniform(shape=[numCav+1],minval=0,maxval=0.03))
 
 ##############################################################################
 
@@ -83,11 +83,11 @@ def ETLHandle(ETLMV,countNumber=3):
 
          
             
-#wETLMV=ETLHandle(wETLMV,20)
+wETLMV=ETLHandle(wETLMV,20)
 
 
 
-lenCellM=LengthCellM(wETLMV,wPhis)
+#lenCellM=LengthCellM(wETLMV,wPhis)
 
 x,xp,y,yp,z,betaC,numPartLost=LayerTwiss(xH,xpH,yH,ypH,zH,zpH,gEmitTInput,wAlphaT,wGammaT)
 
@@ -116,9 +116,9 @@ loss4D=x**2+xp**2+z**2+dBetaC**2
 loss4D_Lost=loss4D*tf.to_float(numPartLost)
 lossZ=z**2+dBetaC**2
 
-optiLoss=tf.train.AdamOptimizer(0.005)
+optiLoss=tf.train.AdamOptimizer(0.00001)
 trainBetaC=optiLoss.minimize(lossBetaC)
-trainX=optiLoss.minimize(lossZ)
+trainX=optiLoss.minimize(loss4D)
 
 
 
@@ -138,7 +138,7 @@ init=tf.global_variables_initializer()
 sess=tf.Session()
 
 sess.run(init)
-print(sess.run(wETLMV))
+print(sess.run(lenCellM))
 
 
 

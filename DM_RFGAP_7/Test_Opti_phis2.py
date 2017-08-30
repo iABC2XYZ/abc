@@ -32,8 +32,8 @@ plt.close('all')
 wAlphaT=tf.Variable(tf.random_uniform(shape=[3],minval=-1.,maxval=1.))
 wGammaT=tf.Variable(tf.random_uniform(shape=[3],minval=0.1,maxval=4.))
 
-#wETLMV=tf.Variable(tf.random_uniform(shape=[numCav],minval=0.001,maxval=0.3))
-wETLMV=tf.constant(0.15,shape=[numCav])
+wETLMV=tf.Variable(tf.random_uniform(shape=[numCav],minval=0.001,maxval=0.3))
+#wETLMV=tf.constant(0.15,shape=[numCav])
 
 wPhis=tf.Variable(tf.random_uniform(shape=[numCav],minval=-np.pi/2.,maxval=np.pi/2))
 
@@ -83,7 +83,8 @@ def ETLHandle(ETLMV,countNumber=3):
 
          
             
-#wETLMV=ETLHandle(wETLMV,20)
+wETLMV=ETLHandle(wETLMV,20)
+wPhis=ETLHandle(wPhis,3)
 
 
 
@@ -116,8 +117,7 @@ loss4D=x**2+xp**2+z**2+dBetaC**2
 loss4D_Lost=loss4D*tf.to_float(numPartLost)
 lossZ=z**2+dBetaC**2
 
-optiLoss=tf.train.AdamOptimizer(0.005)
-trainBetaC=optiLoss.minimize(lossBetaC)
+optiLoss=tf.train.AdamOptimizer(0.004)
 trainX=optiLoss.minimize(lossZ)
 
 
@@ -138,11 +138,11 @@ init=tf.global_variables_initializer()
 sess=tf.Session()
 
 sess.run(init)
-print(sess.run(wETLMV))
+print(sess.run(lenCellM))
 
 
 
-for _ in range(1000):
+for _ in range(10000):
     
     xIn,xpIn,yIn,ypIn,zIn,zpIn=PartGen(numPart)
     
@@ -176,7 +176,7 @@ for _ in range(1000):
     plt.plot(phisR,'.')
     
     plt.pause(0.1)
-    plt.show()
+
     
     if _ % 10 ==0:
 
@@ -201,7 +201,7 @@ for _ in range(1000):
         plt.subplot(223)
         plt.plot(zR,betaCR,'.')
         
-        plt.show()
+
         plt.pause(0.1)
     
     
