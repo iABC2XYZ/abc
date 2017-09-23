@@ -18,7 +18,7 @@ from TFOrth import TFLambdaR,TFOrthTrans
 
 plt.close('all')
 
-emitX=1.4
+emitX=4.8
 alphaX=-2.3
 betaX=15.3
 gammaX=(1.+alphaX**2)/betaX
@@ -73,38 +73,39 @@ xR=xO[0]**2+xO[1]**2
 lossXR=(xR-2.)**2
 
 
-factorLearnH=tf.placeholder(tf.float32,[1])
-optXR=tf.train.AdamOptimizer(factorLearnH[0])
+rateLearn=5e-4
+optXR=tf.train.AdamOptimizer(rateLearn)
 
 trainXR=optXR.minimize(lossXR)
 
 meanLossXR=tf.reduce_mean(lossXR)
+
 
 sess = tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
 
 sess.run(tf.global_variables_initializer())
 
 
-factorLearn=0.001
 
-sizeBatch=100
 
-for _ in xrange(20000):
+sizeBatch=64
+
+for _ in xrange(30000):
     
     startBatch=np.random.randint(0,high=numPart-sizeBatch-1)
     xFeed=X[:,startBatch:startBatch+sizeBatch:]
     
-    sess.run(trainXR,feed_dict={xI:xFeed,factorLearnH:np.array([factorLearn])})
+    sess.run(trainXR,feed_dict={xI:xFeed})
     
     
     #print(sess.run(LambdaR))
     #print('---------------------------')
-    print(sess.run(meanLossXR,feed_dict={xI:X,factorLearnH:np.array([factorLearn])}))
+    print(sess.run(meanLossXR,feed_dict={xI:X}))
     print('_______________________________________________')
 
 
     '''
-    zReal=sess.run(xO,feed_dict={xI:X,factorLearnH:np.array([factorLearn])})
+    zReal=sess.run(xO,feed_dict={xI:X})
     
     
     plt.figure(2)
@@ -113,7 +114,7 @@ for _ in xrange(20000):
     plt.axis('equal')
     plt.pause(0.001)
     ''' 
-
+    
 LambdaRGet=sess.run(LambdaR)
 
 print(LambdaRGet)
