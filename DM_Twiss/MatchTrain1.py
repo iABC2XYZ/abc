@@ -148,12 +148,19 @@ xO=tf.matmul(MTwiss,xD5)
 #I=tf.constant([1.],shape=[1,1])
 #xR=r*(xO[0]**2+xO[1]**2)+(I-r)*(xO[2]**2+xO[3]**2)
 
-xR=xO[0]**2+xO[1]**2+xO[2]**2+xO[3]**2
+#xR=xO[0]**2+xO[1]**2+xO[2]**2+xO[3]**2
 
+r_x=tf.random_uniform([1,1],minval=0.,maxval=1.)
+r_xp=tf.random_uniform([1,1],minval=0.,maxval=1.)
+r_y=tf.random_uniform([1,1],minval=0.,maxval=1.)
+r_yp=tf.random_uniform([1,1],minval=0.,maxval=1.)
+
+#xR=r_x*xO[0]**2+r_xp*xO[1]**2+r_y*xO[2]**2+r_yp*xO[3]**2
+xR=tf.abs((xO[0]+1.)*(xO[1]+1.)*(xO[2]+1.)*(xO[3]+1.))
 
 lossR=xR
 
-rateLearn=0.01
+rateLearn=0.5
 optMethod=tf.train.AdamOptimizer(rateLearn)
 train=optMethod.minimize(lossR)
 
@@ -237,3 +244,6 @@ print(zRealCov)
 print(emitXReal)
 
 """
+
+
+plt.show()
