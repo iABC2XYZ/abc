@@ -1,0 +1,9 @@
+
+
+    wget -c --referer=百度云分享链接 -O 保存的文件名 "百度云实际下载地址"  
+
+
+    wget -c --referer=https://pan.baidu.com/s/1i3D5rU1 -O wsprpm.zip "https://d11.baidupcs.com/file/1dc0983a20dc09bac718c294e2d7991f?bkt=p3-14001dc0983a20dc09bac718c294e2d7991fa7347101000010c98778&xcode=f57474e2acfd259e160ff9d6ddd4bc71225caf9c89125fbc1682cb8519c2059f&fid=539509571-250528-374378955669528&time=1495183968&sign=FDTAXGERLBHS-DCb740ccc5511e5e8fedcff06b081203-GedxuF07WW9WM7VnABQqP1P%2FGRI%3D&to=d11&size=281642872&sta_dx=281642872&sta_cs=2907&sta_ft=zip&sta_ct=7&sta_mt=7&fm2=MH,Nanjing02,Netizen-anywhere,,guangdong,cnc&newver=1&newfm=1&secfm=1&flow_ver=3&pkey=14001dc0983a20dc09bac718c294e2d7991fa7347101000010c98778&sl=72613966&expires=8h&rt=sh&r=542333063&mlogid=3216921857882148128&vuk=33571115&vbdid=2127076613&fin=wsprpm.zip&fn=wsprpm.zip&rtype=1&iv=0&dp-logid=3216921857882148128&dp-callid=0.1.1&hps=1&csl=139&csign=5ZbpUW3Xe6L9%2FGgP%2Bhi3NHx5254%3D&by=themis"  
+
+此处-c 为断点续传，--referer为百度云分享地址，-O为指定输出文件，后面接浏览器下载文件的下载地址
+
