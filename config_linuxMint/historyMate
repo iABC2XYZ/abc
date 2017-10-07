@@ -1,0 +1,196 @@
+    1  ls
+    2  sudo dpkg -i cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb 
+    3  sudo apt-get update 
+    4  sudo apt-get install cuda
+    5  reboot
+    6  pwd
+    7  ls
+    8  cs cuda6
+    9  cd cuda6
+   10  ls
+   11  sudo cp ./include/* /usr/local/cuda-8.0/include
+   12  sudo cp ./lib64/* /usr/local/cuda-8.0/lib64
+   13  sudo apt-get install vim
+   14  vim ~/.bashrc
+   15  source ~/.bashrc
+   16  sudo apt-get install python-pip
+   17  pip install spyder
+   18  pip install --upgrade pip
+   19  pip install   -i https://pypi.tuna.tsinghua.edu.cn/simple/   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+   20  sudo apt-get install setuptools
+   21  pip install setuptools
+   22  sudo pip install setuptools
+   23  pip install   -i https://pypi.tuna.tsinghua.edu.cn/simple/   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+   24  sudo pip install   -i https://pypi.tuna.tsinghua.edu.cn/simple/   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+   25  python
+   26  pip install jupyter
+   27  sudo apt-get install *x86_64-linux-gnu-gcc*
+   28  sudo apt-get build-dep python-lxml
+   29  gcc
+   30  conda install jupyter
+   31  pip install conda
+   32  sudo apt-get install libxml2-dev libxslt1-dev python-dev
+   33  sudo apt-get install zlib1g-dev
+   34  sudo apt-get install libevent-dev
+   35  sudo pip install lxml
+   36  sudo pip install lxml --upgrade
+   37  pip install conda
+   38  sudo pip install conda
+   39  pip install jupyter
+   40  sudo pip install jupyter
+   41  jupyter notebook
+   42  pwd
+   43  ls
+   44  nvcc
+   45  python
+   46  spyder
+   47  sudo apt install spyder
+   48  spyder 
+   49  sudo apt-get install mate
+   50  sudo apt-get install mate-desktop*
+   51  sudo apt-get update
+   52  sudo apt-get install mint-meta-mate
+   53  sudo apt-get install mint-meta-mate
+   54  sudo add-apt-repository ppa:hzwhuang/ss-qt5
+   55  sudo apt-get update
+   56  sudo apt-get install shadowsocks-qt5
+   57  sudo apt-get install skype
+   58  sudo apt-get install pepperflashplugin-nonfree
+   59  pwd
+   60  wget http://cznic.dl.osdn.jp/clonezilla/68294/clonezilla-live-20170905-zesty-i386.iso
+   61  jupyter
+   62  jupyter notebook
+   63  cd ~
+   64  pwd
+   65  jupyter notebook
+   66  pip install matplotlib
+   67  sudo pip install matplotlib
+   68  cd ~
+   69  pwd
+   70  ssh-keygen -t rsa -b 4096 -C "jiangpeiyong10@mails.ucas.ac.cn"
+   71  ls
+   72  cd .ssh/
+   73  ls
+   74  vi id_rsa.pub 
+   75  k
+   76  kate id_rsa.pub 
+   77  sudo apt-get install git
+   78  pwd
+   79  ls
+   80  mv 桌面 Desktop
+   81  mv 下载 Download
+   82  ls
+   83  cd Desktop/
+   84  ls
+   85  cd ABC
+   86  ls
+   87  cd abc/
+   88  ls
+   89  git pull origin master 
+   90  pwd
+   91  ls
+   92  cd DM_Twiss/
+   93  ls
+   94  spyder 
+   95  pwd
+   96  ls
+   97  cd ABC/
+   98  ls
+   99  pwd
+  100  git clone git@github.com:iABC2XYZ/abc.git
+  101  ls
+  102  cd abc/
+  103  ls
+  104  git pull origin master 
+  105  cd DM_Twiss/
+  106  ls
+  107  python MatchTrain1.py 
+  108  pwd
+  109  spyder
+  110  sudo pip install python-tk 
+  111  conda
+  112  conda install python-tk 
+  113  sudo pip install conda
+  114  sudo conda install python-tk 
+  115  easy_install conda
+  116  sudo apt-get install python-tk 
+  117  pwd
+  118  ls
+  119  spyder
+  120  pwd
+  121  ls
+  122  cd ABC/
+  123  ls
+  124  cd abc/
+  125  ls
+  126  pwd
+  127  ls
+  128  pwd
+  129  git push origin master 
+  130  git add -a
+  131  git add -A
+  132  git commit -m 'M'
+  133  git commit -m "BK"
+  134  git config --global user.email "jiangpeiyong10@mails.ucas.ac.cn"
+  135  git config --global user.name "iABC2XYZ"
+  136  git commit -m "BK"
+  137  git push origin master 
+  138  poweroff
+  139  pwd
+  140  ls
+  141  pwd
+  142  cd Desktop/
+  143  ls
+  144  cd ABC
+  145  l
+  146  s
+  147  cd abc/
+  148  ls
+  149  pwd
+  150  git pull origin master 
+  151  pwd
+  152  cd ../
+  153  rm -fr *
+  154  reboot
+  155  pwd
+  156  ls
+  157  pwd
+  158  cd Desktop/
+  159  ls
+  160  cd A
+  161  cd ABC
+  162  pwd
+  163  ls
+  164  cd ABC
+  165  ls
+  166  ped
+  167  pwd
+  168  git clone git@github.com:iABC2XYZ/abc.git
+  169  pwd
+  170  ls
+  171  cd abc/
+  172  pwd
+  173  ls
+  174  cd DM_Twiss/
+  175  ls
+  176  pwd
+  177  ls
+  178  cd Desktop/
+  179  ls
+  180  ped
+  181  pwd
+  182  ls
+  183  cd ABC
+  184  pwd
+  185  ls
+  186  cd abc/
+  187  ls
+  188  pwd
+  189  cd DM_Twiss/
+  190  ls
+  191  pwd
+  192  ls
+  193  pwd
+  194  spyder 
+  195  pwd
+  196  history>>historyMate

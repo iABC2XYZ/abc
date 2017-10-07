@@ -1,0 +1,1066 @@
+ 
+ sudo apt-get install python-pip
+[sudo] a 的密码： 
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+将会同时安装下列软件：
+  python-pip-whl
+推荐安装：
+  python-all-dev python-setuptools python-wheel
+下列【新】软件包将被安装：
+  python-pip python-pip-whl
+升级了 0 个软件包，新安装了 2 个软件包，要卸载 0 个软件包，有 411 个软件包未被升级。
+需要下载 1,255 kB 的归档。
+解压缩后会消耗 1,854 kB 的额外空间。
+您希望继续执行吗？ [Y/n] y
+获取:1 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python-pip-whl all 8.1.1-2ubuntu0.4 [1,110 kB]
+获取:2 http://archive.ubuntu.com/ubuntu xenial-updates/universe amd64 python-pip all 8.1.1-2ubuntu0.4 [144 kB]                       
+已下载 1,255 kB，耗时 21秒 (57.5 kB/s)                                                                                               
+正在选中未选择的软件包 python-pip-whl。
+(正在读取数据库 ... 系统当前共安装有 219385 个文件和目录。)
+正准备解包 .../python-pip-whl_8.1.1-2ubuntu0.4_all.deb  ...
+正在解包 python-pip-whl (8.1.1-2ubuntu0.4) ...                                                                                        
+正在选中未选择的软件包 python-pip。                                                                                                   
+正准备解包 .../python-pip_8.1.1-2ubuntu0.4_all.deb  ...                                                                               
+正在解包 python-pip (8.1.1-2ubuntu0.4) ...                                                                                            
+正在处理用于 man-db (2.7.5-1) 的触发器 ...                                                                                            
+正在设置 python-pip-whl (8.1.1-2ubuntu0.4) ...                                                                                        
+正在设置 python-pip (8.1.1-2ubuntu0.4) ...                                                                                            
+a@A ~ $ pip install spyder                                                                                                            
+Collecting spyder                                                                                                                     
+  Downloading spyder-3.2.3-py2-none-manylinux1_x86_64.whl (3.5MB)                                                                     
+    100% |████████████████████████████████| 3.5MB 205kB/s 
+Collecting qtawesome>=0.4.1 (from spyder)
+  Downloading QtAwesome-0.4.4-py2.py3-none-any.whl (151kB)
+    100% |████████████████████████████████| 153kB 540kB/s 
+Collecting pickleshare (from spyder)
+  Downloading pickleshare-0.7.4-py2.py3-none-any.whl
+Collecting psutil (from spyder)
+  Downloading psutil-5.3.1.tar.gz (397kB)
+    100% |████████████████████████████████| 399kB 543kB/s 
+    Complete output from command python setup.py egg_info:
+    Traceback (most recent call last):
+      File "<string>", line 1, in <module>
+    ImportError: No module named setuptools
+    
+    ----------------------------------------
+Command "python setup.py egg_info" failed with error code 1 in /tmp/pip-build-2u8b6D/psutil/
+You are using pip version 8.1.1, however version 9.0.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+a@A ~ $ ^C
+a@A ~ $ pip install --upgrade pip
+Collecting pip
+  Downloading pip-9.0.1-py2.py3-none-any.whl (1.3MB)
+    100% |████████████████████████████████| 1.3MB 668kB/s 
+Installing collected packages: pip
+Successfully installed pip-8.1.1
+You are using pip version 8.1.1, however version 9.0.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+a@A ~ $ pip install \
+>   -i https://pypi.tuna.tsinghua.edu.cn/simple/ \
+>   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+Collecting tensorflow-gpu==1.3.0 from https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+  Downloading https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl (158.8MB)
+    34% |███████████                     | 55.1MB 403kB/s eta 0:04:18Exception:
+Traceback (most recent call last):
+  File "/home/a/.local/lib/python2.7/site-packages/pip/basecommand.py", line 215, in main
+    status = self.run(options, args)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/commands/install.py", line 324, in run
+    requirement_set.prepare_files(finder)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_set.py", line 380, in prepare_files
+    ignore_dependencies=self.ignore_dependencies))
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_set.py", line 620, in _prepare_file
+    session=self.session, hashes=hashes)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/download.py", line 821, in unpack_url
+    hashes=hashes
+  File "/home/a/.local/lib/python2.7/site-packages/pip/download.py", line 659, in unpack_http_url
+    hashes)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/download.py", line 882, in _download_http_url
+    _download_url(resp, link, content_file, hashes)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/download.py", line 605, in _download_url
+    consume(downloaded_chunks)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/utils/__init__.py", line 852, in consume
+    deque(iterator, maxlen=0)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/download.py", line 571, in written_chunks
+    for chunk in chunks:
+  File "/home/a/.local/lib/python2.7/site-packages/pip/utils/ui.py", line 139, in iter
+    for x in it:
+  File "/home/a/.local/lib/python2.7/site-packages/pip/download.py", line 560, in resp_read
+    decode_content=False):
+  File "/home/a/.local/lib/python2.7/site-packages/pip/_vendor/requests/packages/urllib3/response.py", line 357, in stream
+    data = self.read(amt=amt, decode_content=decode_content)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/_vendor/requests/packages/urllib3/response.py", line 324, in read
+    flush_decoder = True
+  File "/usr/lib/python2.7/contextlib.py", line 35, in __exit__
+    self.gen.throw(type, value, traceback)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/_vendor/requests/packages/urllib3/response.py", line 246, in _error_catcher
+    raise ReadTimeoutError(self._pool, None, 'Read timed out.')
+ReadTimeoutError: HTTPSConnectionPool(host='mirrors.tuna.tsinghua.edu.cn', port=443): Read timed out.
+a@A ~ $ 
+a@A ~ $ pip install   -i https://pypi.tuna.tsinghua.edu.cn/simple/   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+Collecting tensorflow-gpu==1.3.0 from https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+  Downloading https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl (158.8MB)
+    100% |████████████████████████████████| 158.8MB 9.1kB/s 
+Collecting mock>=2.0.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/e6/35/f187bdf23be87092bd0f1200d43d23076cee4d0dec109f195173fd3ebc79/mock-2.0.0-py2.py3-none-any.whl (56kB)
+    100% |████████████████████████████████| 61kB 758kB/s 
+Collecting numpy>=1.11.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/5f/d2/9fa0201944933afd6d059f1e32aa6bdb203b23ab62fc823d3adf36295b9a/numpy-1.13.1-cp27-cp27mu-manylinux1_x86_64.whl (16.6MB)
+    100% |████████████████████████████████| 16.6MB 83kB/s 
+Collecting backports.weakref>=1.0rc1 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/88/ec/f598b633c3d5ffe267aaada57d961c94fdfa183c5c3ebda2b6d151943db6/backports.weakref-1.0.post1-py2.py3-none-any.whl
+Collecting wheel (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/0c/80/16a85b47702a1f47a63c104c91abdd0a6704ee8ae3b4ce4afc49bc39f9d9/wheel-0.30.0-py2.py3-none-any.whl (49kB)
+    100% |████████████████████████████████| 51kB 1.1MB/s 
+Collecting tensorflow-tensorboard<0.2.0,>=0.1.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/92/4a/13ab73b3f1f8d94c0beaca352f011bc9f58ef2e3b01abb44e25cc31a4940/tensorflow_tensorboard-0.1.6-py2-none-any.whl (2.2MB)
+    100% |████████████████████████████████| 2.2MB 575kB/s 
+Requirement already satisfied: six>=1.10.0 in /usr/lib/python2.7/dist-packages (from tensorflow-gpu==1.3.0)
+Collecting protobuf>=3.3.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/9c/e4/993661ca20c57307561a14180757a7a3cb30c0283f416ff3040dca7d91d3/protobuf-3.4.0-cp27-cp27mu-manylinux1_x86_64.whl (6.2MB)
+    100% |████████████████████████████████| 6.2MB 225kB/s 
+Collecting funcsigs>=1; python_version < "3.3" (from mock>=2.0.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/69/cb/f5be453359271714c01b9bd06126eaf2e368f1fddfff30818754b5ac2328/funcsigs-1.0.2-py2.py3-none-any.whl
+Collecting pbr>=0.11 (from mock>=2.0.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/0c/5d/b077dbf309993d52c1d71e6bf6fe443a8029ea215135ebbe0b1b10e7aefc/pbr-3.1.1-py2.py3-none-any.whl (99kB)
+    100% |████████████████████████████████| 102kB 3.1MB/s 
+Collecting bleach==1.5.0 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/33/70/86c5fec937ea4964184d4d6c4f0b9551564f821e1c3575907639036d9b90/bleach-1.5.0-py2.py3-none-any.whl
+Collecting markdown>=2.6.8 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/29/82/dfe242bcfd9eec0e7bf93a80a8f8d8515a95b980c44f5c0b45606397a423/Markdown-2.6.9.tar.gz (271kB)
+    100% |████████████████████████████████| 276kB 1.9MB/s 
+Could not import setuptools which is required to install from a source distribution.
+Please install setuptools.
+a@A ~ $ sudo apt-get install setuptools
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+E: 无法定位软件包 setuptools
+a@A ~ $ pip install setuptools
+Collecting setuptools
+  Downloading setuptools-36.5.0-py2.py3-none-any.whl (478kB)
+    100% |████████████████████████████████| 481kB 503kB/s 
+Installing collected packages: setuptools
+Exception:
+Traceback (most recent call last):
+  File "/home/a/.local/lib/python2.7/site-packages/pip/basecommand.py", line 215, in main
+    status = self.run(options, args)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/commands/install.py", line 342, in run
+    prefix=options.prefix_path,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_set.py", line 784, in install
+    **kwargs
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 851, in install
+    self.move_wheel_files(self.source_dir, root=root, prefix=prefix)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 1064, in move_wheel_files
+    isolated=self.isolated,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 345, in move_wheel_files
+    clobber(source, lib_dir, True)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 323, in clobber
+    shutil.copyfile(srcfile, destfile)
+  File "/usr/lib/python2.7/shutil.py", line 83, in copyfile
+    with open(dst, 'wb') as fdst:
+IOError: [Errno 13] 权限不够: '/usr/local/lib/python2.7/dist-packages/easy_install.py'
+a@A ~ $ sudo pip install setuptools
+The directory '/home/a/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/a/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+Collecting setuptools
+  Downloading setuptools-36.5.0-py2.py3-none-any.whl (478kB)
+    100% |████████████████████████████████| 481kB 279kB/s 
+Installing collected packages: setuptools
+Successfully installed setuptools-36.5.0
+a@A ~ $ pip install   -i https://pypi.tuna.tsinghua.edu.cn/simple/   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+Collecting tensorflow-gpu==1.3.0 from https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+
+  Using cached https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+Collecting mock>=2.0.0 (from tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/e6/35/f187bdf23be87092bd0f1200d43d23076cee4d0dec109f195173fd3ebc79/mock-2.0.0-py2.py3-none-any.whl
+Collecting numpy>=1.11.0 (from tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/5f/d2/9fa0201944933afd6d059f1e32aa6bdb203b23ab62fc823d3adf36295b9a/numpy-1.13.1-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting backports.weakref>=1.0rc1 (from tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/88/ec/f598b633c3d5ffe267aaada57d961c94fdfa183c5c3ebda2b6d151943db6/backports.weakref-1.0.post1-py2.py3-none-any.whl
+Collecting wheel (from tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/0c/80/16a85b47702a1f47a63c104c91abdd0a6704ee8ae3b4ce4afc49bc39f9d9/wheel-0.30.0-py2.py3-none-any.whl
+Collecting tensorflow-tensorboard<0.2.0,>=0.1.0 (from tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/92/4a/13ab73b3f1f8d94c0beaca352f011bc9f58ef2e3b01abb44e25cc31a4940/tensorflow_tensorboard-0.1.6-py2-none-any.whl
+Requirement already satisfied: six>=1.10.0 in /usr/lib/python2.7/dist-packages (from tensorflow-gpu==1.3.0)
+Collecting protobuf>=3.3.0 (from tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/9c/e4/993661ca20c57307561a14180757a7a3cb30c0283f416ff3040dca7d91d3/protobuf-3.4.0-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting funcsigs>=1; python_version < "3.3" (from mock>=2.0.0->tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/69/cb/f5be453359271714c01b9bd06126eaf2e368f1fddfff30818754b5ac2328/funcsigs-1.0.2-py2.py3-none-any.whl
+Collecting pbr>=0.11 (from mock>=2.0.0->tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/0c/5d/b077dbf309993d52c1d71e6bf6fe443a8029ea215135ebbe0b1b10e7aefc/pbr-3.1.1-py2.py3-none-any.whl
+Collecting bleach==1.5.0 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/33/70/86c5fec937ea4964184d4d6c4f0b9551564f821e1c3575907639036d9b90/bleach-1.5.0-py2.py3-none-any.whl
+Collecting markdown>=2.6.8 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Using cached https://pypi.tuna.tsinghua.edu.cn/packages/29/82/dfe242bcfd9eec0e7bf93a80a8f8d8515a95b980c44f5c0b45606397a423/Markdown-2.6.9.tar.gz
+Collecting html5lib==0.9999999 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/ae/ae/bcb60402c60932b32dfaf19bb53870b29eda2cd17551ba5639219fb5ebf9/html5lib-0.9999999.tar.gz (889kB)
+    100% |████████████████████████████████| 890kB 904kB/s 
+Collecting werkzeug>=0.11.10 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/97/02/306e0d57fdbf467ec1c763bc1757ec6ba20b1332e0ea7e49111533d71d1c/Werkzeug-0.12.2-py2.py3-none-any.whl (312kB)
+    100% |████████████████████████████████| 317kB 1.6MB/s 
+Requirement already satisfied: setuptools in /usr/local/lib/python2.7/dist-packages (from protobuf>=3.3.0->tensorflow-gpu==1.3.0)
+Installing collected packages: funcsigs, pbr, mock, numpy, backports.weakref, wheel, html5lib, bleach, markdown, protobuf, werkzeug, tensorflow-tensorboard, tensorflow-gpu
+Exception:
+Traceback (most recent call last):
+  File "/home/a/.local/lib/python2.7/site-packages/pip/basecommand.py", line 215, in main
+    status = self.run(options, args)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/commands/install.py", line 342, in run
+    prefix=options.prefix_path,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_set.py", line 784, in install
+    **kwargs
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 851, in install
+    self.move_wheel_files(self.source_dir, root=root, prefix=prefix)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 1064, in move_wheel_files
+    isolated=self.isolated,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 345, in move_wheel_files
+    clobber(source, lib_dir, True)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 316, in clobber
+    ensure_dir(destdir)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/utils/__init__.py", line 83, in ensure_dir
+    os.makedirs(path)
+  File "/usr/lib/python2.7/os.py", line 157, in makedirs
+    mkdir(name, mode)
+OSError: [Errno 13] 权限不够: '/usr/local/lib/python2.7/dist-packages/funcsigs-1.0.2.dist-info'
+a@A ~ $ 
+a@A ~ $ sudo pip install   -i https://pypi.tuna.tsinghua.edu.cn/simple/   https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+The directory '/home/a/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/a/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+Collecting tensorflow-gpu==1.3.0 from https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl
+  Downloading https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/gpu/tensorflow_gpu-1.3.0-cp27-none-linux_x86_64.whl (158.8MB)
+    100% |████████████████████████████████| 158.8MB 9.5kB/s 
+Collecting mock>=2.0.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/e6/35/f187bdf23be87092bd0f1200d43d23076cee4d0dec109f195173fd3ebc79/mock-2.0.0-py2.py3-none-any.whl (56kB)
+    100% |████████████████████████████████| 61kB 701kB/s 
+Collecting numpy>=1.11.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/5f/d2/9fa0201944933afd6d059f1e32aa6bdb203b23ab62fc823d3adf36295b9a/numpy-1.13.1-cp27-cp27mu-manylinux1_x86_64.whl (16.6MB)
+    100% |████████████████████████████████| 16.6MB 86kB/s 
+Collecting backports.weakref>=1.0rc1 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/88/ec/f598b633c3d5ffe267aaada57d961c94fdfa183c5c3ebda2b6d151943db6/backports.weakref-1.0.post1-py2.py3-none-any.whl
+Collecting wheel (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/0c/80/16a85b47702a1f47a63c104c91abdd0a6704ee8ae3b4ce4afc49bc39f9d9/wheel-0.30.0-py2.py3-none-any.whl (49kB)
+    100% |████████████████████████████████| 51kB 1.3MB/s 
+Collecting tensorflow-tensorboard<0.2.0,>=0.1.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/92/4a/13ab73b3f1f8d94c0beaca352f011bc9f58ef2e3b01abb44e25cc31a4940/tensorflow_tensorboard-0.1.6-py2-none-any.whl (2.2MB)
+    100% |████████████████████████████████| 2.2MB 650kB/s 
+Requirement already satisfied: six>=1.10.0 in /usr/lib/python2.7/dist-packages (from tensorflow-gpu==1.3.0)
+Collecting protobuf>=3.3.0 (from tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/9c/e4/993661ca20c57307561a14180757a7a3cb30c0283f416ff3040dca7d91d3/protobuf-3.4.0-cp27-cp27mu-manylinux1_x86_64.whl (6.2MB)
+    100% |████████████████████████████████| 6.2MB 223kB/s 
+Collecting funcsigs>=1; python_version < "3.3" (from mock>=2.0.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/69/cb/f5be453359271714c01b9bd06126eaf2e368f1fddfff30818754b5ac2328/funcsigs-1.0.2-py2.py3-none-any.whl
+Collecting pbr>=0.11 (from mock>=2.0.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/0c/5d/b077dbf309993d52c1d71e6bf6fe443a8029ea215135ebbe0b1b10e7aefc/pbr-3.1.1-py2.py3-none-any.whl (99kB)
+    100% |████████████████████████████████| 102kB 1.7MB/s 
+Collecting bleach==1.5.0 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/33/70/86c5fec937ea4964184d4d6c4f0b9551564f821e1c3575907639036d9b90/bleach-1.5.0-py2.py3-none-any.whl
+Collecting markdown>=2.6.8 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/29/82/dfe242bcfd9eec0e7bf93a80a8f8d8515a95b980c44f5c0b45606397a423/Markdown-2.6.9.tar.gz (271kB)
+    100% |████████████████████████████████| 276kB 2.4MB/s 
+Collecting html5lib==0.9999999 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/ae/ae/bcb60402c60932b32dfaf19bb53870b29eda2cd17551ba5639219fb5ebf9/html5lib-0.9999999.tar.gz (889kB)
+    100% |████████████████████████████████| 890kB 1.2MB/s 
+Collecting werkzeug>=0.11.10 (from tensorflow-tensorboard<0.2.0,>=0.1.0->tensorflow-gpu==1.3.0)
+  Downloading https://pypi.tuna.tsinghua.edu.cn/packages/97/02/306e0d57fdbf467ec1c763bc1757ec6ba20b1332e0ea7e49111533d71d1c/Werkzeug-0.12.2-py2.py3-none-any.whl (312kB)
+    100% |████████████████████████████████| 317kB 2.5MB/s 
+Requirement already satisfied: setuptools in /usr/local/lib/python2.7/dist-packages (from protobuf>=3.3.0->tensorflow-gpu==1.3.0)
+Installing collected packages: funcsigs, pbr, mock, numpy, backports.weakref, wheel, html5lib, bleach, markdown, protobuf, werkzeug, tensorflow-tensorboard, tensorflow-gpu
+  Running setup.py install for html5lib ... done
+  Running setup.py install for markdown ... done
+  Found existing installation: protobuf 2.6.1
+    Uninstalling protobuf-2.6.1:
+      Successfully uninstalled protobuf-2.6.1
+Successfully installed backports.weakref-1.0.post1 bleach-1.5.0 funcsigs-1.0.2 html5lib-0.9999999 markdown-2.6.9 mock-2.0.0 numpy-1.13.1 pbr-3.1.1 protobuf-3.4.0 tensorflow-gpu-1.3.0 tensorflow-tensorboard-0.1.6 werkzeug-0.12.2 wheel-0.30.0
+a@A ~ $ python
+Python 2.7.12 (default, Nov 19 2016, 06:48:10) 
+[GCC 5.4.0 20160609] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import tensorflow
+>>> exit()
+a@A ~ $ pip install jupyter
+Collecting jupyter
+  Downloading jupyter-1.0.0-py2.py3-none-any.whl
+Collecting ipykernel (from jupyter)
+  Downloading ipykernel-4.6.1-py2-none-any.whl (104kB)
+    100% |████████████████████████████████| 112kB 314kB/s 
+Collecting jupyter-console (from jupyter)
+  Downloading jupyter_console-5.2.0-py2.py3-none-any.whl
+Collecting qtconsole (from jupyter)
+  Downloading qtconsole-4.3.1-py2.py3-none-any.whl (108kB)
+    100% |████████████████████████████████| 112kB 1.6MB/s 
+Collecting notebook (from jupyter)
+  Downloading notebook-5.1.0-py2.py3-none-any.whl (8.0MB)
+    100% |████████████████████████████████| 8.0MB 114kB/s 
+Collecting ipywidgets (from jupyter)
+  Downloading ipywidgets-7.0.1-py2.py3-none-any.whl (66kB)
+    100% |████████████████████████████████| 71kB 268kB/s 
+Collecting nbconvert (from jupyter)
+  Downloading nbconvert-5.3.1-py2.py3-none-any.whl (387kB)
+    100% |████████████████████████████████| 389kB 302kB/s 
+Collecting ipython>=4.0.0 (from ipykernel->jupyter)
+  Downloading ipython-5.5.0-py2-none-any.whl (758kB)
+    100% |████████████████████████████████| 768kB 288kB/s 
+Collecting traitlets>=4.1.0 (from ipykernel->jupyter)
+  Downloading traitlets-4.3.2-py2.py3-none-any.whl (74kB)
+    100% |████████████████████████████████| 81kB 345kB/s 
+Collecting tornado>=4.0 (from ipykernel->jupyter)
+  Downloading tornado-4.5.2.tar.gz (483kB)
+    100% |████████████████████████████████| 491kB 346kB/s 
+Collecting jupyter-client (from ipykernel->jupyter)
+  Downloading jupyter_client-5.1.0-py2.py3-none-any.whl (84kB)
+    100% |████████████████████████████████| 92kB 427kB/s 
+Collecting prompt-toolkit<2.0.0,>=1.0.0 (from jupyter-console->jupyter)
+  Downloading prompt_toolkit-1.0.15-py2-none-any.whl (247kB)
+    100% |████████████████████████████████| 256kB 385kB/s 
+Collecting pygments (from jupyter-console->jupyter)
+  Downloading Pygments-2.2.0-py2.py3-none-any.whl (841kB)
+    100% |████████████████████████████████| 849kB 318kB/s 
+Collecting jupyter-core (from qtconsole->jupyter)
+  Downloading jupyter_core-4.3.0-py2.py3-none-any.whl (76kB)
+    100% |████████████████████████████████| 81kB 298kB/s 
+Collecting ipython-genutils (from qtconsole->jupyter)
+  Downloading ipython_genutils-0.2.0-py2.py3-none-any.whl
+Collecting nbformat (from notebook->jupyter)
+  Downloading nbformat-4.4.0-py2.py3-none-any.whl (155kB)
+    100% |████████████████████████████████| 163kB 362kB/s 
+Collecting jinja2 (from notebook->jupyter)
+  Downloading Jinja2-2.9.6-py2.py3-none-any.whl (340kB)
+    100% |████████████████████████████████| 348kB 359kB/s 
+Collecting terminado>=0.3.3; sys_platform != "win32" (from notebook->jupyter)
+  Downloading terminado-0.6.tar.gz
+Collecting widgetsnbextension~=3.0.0 (from ipywidgets->jupyter)
+  Downloading widgetsnbextension-3.0.3-py2.py3-none-any.whl (2.5MB)
+    100% |████████████████████████████████| 2.5MB 169kB/s 
+Requirement already satisfied: bleach in /usr/local/lib/python2.7/dist-packages (from nbconvert->jupyter)
+Collecting mistune>=0.7.4 (from nbconvert->jupyter)
+  Downloading mistune-0.7.4-py2.py3-none-any.whl
+Collecting testpath (from nbconvert->jupyter)
+  Downloading testpath-0.3.1-py2.py3-none-any.whl (161kB)
+    100% |████████████████████████████████| 163kB 208kB/s 
+Collecting entrypoints>=0.2.2 (from nbconvert->jupyter)
+  Downloading entrypoints-0.2.3-py2.py3-none-any.whl
+Collecting pandocfilters>=1.4.1 (from nbconvert->jupyter)
+  Downloading pandocfilters-1.4.2.tar.gz
+Collecting pickleshare (from ipython>=4.0.0->ipykernel->jupyter)
+  Using cached pickleshare-0.7.4-py2.py3-none-any.whl
+Collecting simplegeneric>0.8 (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading simplegeneric-0.8.1.zip
+Collecting backports.shutil-get-terminal-size; python_version == "2.7" (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading backports.shutil_get_terminal_size-1.0.0-py2.py3-none-any.whl
+Collecting decorator (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading decorator-4.1.2-py2.py3-none-any.whl
+Requirement already satisfied: pexpect; sys_platform != "win32" in /usr/lib/python2.7/dist-packages (from ipython>=4.0.0->ipykernel->jupyter)
+Collecting pathlib2; python_version == "2.7" or python_version == "3.3" (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading pathlib2-2.3.0-py2.py3-none-any.whl
+Requirement already satisfied: setuptools>=18.5 in /usr/local/lib/python2.7/dist-packages (from ipython>=4.0.0->ipykernel->jupyter)
+Requirement already satisfied: enum34; python_version == "2.7" in /usr/lib/python2.7/dist-packages (from traitlets>=4.1.0->ipykernel->jupyter)
+Requirement already satisfied: six in /usr/lib/python2.7/dist-packages (from traitlets>=4.1.0->ipykernel->jupyter)
+Collecting singledispatch (from tornado>=4.0->ipykernel->jupyter)
+  Downloading singledispatch-3.4.0.3-py2.py3-none-any.whl
+Collecting certifi (from tornado>=4.0->ipykernel->jupyter)
+  Downloading certifi-2017.7.27.1-py2.py3-none-any.whl (349kB)
+    100% |████████████████████████████████| 358kB 271kB/s 
+Collecting backports_abc>=0.4 (from tornado>=4.0->ipykernel->jupyter)
+  Downloading backports_abc-0.5-py2.py3-none-any.whl
+Collecting python-dateutil>=2.1 (from jupyter-client->ipykernel->jupyter)
+  Downloading python_dateutil-2.6.1-py2.py3-none-any.whl (194kB)
+    100% |████████████████████████████████| 194kB 298kB/s 
+Collecting pyzmq>=13 (from jupyter-client->ipykernel->jupyter)
+  Downloading pyzmq-16.0.2-cp27-cp27mu-manylinux1_x86_64.whl (3.0MB)
+    100% |████████████████████████████████| 3.0MB 208kB/s 
+Collecting wcwidth (from prompt-toolkit<2.0.0,>=1.0.0->jupyter-console->jupyter)
+  Downloading wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting jsonschema!=2.5.0,>=2.4 (from nbformat->notebook->jupyter)
+  Downloading jsonschema-2.6.0-py2.py3-none-any.whl
+Requirement already satisfied: MarkupSafe>=0.23 in /usr/lib/python2.7/dist-packages (from jinja2->notebook->jupyter)
+Requirement already satisfied: ptyprocess in /usr/lib/python2.7/dist-packages (from terminado>=0.3.3; sys_platform != "win32"->notebook->jupyter)
+Requirement already satisfied: html5lib!=0.9999,!=0.99999,<0.99999999,>=0.999 in /usr/local/lib/python2.7/dist-packages (from bleach->nbconvert->jupyter)
+Collecting configparser>=3.5; python_version == "2.7" (from entrypoints>=0.2.2->nbconvert->jupyter)
+  Downloading configparser-3.5.0.tar.gz
+Collecting scandir; python_version < "3.5" (from pathlib2; python_version == "2.7" or python_version == "3.3"->ipython>=4.0.0->ipykernel->jupyter)
+  Downloading scandir-1.5.tar.gz
+Collecting functools32; python_version == "2.7" (from jsonschema!=2.5.0,>=2.4->nbformat->notebook->jupyter)
+  Downloading functools32-3.2.3-2.zip
+Building wheels for collected packages: tornado, terminado, pandocfilters, simplegeneric, configparser, scandir, functools32
+  Running setup.py bdist_wheel for tornado ... done
+  Stored in directory: /home/a/.cache/pip/wheels/b3/47/3a/96e12476829cb196adabc879fedb72f1bb2c8613b6961e78e7
+  Running setup.py bdist_wheel for terminado ... done
+  Stored in directory: /home/a/.cache/pip/wheels/3b/c2/ea/af635ffb63857a8c2ddd22da6a4b52f5b7ea3065db94ef5d7c
+  Running setup.py bdist_wheel for pandocfilters ... done
+  Stored in directory: /home/a/.cache/pip/wheels/08/5b/5b/66b3cde6f8215f8345479ef3699d6ddbb860f6ea7072008f8b
+  Running setup.py bdist_wheel for simplegeneric ... done
+  Stored in directory: /home/a/.cache/pip/wheels/7b/31/08/c85e74c84188cbec6a6827beec4d640f2bd78ae003dc1ec09d
+  Running setup.py bdist_wheel for configparser ... done
+  Stored in directory: /home/a/.cache/pip/wheels/1c/bd/b4/277af3f6c40645661b4cd1c21df26aca0f2e1e9714a1d4cda8
+  Running setup.py bdist_wheel for scandir ... error
+  Complete output from command /usr/bin/python -u -c "import setuptools, tokenize;__file__='/tmp/pip-build-VEEnAy/scandir/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" bdist_wheel -d /tmp/tmp14B13tpip-wheel- --python-tag cp27:
+  running bdist_wheel
+  running build
+  running build_py
+  creating build
+  creating build/lib.linux-x86_64-2.7
+  copying scandir.py -> build/lib.linux-x86_64-2.7
+  running build_ext
+  building '_scandir' extension
+  creating build/temp.linux-x86_64-2.7
+  x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -fPIC -I/usr/include/python2.7 -c _scandir.c -o build/temp.linux-x86_64-2.7/_scandir.o
+  _scandir.c:14:20: fatal error: Python.h: 没有那个文件或目录
+   #include <Python.h>
+                      ^
+  compilation terminated.
+  error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+  
+  ----------------------------------------
+  Failed building wheel for scandir
+  Running setup.py clean for scandir
+  Running setup.py bdist_wheel for functools32 ... done
+  Stored in directory: /home/a/.cache/pip/wheels/3c/d0/09/cd78d0ff4d6cfecfbd730782a7815a4571cd2cd4d2ed6e69d9
+Successfully built tornado terminado pandocfilters simplegeneric configparser functools32
+Failed to build scandir
+Installing collected packages: scandir, pathlib2, pickleshare, simplegeneric, decorator, ipython-genutils, traitlets, backports.shutil-get-terminal-size, pygments, wcwidth, prompt-toolkit, ipython, singledispatch, certifi, backports-abc, tornado, python-dateutil, pyzmq, jupyter-core, jupyter-client, ipykernel, jupyter-console, qtconsole, functools32, jsonschema, nbformat, mistune, testpath, jinja2, configparser, entrypoints, pandocfilters, nbconvert, terminado, notebook, widgetsnbextension, ipywidgets, jupyter
+  Running setup.py install for scandir ... error
+    Complete output from command /usr/bin/python -u -c "import setuptools, tokenize;__file__='/tmp/pip-build-VEEnAy/scandir/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/pip-wZbAAo-record/install-record.txt --single-version-externally-managed --compile:
+    running install
+    running build
+    running build_py
+    creating build
+    creating build/lib.linux-x86_64-2.7
+    copying scandir.py -> build/lib.linux-x86_64-2.7
+    running build_ext
+    building '_scandir' extension
+    creating build/temp.linux-x86_64-2.7
+    x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -fPIC -I/usr/include/python2.7 -c _scandir.c -o build/temp.linux-x86_64-2.7/_scandir.o
+    _scandir.c:14:20: fatal error: Python.h: 没有那个文件或目录
+     #include <Python.h>
+                        ^
+    compilation terminated.
+    error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+    
+    ----------------------------------------
+Command "/usr/bin/python -u -c "import setuptools, tokenize;__file__='/tmp/pip-build-VEEnAy/scandir/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/pip-wZbAAo-record/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /tmp/pip-build-VEEnAy/scandir/
+a@A ~ $ sudo apt-get install x
+Display all 1081 possibilities? (y or n)
+a@A ~ $ sudo apt-get install *x86_64-linux-gnu-gcc*
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+E: 无法定位软件包 *x86_64-linux-gnu-gcc*
+E: 无法按照 glob ‘*x86_64-linux-gnu-gcc*’ 找到任何软件包
+E: 编译正则表达式时出错 - 无效的前导常规表达式
+E: 无法按照正则表达式 *x86_64-linux-gnu-gcc* 找到任何软件包
+a@A ~ $ sudo apt-get build-dep python-lxml
+正在读取软件包列表... 完成
+E: 您必须在 sources.list 中指定代码源(deb-src) URI
+a@A ~ $ gcc
+gcc: fatal error: no input files
+compilation terminated.
+a@A ~ $ conda install jupyter
+conda：未找到命令
+a@A ~ $ pip install conda
+Collecting conda
+  Downloading conda-4.3.16.tar.gz (299kB)
+    100% |████████████████████████████████| 307kB 1.6MB/s 
+Collecting pycosat>=0.6.1 (from conda)
+  Downloading pycosat-0.6.1.tar.gz (59kB)
+    100% |████████████████████████████████| 61kB 3.5MB/s 
+Collecting requests>=2.12.4 (from conda)
+  Downloading requests-2.18.4-py2.py3-none-any.whl (88kB)
+    100% |████████████████████████████████| 92kB 3.3MB/s 
+Collecting ruamel.yaml>=0.11.14 (from conda)
+  Downloading ruamel.yaml-0.15.34-cp27-cp27mu-manylinux1_x86_64.whl (534kB)
+    100% |████████████████████████████████| 542kB 1.6MB/s 
+Requirement already satisfied: enum34 in /usr/lib/python2.7/dist-packages (from conda)
+Collecting urllib3<1.23,>=1.21.1 (from requests>=2.12.4->conda)
+  Downloading urllib3-1.22-py2.py3-none-any.whl (132kB)
+    100% |████████████████████████████████| 133kB 2.4MB/s 
+Collecting idna<2.7,>=2.5 (from requests>=2.12.4->conda)
+  Downloading idna-2.6-py2.py3-none-any.whl (56kB)
+    100% |████████████████████████████████| 61kB 3.2MB/s 
+Collecting chardet<3.1.0,>=3.0.2 (from requests>=2.12.4->conda)
+  Downloading chardet-3.0.4-py2.py3-none-any.whl (133kB)
+    100% |████████████████████████████████| 143kB 3.1MB/s 
+Collecting certifi>=2017.4.17 (from requests>=2.12.4->conda)
+  Using cached certifi-2017.7.27.1-py2.py3-none-any.whl
+Collecting ruamel.ordereddict; platform_python_implementation == "CPython" and python_version <= "2.7" (from ruamel.yaml>=0.11.14->conda)
+  Downloading ruamel.ordereddict-0.4.13-cp27-cp27mu-manylinux1_x86_64.whl (99kB)
+    100% |████████████████████████████████| 102kB 4.0MB/s 
+Building wheels for collected packages: conda, pycosat
+  Running setup.py bdist_wheel for conda ... done
+  Stored in directory: /home/a/.cache/pip/wheels/b2/a6/11/e17f2ad0c38f0e03fbb4af93b0e0e6e913275a2aa3fcf88fed
+  Running setup.py bdist_wheel for pycosat ... error
+  Complete output from command /usr/bin/python -u -c "import setuptools, tokenize;__file__='/tmp/pip-build-0S0ENP/pycosat/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" bdist_wheel -d /tmp/tmpgacpCYpip-wheel- --python-tag cp27:
+  running bdist_wheel
+  running build
+  running build_py
+  creating build
+  creating build/lib.linux-x86_64-2.7
+  copying test_pycosat.py -> build/lib.linux-x86_64-2.7
+  running build_ext
+  building 'pycosat' extension
+  creating build/temp.linux-x86_64-2.7
+  x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -fPIC -DPYCOSAT_VERSION="0.6.1" -I/usr/include/python2.7 -c pycosat.c -o build/temp.linux-x86_64-2.7/pycosat.o
+  pycosat.c:9:20: fatal error: Python.h: 没有那个文件或目录
+  compilation terminated.
+  error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+  
+  ----------------------------------------
+  Failed building wheel for pycosat
+  Running setup.py clean for pycosat
+Successfully built conda
+Failed to build pycosat
+Installing collected packages: pycosat, urllib3, idna, chardet, certifi, requests, ruamel.ordereddict, ruamel.yaml, conda
+  Running setup.py install for pycosat ... error
+    Complete output from command /usr/bin/python -u -c "import setuptools, tokenize;__file__='/tmp/pip-build-0S0ENP/pycosat/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/pip-e5bsxG-record/install-record.txt --single-version-externally-managed --compile:
+    running install
+    running build
+    running build_py
+    creating build
+    creating build/lib.linux-x86_64-2.7
+    copying test_pycosat.py -> build/lib.linux-x86_64-2.7
+    running build_ext
+    building 'pycosat' extension
+    creating build/temp.linux-x86_64-2.7
+    x86_64-linux-gnu-gcc -pthread -DNDEBUG -g -fwrapv -O2 -Wall -Wstrict-prototypes -fno-strict-aliasing -Wdate-time -D_FORTIFY_SOURCE=2 -g -fstack-protector-strong -Wformat -Werror=format-security -fPIC -DPYCOSAT_VERSION="0.6.1" -I/usr/include/python2.7 -c pycosat.c -o build/temp.linux-x86_64-2.7/pycosat.o
+    pycosat.c:9:20: fatal error: Python.h: 没有那个文件或目录
+    compilation terminated.
+    error: command 'x86_64-linux-gnu-gcc' failed with exit status 1
+    
+    ----------------------------------------
+Command "/usr/bin/python -u -c "import setuptools, tokenize;__file__='/tmp/pip-build-0S0ENP/pycosat/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /tmp/pip-e5bsxG-record/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /tmp/pip-build-0S0ENP/pycosat/
+a@A ~ $ sudo apt-get install libxml2-dev libxslt1-dev python-dev
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+将会同时安装下列软件：
+  icu-devtools libexpat1 libexpat1-dev libicu-dev libpython-dev libpython2.7-dev libxml2 python2.7-dev
+建议安装：
+  icu-doc
+下列【新】软件包将被安装：
+  icu-devtools libexpat1-dev libicu-dev libpython-dev libpython2.7-dev libxml2-dev libxslt1-dev python-dev python2.7-dev
+下列软件包将被升级：
+  libexpat1 libxml2
+升级了 2 个软件包，新安装了 9 个软件包，要卸载 0 个软件包，有 409 个软件包未被升级。
+需要下载 38.8 MB 的归档。
+解压缩后会消耗 89.5 MB 的额外空间。
+您希望继续执行吗？ [Y/n] y
+中止。
+a@A ~ $ sudo apt-get install libxml2-dev libxslt1-dev python-dev
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+将会同时安装下列软件：
+  icu-devtools libexpat1 libexpat1-dev libicu-dev libpython-dev libpython2.7-dev libxml2 python2.7-dev
+建议安装：
+  icu-doc
+下列【新】软件包将被安装：
+  icu-devtools libexpat1-dev libicu-dev libpython-dev libpython2.7-dev libxml2-dev libxslt1-dev python-dev python2.7-dev
+下列软件包将被升级：
+  libexpat1 libxml2
+升级了 2 个软件包，新安装了 9 个软件包，要卸载 0 个软件包，有 409 个软件包未被升级。
+需要下载 38.8 MB 的归档。
+解压缩后会消耗 89.5 MB 的额外空间。
+您希望继续执行吗？ [Y/n] y
+获取:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libexpat1 amd64 2.1.0-7ubuntu0.16.04.3 [71.2 kB]
+获取:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libxml2 amd64 2.9.3+dfsg1-1ubuntu0.3 [697 kB]
+获取:3 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 icu-devtools amd64 55.1-7ubuntu0.2 [166 kB]
+获取:4 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libexpat1-dev amd64 2.1.0-7ubuntu0.16.04.3 [115 kB]                
+获取:5 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libicu-dev amd64 55.1-7ubuntu0.2 [8,530 kB]                        
+获取:6 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libpython2.7-dev amd64 2.7.12-1ubuntu0~16.04.1 [27.8 MB]           
+67% [6 libpython2.7-dev 18.8 MB/27.8 MB 67%]                                                                           506 kB/s 20秒
+68% [6 libpython2.7-dev 19.2 MB/27.8 MB 69%]                                                                           411 kB/s 24秒
+获取:7 http://archive.ubuntu.com/ubuntu xenial/main amd64 libpython-dev amd64 2.7.11-1 [7,728 B]                                     
+获取:8 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libxml2-dev amd64 2.9.3+dfsg1-1ubuntu0.3 [744 kB]                  
+获取:9 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libxslt1-dev amd64 1.1.28-2.1ubuntu0.1 [406 kB]                    
+获取:10 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 python2.7-dev amd64 2.7.12-1ubuntu0~16.04.1 [276 kB]              
+获取:11 http://archive.ubuntu.com/ubuntu xenial/main amd64 python-dev amd64 2.7.11-1 [1,160 B]                                       
+已下载 38.8 MB，耗时 1分 43秒 (375 kB/s)                                                                                             
+(正在读取数据库 ... 系统当前共安装有 219511 个文件和目录。)
+正准备解包 .../libexpat1_2.1.0-7ubuntu0.16.04.3_amd64.deb  ...
+正在将 libexpat1:amd64 (2.1.0-7ubuntu0.16.04.3) 解包到 (2.1.0-7ubuntu0.16.04.2) 上 ...
+正在处理用于 libc-bin (2.23-0ubuntu7) 的触发器 ...
+/sbin/ldconfig.real: /usr/local/cuda-8.0/targets/x86_64-linux/lib/libcudnn.so.6 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib/nvidia-375/libEGL.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib32/nvidia-375/libEGL.so.1 is not a symbolic link
+
+正在设置 libexpat1:amd64 (2.1.0-7ubuntu0.16.04.3) ...
+正在处理用于 libc-bin (2.23-0ubuntu7) 的触发器 ...
+/sbin/ldconfig.real: /usr/local/cuda-8.0/targets/x86_64-linux/lib/libcudnn.so.6 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib/nvidia-375/libEGL.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib32/nvidia-375/libEGL.so.1 is not a symbolic link
+
+(正在读取数据库 ... 系统当前共安装有 219511 个文件和目录。)
+正准备解包 .../libxml2_2.9.3+dfsg1-1ubuntu0.3_amd64.deb  ...
+正在将 libxml2:amd64 (2.9.3+dfsg1-1ubuntu0.3) 解包到 (2.9.3+dfsg1-1ubuntu0.2) 上 ...
+正在处理用于 libc-bin (2.23-0ubuntu7) 的触发器 ...
+/sbin/ldconfig.real: /usr/local/cuda-8.0/targets/x86_64-linux/lib/libcudnn.so.6 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib/nvidia-375/libEGL.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib32/nvidia-375/libEGL.so.1 is not a symbolic link
+
+正在设置 libxml2:amd64 (2.9.3+dfsg1-1ubuntu0.3) ...
+正在处理用于 libc-bin (2.23-0ubuntu7) 的触发器 ...
+/sbin/ldconfig.real: /usr/local/cuda-8.0/targets/x86_64-linux/lib/libcudnn.so.6 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib/nvidia-375/libEGL.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib32/nvidia-375/libEGL.so.1 is not a symbolic link
+
+正在选中未选择的软件包 icu-devtools。
+(正在读取数据库 ... 系统当前共安装有 219511 个文件和目录。)
+正准备解包 .../icu-devtools_55.1-7ubuntu0.2_amd64.deb  ...
+正在解包 icu-devtools (55.1-7ubuntu0.2) ...
+正在选中未选择的软件包 libexpat1-dev:amd64。
+正准备解包 .../libexpat1-dev_2.1.0-7ubuntu0.16.04.3_amd64.deb  ...
+正在解包 libexpat1-dev:amd64 (2.1.0-7ubuntu0.16.04.3) ...
+正在选中未选择的软件包 libicu-dev:amd64。
+正准备解包 .../libicu-dev_55.1-7ubuntu0.2_amd64.deb  ...
+正在解包 libicu-dev:amd64 (55.1-7ubuntu0.2) ...
+正在选中未选择的软件包 libpython2.7-dev:amd64。
+正准备解包 .../libpython2.7-dev_2.7.12-1ubuntu0~16.04.1_amd64.deb  ...
+正在解包 libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.1) ...
+正在选中未选择的软件包 libpython-dev:amd64。
+正准备解包 .../libpython-dev_2.7.11-1_amd64.deb  ...
+正在解包 libpython-dev:amd64 (2.7.11-1) ...
+正在选中未选择的软件包 libxml2-dev:amd64。
+正准备解包 .../libxml2-dev_2.9.3+dfsg1-1ubuntu0.3_amd64.deb  ...
+正在解包 libxml2-dev:amd64 (2.9.3+dfsg1-1ubuntu0.3) ...
+正在选中未选择的软件包 libxslt1-dev:amd64。
+正准备解包 .../libxslt1-dev_1.1.28-2.1ubuntu0.1_amd64.deb  ...
+正在解包 libxslt1-dev:amd64 (1.1.28-2.1ubuntu0.1) ...
+正在选中未选择的软件包 python2.7-dev。
+正准备解包 .../python2.7-dev_2.7.12-1ubuntu0~16.04.1_amd64.deb  ...
+正在解包 python2.7-dev (2.7.12-1ubuntu0~16.04.1) ...
+正在选中未选择的软件包 python-dev。
+正准备解包 .../python-dev_2.7.11-1_amd64.deb  ...
+正在解包 python-dev (2.7.11-1) ...
+正在处理用于 man-db (2.7.5-1) 的触发器 ...
+正在处理用于 doc-base (0.10.7) 的触发器 ...
+Processing 2 added doc-base files...
+Registering documents with scrollkeeper...
+正在设置 icu-devtools (55.1-7ubuntu0.2) ...
+正在设置 libexpat1-dev:amd64 (2.1.0-7ubuntu0.16.04.3) ...
+正在设置 libicu-dev:amd64 (55.1-7ubuntu0.2) ...
+正在设置 libpython2.7-dev:amd64 (2.7.12-1ubuntu0~16.04.1) ...
+正在设置 libpython-dev:amd64 (2.7.11-1) ...
+正在设置 libxml2-dev:amd64 (2.9.3+dfsg1-1ubuntu0.3) ...
+正在设置 libxslt1-dev:amd64 (1.1.28-2.1ubuntu0.1) ...
+正在设置 python2.7-dev (2.7.12-1ubuntu0~16.04.1) ...
+正在设置 python-dev (2.7.11-1) ...
+a@A ~ $ sudo apt-get install zlib1g-dev
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+下列【新】软件包将被安装：
+  zlib1g-dev
+升级了 0 个软件包，新安装了 1 个软件包，要卸载 0 个软件包，有 409 个软件包未被升级。
+需要下载 168 kB 的归档。
+解压缩后会消耗 425 kB 的额外空间。
+获取:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 zlib1g-dev amd64 1:1.2.8.dfsg-2ubuntu4.1 [168 kB]
+已下载 168 kB，耗时 2秒 (74.2 kB/s)                
+正在选中未选择的软件包 zlib1g-dev:amd64。
+(正在读取数据库 ... 系统当前共安装有 220425 个文件和目录。)
+正准备解包 .../zlib1g-dev_1%3a1.2.8.dfsg-2ubuntu4.1_amd64.deb  ...
+正在解包 zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.1) ...
+正在处理用于 man-db (2.7.5-1) 的触发器 ...
+正在设置 zlib1g-dev:amd64 (1:1.2.8.dfsg-2ubuntu4.1) ...
+a@A ~ $ sudo apt-get install libevent-dev
+正在读取软件包列表... 完成
+正在分析软件包的依赖关系树       
+正在读取状态信息... 完成       
+将会同时安装下列软件：
+  libevent-2.0-5 libevent-core-2.0-5 libevent-extra-2.0-5 libevent-openssl-2.0-5 libevent-pthreads-2.0-5
+下列【新】软件包将被安装：
+  libevent-2.0-5 libevent-core-2.0-5 libevent-dev libevent-extra-2.0-5 libevent-openssl-2.0-5 libevent-pthreads-2.0-5
+升级了 0 个软件包，新安装了 6 个软件包，要卸载 0 个软件包，有 409 个软件包未被升级。
+需要下载 463 kB 的归档。
+解压缩后会消耗 2,152 kB 的额外空间。
+您希望继续执行吗？ [Y/n] y
+获取:1 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [114 kB]
+获取:2 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-core-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [70.6 kB]
+获取:3 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-extra-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [51.1 kB]
+获取:4 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-pthreads-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [5,020 B]
+获取:5 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-openssl-2.0-5 amd64 2.0.21-stable-2ubuntu0.16.04.1 [10.6 kB]
+获取:6 http://archive.ubuntu.com/ubuntu xenial-updates/main amd64 libevent-dev amd64 2.0.21-stable-2ubuntu0.16.04.1 [211 kB]
+已下载 463 kB，耗时 2秒 (171 kB/s)    
+正在选中未选择的软件包 libevent-2.0-5:amd64。
+(正在读取数据库 ... 系统当前共安装有 220453 个文件和目录。)
+正准备解包 .../libevent-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb  ...
+正在解包 libevent-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在选中未选择的软件包 libevent-core-2.0-5:amd64。
+正准备解包 .../libevent-core-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb  ...
+正在解包 libevent-core-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在选中未选择的软件包 libevent-extra-2.0-5:amd64。
+正准备解包 .../libevent-extra-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb  ...
+正在解包 libevent-extra-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在选中未选择的软件包 libevent-pthreads-2.0-5:amd64。
+正准备解包 .../libevent-pthreads-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb  ...
+正在解包 libevent-pthreads-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在选中未选择的软件包 libevent-openssl-2.0-5:amd64。
+正准备解包 .../libevent-openssl-2.0-5_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb  ...
+正在解包 libevent-openssl-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在选中未选择的软件包 libevent-dev。
+正准备解包 .../libevent-dev_2.0.21-stable-2ubuntu0.16.04.1_amd64.deb  ...
+正在解包 libevent-dev (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在处理用于 libc-bin (2.23-0ubuntu7) 的触发器 ...
+/sbin/ldconfig.real: /usr/local/cuda-8.0/targets/x86_64-linux/lib/libcudnn.so.6 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib/nvidia-375/libEGL.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib32/nvidia-375/libEGL.so.1 is not a symbolic link
+
+正在设置 libevent-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在设置 libevent-core-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在设置 libevent-extra-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在设置 libevent-pthreads-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在设置 libevent-openssl-2.0-5:amd64 (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在设置 libevent-dev (2.0.21-stable-2ubuntu0.16.04.1) ...
+正在处理用于 libc-bin (2.23-0ubuntu7) 的触发器 ...
+/sbin/ldconfig.real: /usr/local/cuda-8.0/targets/x86_64-linux/lib/libcudnn.so.6 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib/nvidia-375/libEGL.so.1 is not a symbolic link
+
+/sbin/ldconfig.real: /usr/lib32/nvidia-375/libEGL.so.1 is not a symbolic link
+
+a@A ~ $ sudo pip install lxml
+The directory '/home/a/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/a/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+Requirement already satisfied: lxml in /usr/lib/python2.7/dist-packages
+a@A ~ $ sudo pip install lxml --upgrade
+The directory '/home/a/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/a/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+Collecting lxml
+  Downloading lxml-4.0.0-cp27-cp27mu-manylinux1_x86_64.whl (5.3MB)
+    100% |████████████████████████████████| 5.3MB 259kB/s 
+Installing collected packages: lxml
+  Found existing installation: lxml 3.5.0
+    Uninstalling lxml-3.5.0:
+      Successfully uninstalled lxml-3.5.0
+Successfully installed lxml-4.0.0
+a@A ~ $ pip install conda
+Collecting conda
+Collecting ruamel.yaml>=0.11.14 (from conda)
+  Using cached ruamel.yaml-0.15.34-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting requests>=2.12.4 (from conda)
+  Using cached requests-2.18.4-py2.py3-none-any.whl
+Requirement already satisfied: enum34 in /usr/lib/python2.7/dist-packages (from conda)
+Collecting pycosat>=0.6.1 (from conda)
+  Using cached pycosat-0.6.1.tar.gz
+Collecting ruamel.ordereddict; platform_python_implementation == "CPython" and python_version <= "2.7" (from ruamel.yaml>=0.11.14->conda)
+  Using cached ruamel.ordereddict-0.4.13-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting urllib3<1.23,>=1.21.1 (from requests>=2.12.4->conda)
+  Using cached urllib3-1.22-py2.py3-none-any.whl
+Collecting idna<2.7,>=2.5 (from requests>=2.12.4->conda)
+  Using cached idna-2.6-py2.py3-none-any.whl
+Collecting chardet<3.1.0,>=3.0.2 (from requests>=2.12.4->conda)
+  Using cached chardet-3.0.4-py2.py3-none-any.whl
+Collecting certifi>=2017.4.17 (from requests>=2.12.4->conda)
+  Using cached certifi-2017.7.27.1-py2.py3-none-any.whl
+Building wheels for collected packages: pycosat
+  Running setup.py bdist_wheel for pycosat ... done
+  Stored in directory: /home/a/.cache/pip/wheels/27/79/f2/5b1877314d8927a1068e924f363a7dae6b9d4d61ebf420b7f8
+Successfully built pycosat
+Installing collected packages: ruamel.ordereddict, ruamel.yaml, urllib3, idna, chardet, certifi, requests, pycosat, conda
+Exception:
+Traceback (most recent call last):
+  File "/home/a/.local/lib/python2.7/site-packages/pip/basecommand.py", line 215, in main
+    status = self.run(options, args)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/commands/install.py", line 342, in run
+    prefix=options.prefix_path,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_set.py", line 784, in install
+    **kwargs
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 851, in install
+    self.move_wheel_files(self.source_dir, root=root, prefix=prefix)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 1064, in move_wheel_files
+    isolated=self.isolated,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 345, in move_wheel_files
+    clobber(source, lib_dir, True)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 323, in clobber
+    shutil.copyfile(srcfile, destfile)
+  File "/usr/lib/python2.7/shutil.py", line 83, in copyfile
+    with open(dst, 'wb') as fdst:
+IOError: [Errno 13] 权限不够: '/usr/local/lib/python2.7/dist-packages/ruamel.ordereddict-0.4.13-py2.7-nspkg.pth'
+a@A ~ $ sudo pip install conda
+The directory '/home/a/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/a/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+Collecting conda
+Collecting ruamel.yaml>=0.11.14 (from conda)
+  Downloading ruamel.yaml-0.15.34-cp27-cp27mu-manylinux1_x86_64.whl (534kB)
+    100% |████████████████████████████████| 542kB 578kB/s 
+Collecting requests>=2.12.4 (from conda)
+  Downloading requests-2.18.4-py2.py3-none-any.whl (88kB)
+    100% |████████████████████████████████| 92kB 496kB/s 
+Requirement already satisfied: enum34 in /usr/lib/python2.7/dist-packages (from conda)
+Collecting pycosat>=0.6.1 (from conda)
+Collecting ruamel.ordereddict; platform_python_implementation == "CPython" and python_version <= "2.7" (from ruamel.yaml>=0.11.14->conda)
+  Downloading ruamel.ordereddict-0.4.13-cp27-cp27mu-manylinux1_x86_64.whl (99kB)
+    100% |████████████████████████████████| 102kB 1.1MB/s 
+Collecting urllib3<1.23,>=1.21.1 (from requests>=2.12.4->conda)
+  Downloading urllib3-1.22-py2.py3-none-any.whl (132kB)
+    100% |████████████████████████████████| 133kB 444kB/s 
+Collecting idna<2.7,>=2.5 (from requests>=2.12.4->conda)
+  Downloading idna-2.6-py2.py3-none-any.whl (56kB)
+    100% |████████████████████████████████| 61kB 271kB/s 
+Collecting chardet<3.1.0,>=3.0.2 (from requests>=2.12.4->conda)
+  Downloading chardet-3.0.4-py2.py3-none-any.whl (133kB)
+    100% |████████████████████████████████| 143kB 369kB/s 
+Collecting certifi>=2017.4.17 (from requests>=2.12.4->conda)
+  Downloading certifi-2017.7.27.1-py2.py3-none-any.whl (349kB)
+    100% |████████████████████████████████| 358kB 539kB/s 
+Installing collected packages: ruamel.ordereddict, ruamel.yaml, urllib3, idna, chardet, certifi, requests, pycosat, conda
+  Found existing installation: idna 2.0
+    Uninstalling idna-2.0:
+      Successfully uninstalled idna-2.0
+  Found existing installation: chardet 2.3.0
+    Uninstalling chardet-2.3.0:
+      Successfully uninstalled chardet-2.3.0
+Successfully installed certifi-2017.7.27.1 chardet-3.0.4 conda-4.3.16 idna-2.6 pycosat-0.6.1 requests-2.18.4 ruamel.ordereddict-0.4.13 ruamel.yaml-0.15.34 urllib3-1.22
+a@A ~ $ pip install jupyter
+Collecting jupyter
+  Using cached jupyter-1.0.0-py2.py3-none-any.whl
+Collecting ipykernel (from jupyter)
+  Using cached ipykernel-4.6.1-py2-none-any.whl
+Collecting jupyter-console (from jupyter)
+  Using cached jupyter_console-5.2.0-py2.py3-none-any.whl
+Collecting qtconsole (from jupyter)
+  Using cached qtconsole-4.3.1-py2.py3-none-any.whl
+Collecting notebook (from jupyter)
+  Using cached notebook-5.1.0-py2.py3-none-any.whl
+Collecting ipywidgets (from jupyter)
+  Using cached ipywidgets-7.0.1-py2.py3-none-any.whl
+Collecting nbconvert (from jupyter)
+  Using cached nbconvert-5.3.1-py2.py3-none-any.whl
+Collecting ipython>=4.0.0 (from ipykernel->jupyter)
+  Using cached ipython-5.5.0-py2-none-any.whl
+Collecting traitlets>=4.1.0 (from ipykernel->jupyter)
+  Using cached traitlets-4.3.2-py2.py3-none-any.whl
+Collecting tornado>=4.0 (from ipykernel->jupyter)
+Collecting jupyter-client (from ipykernel->jupyter)
+  Using cached jupyter_client-5.1.0-py2.py3-none-any.whl
+Collecting prompt-toolkit<2.0.0,>=1.0.0 (from jupyter-console->jupyter)
+  Using cached prompt_toolkit-1.0.15-py2-none-any.whl
+Collecting pygments (from jupyter-console->jupyter)
+  Using cached Pygments-2.2.0-py2.py3-none-any.whl
+Collecting jupyter-core (from qtconsole->jupyter)
+  Using cached jupyter_core-4.3.0-py2.py3-none-any.whl
+Collecting ipython-genutils (from qtconsole->jupyter)
+  Using cached ipython_genutils-0.2.0-py2.py3-none-any.whl
+Collecting nbformat (from notebook->jupyter)
+  Using cached nbformat-4.4.0-py2.py3-none-any.whl
+Collecting jinja2 (from notebook->jupyter)
+  Using cached Jinja2-2.9.6-py2.py3-none-any.whl
+Collecting terminado>=0.3.3; sys_platform != "win32" (from notebook->jupyter)
+Collecting widgetsnbextension~=3.0.0 (from ipywidgets->jupyter)
+  Using cached widgetsnbextension-3.0.3-py2.py3-none-any.whl
+Requirement already satisfied: bleach in /usr/local/lib/python2.7/dist-packages (from nbconvert->jupyter)
+Collecting mistune>=0.7.4 (from nbconvert->jupyter)
+  Using cached mistune-0.7.4-py2.py3-none-any.whl
+Collecting testpath (from nbconvert->jupyter)
+  Using cached testpath-0.3.1-py2.py3-none-any.whl
+Collecting entrypoints>=0.2.2 (from nbconvert->jupyter)
+  Using cached entrypoints-0.2.3-py2.py3-none-any.whl
+Collecting pandocfilters>=1.4.1 (from nbconvert->jupyter)
+Collecting pickleshare (from ipython>=4.0.0->ipykernel->jupyter)
+  Using cached pickleshare-0.7.4-py2.py3-none-any.whl
+Collecting simplegeneric>0.8 (from ipython>=4.0.0->ipykernel->jupyter)
+Collecting backports.shutil-get-terminal-size; python_version == "2.7" (from ipython>=4.0.0->ipykernel->jupyter)
+  Using cached backports.shutil_get_terminal_size-1.0.0-py2.py3-none-any.whl
+Collecting decorator (from ipython>=4.0.0->ipykernel->jupyter)
+  Using cached decorator-4.1.2-py2.py3-none-any.whl
+Requirement already satisfied: pexpect; sys_platform != "win32" in /usr/lib/python2.7/dist-packages (from ipython>=4.0.0->ipykernel->jupyter)
+Collecting pathlib2; python_version == "2.7" or python_version == "3.3" (from ipython>=4.0.0->ipykernel->jupyter)
+  Using cached pathlib2-2.3.0-py2.py3-none-any.whl
+Requirement already satisfied: setuptools>=18.5 in /usr/local/lib/python2.7/dist-packages (from ipython>=4.0.0->ipykernel->jupyter)
+Requirement already satisfied: enum34; python_version == "2.7" in /usr/lib/python2.7/dist-packages (from traitlets>=4.1.0->ipykernel->jupyter)
+Requirement already satisfied: six in /usr/lib/python2.7/dist-packages (from traitlets>=4.1.0->ipykernel->jupyter)
+Collecting singledispatch (from tornado>=4.0->ipykernel->jupyter)
+  Using cached singledispatch-3.4.0.3-py2.py3-none-any.whl
+Requirement already satisfied: certifi in /usr/local/lib/python2.7/dist-packages (from tornado>=4.0->ipykernel->jupyter)
+Collecting backports-abc>=0.4 (from tornado>=4.0->ipykernel->jupyter)
+  Using cached backports_abc-0.5-py2.py3-none-any.whl
+Collecting python-dateutil>=2.1 (from jupyter-client->ipykernel->jupyter)
+  Using cached python_dateutil-2.6.1-py2.py3-none-any.whl
+Collecting pyzmq>=13 (from jupyter-client->ipykernel->jupyter)
+  Using cached pyzmq-16.0.2-cp27-cp27mu-manylinux1_x86_64.whl
+Collecting wcwidth (from prompt-toolkit<2.0.0,>=1.0.0->jupyter-console->jupyter)
+  Using cached wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting jsonschema!=2.5.0,>=2.4 (from nbformat->notebook->jupyter)
+  Using cached jsonschema-2.6.0-py2.py3-none-any.whl
+Requirement already satisfied: MarkupSafe>=0.23 in /usr/lib/python2.7/dist-packages (from jinja2->notebook->jupyter)
+Requirement already satisfied: ptyprocess in /usr/lib/python2.7/dist-packages (from terminado>=0.3.3; sys_platform != "win32"->notebook->jupyter)
+Requirement already satisfied: html5lib!=0.9999,!=0.99999,<0.99999999,>=0.999 in /usr/local/lib/python2.7/dist-packages (from bleach->nbconvert->jupyter)
+Collecting configparser>=3.5; python_version == "2.7" (from entrypoints>=0.2.2->nbconvert->jupyter)
+Collecting scandir; python_version < "3.5" (from pathlib2; python_version == "2.7" or python_version == "3.3"->ipython>=4.0.0->ipykernel->jupyter)
+  Using cached scandir-1.5.tar.gz
+Collecting functools32; python_version == "2.7" (from jsonschema!=2.5.0,>=2.4->nbformat->notebook->jupyter)
+Building wheels for collected packages: scandir
+  Running setup.py bdist_wheel for scandir ... done
+  Stored in directory: /home/a/.cache/pip/wheels/47/af/a2/eb591a17e9709a17d8b53696f6ad89914a05eaf9c091f36e18
+Successfully built scandir
+Installing collected packages: scandir, pathlib2, pickleshare, simplegeneric, decorator, ipython-genutils, traitlets, backports.shutil-get-terminal-size, pygments, wcwidth, prompt-toolkit, ipython, singledispatch, backports-abc, tornado, python-dateutil, pyzmq, jupyter-core, jupyter-client, ipykernel, jupyter-console, qtconsole, functools32, jsonschema, nbformat, mistune, testpath, jinja2, configparser, entrypoints, pandocfilters, nbconvert, terminado, notebook, widgetsnbextension, ipywidgets, jupyter
+Exception:
+Traceback (most recent call last):
+  File "/home/a/.local/lib/python2.7/site-packages/pip/basecommand.py", line 215, in main
+    status = self.run(options, args)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/commands/install.py", line 342, in run
+    prefix=options.prefix_path,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_set.py", line 784, in install
+    **kwargs
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 851, in install
+    self.move_wheel_files(self.source_dir, root=root, prefix=prefix)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/req/req_install.py", line 1064, in move_wheel_files
+    isolated=self.isolated,
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 345, in move_wheel_files
+    clobber(source, lib_dir, True)
+  File "/home/a/.local/lib/python2.7/site-packages/pip/wheel.py", line 323, in clobber
+    shutil.copyfile(srcfile, destfile)
+  File "/usr/lib/python2.7/shutil.py", line 83, in copyfile
+    with open(dst, 'wb') as fdst:
+IOError: [Errno 13] 权限不够: '/usr/local/lib/python2.7/dist-packages/scandir.pyc'
+a@A ~ $ sudo pip install jupyter
+The directory '/home/a/.cache/pip/http' or its parent directory is not owned by the current user and the cache has been disabled. Please check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+The directory '/home/a/.cache/pip' or its parent directory is not owned by the current user and caching wheels has been disabled. check the permissions and owner of that directory. If executing pip with sudo, you may want sudo's -H flag.
+Collecting jupyter
+  Downloading jupyter-1.0.0-py2.py3-none-any.whl
+Collecting ipykernel (from jupyter)
+  Downloading ipykernel-4.6.1-py2-none-any.whl (104kB)
+    100% |████████████████████████████████| 112kB 282kB/s 
+Collecting jupyter-console (from jupyter)
+  Downloading jupyter_console-5.2.0-py2.py3-none-any.whl
+Collecting qtconsole (from jupyter)
+  Downloading qtconsole-4.3.1-py2.py3-none-any.whl (108kB)
+    100% |████████████████████████████████| 112kB 1.6MB/s 
+Collecting notebook (from jupyter)
+  Downloading notebook-5.1.0-py2.py3-none-any.whl (8.0MB)
+    100% |████████████████████████████████| 8.0MB 121kB/s 
+Collecting ipywidgets (from jupyter)
+  Downloading ipywidgets-7.0.1-py2.py3-none-any.whl (66kB)
+    100% |████████████████████████████████| 71kB 253kB/s 
+Collecting nbconvert (from jupyter)
+  Downloading nbconvert-5.3.1-py2.py3-none-any.whl (387kB)
+    100% |████████████████████████████████| 389kB 152kB/s 
+Collecting ipython>=4.0.0 (from ipykernel->jupyter)
+  Downloading ipython-5.5.0-py2-none-any.whl (758kB)
+    100% |████████████████████████████████| 768kB 252kB/s 
+Collecting traitlets>=4.1.0 (from ipykernel->jupyter)
+  Downloading traitlets-4.3.2-py2.py3-none-any.whl (74kB)
+    100% |████████████████████████████████| 81kB 291kB/s 
+Collecting tornado>=4.0 (from ipykernel->jupyter)
+Collecting jupyter-client (from ipykernel->jupyter)
+  Downloading jupyter_client-5.1.0-py2.py3-none-any.whl (84kB)
+    100% |████████████████████████████████| 92kB 314kB/s 
+Collecting prompt-toolkit<2.0.0,>=1.0.0 (from jupyter-console->jupyter)
+  Downloading prompt_toolkit-1.0.15-py2-none-any.whl (247kB)
+    100% |████████████████████████████████| 256kB 253kB/s 
+Collecting pygments (from jupyter-console->jupyter)
+  Downloading Pygments-2.2.0-py2.py3-none-any.whl (841kB)
+    100% |████████████████████████████████| 849kB 288kB/s 
+Collecting jupyter-core (from qtconsole->jupyter)
+  Downloading jupyter_core-4.3.0-py2.py3-none-any.whl (76kB)
+    100% |████████████████████████████████| 81kB 353kB/s 
+Collecting ipython-genutils (from qtconsole->jupyter)
+  Downloading ipython_genutils-0.2.0-py2.py3-none-any.whl
+Collecting nbformat (from notebook->jupyter)
+  Downloading nbformat-4.4.0-py2.py3-none-any.whl (155kB)
+    100% |████████████████████████████████| 163kB 361kB/s 
+Collecting jinja2 (from notebook->jupyter)
+  Downloading Jinja2-2.9.6-py2.py3-none-any.whl (340kB)
+    100% |████████████████████████████████| 348kB 486kB/s 
+Collecting terminado>=0.3.3; sys_platform != "win32" (from notebook->jupyter)
+Collecting widgetsnbextension~=3.0.0 (from ipywidgets->jupyter)
+  Downloading widgetsnbextension-3.0.3-py2.py3-none-any.whl (2.5MB)
+    100% |████████████████████████████████| 2.5MB 177kB/s 
+Requirement already satisfied: bleach in /usr/local/lib/python2.7/dist-packages (from nbconvert->jupyter)
+Collecting mistune>=0.7.4 (from nbconvert->jupyter)
+  Downloading mistune-0.7.4-py2.py3-none-any.whl
+Collecting testpath (from nbconvert->jupyter)
+  Downloading testpath-0.3.1-py2.py3-none-any.whl (161kB)
+    100% |████████████████████████████████| 163kB 266kB/s 
+Collecting entrypoints>=0.2.2 (from nbconvert->jupyter)
+  Downloading entrypoints-0.2.3-py2.py3-none-any.whl
+Collecting pandocfilters>=1.4.1 (from nbconvert->jupyter)
+Collecting pickleshare (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading pickleshare-0.7.4-py2.py3-none-any.whl
+Collecting simplegeneric>0.8 (from ipython>=4.0.0->ipykernel->jupyter)
+Collecting backports.shutil-get-terminal-size; python_version == "2.7" (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading backports.shutil_get_terminal_size-1.0.0-py2.py3-none-any.whl
+Collecting decorator (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading decorator-4.1.2-py2.py3-none-any.whl
+Requirement already satisfied: pexpect; sys_platform != "win32" in /usr/lib/python2.7/dist-packages (from ipython>=4.0.0->ipykernel->jupyter)
+Collecting pathlib2; python_version == "2.7" or python_version == "3.3" (from ipython>=4.0.0->ipykernel->jupyter)
+  Downloading pathlib2-2.3.0-py2.py3-none-any.whl
+Requirement already satisfied: setuptools>=18.5 in /usr/local/lib/python2.7/dist-packages (from ipython>=4.0.0->ipykernel->jupyter)
+Requirement already satisfied: enum34; python_version == "2.7" in /usr/lib/python2.7/dist-packages (from traitlets>=4.1.0->ipykernel->jupyter)
+Requirement already satisfied: six in /usr/lib/python2.7/dist-packages (from traitlets>=4.1.0->ipykernel->jupyter)
+Collecting singledispatch (from tornado>=4.0->ipykernel->jupyter)
+  Downloading singledispatch-3.4.0.3-py2.py3-none-any.whl
+Requirement already satisfied: certifi in /usr/local/lib/python2.7/dist-packages (from tornado>=4.0->ipykernel->jupyter)
+Collecting backports-abc>=0.4 (from tornado>=4.0->ipykernel->jupyter)
+  Downloading backports_abc-0.5-py2.py3-none-any.whl
+Collecting python-dateutil>=2.1 (from jupyter-client->ipykernel->jupyter)
+  Downloading python_dateutil-2.6.1-py2.py3-none-any.whl (194kB)
+    100% |████████████████████████████████| 194kB 295kB/s 
+Collecting pyzmq>=13 (from jupyter-client->ipykernel->jupyter)
+  Downloading pyzmq-16.0.2-cp27-cp27mu-manylinux1_x86_64.whl (3.0MB)
+    100% |████████████████████████████████| 3.0MB 240kB/s 
+Collecting wcwidth (from prompt-toolkit<2.0.0,>=1.0.0->jupyter-console->jupyter)
+  Downloading wcwidth-0.1.7-py2.py3-none-any.whl
+Collecting jsonschema!=2.5.0,>=2.4 (from nbformat->notebook->jupyter)
+  Downloading jsonschema-2.6.0-py2.py3-none-any.whl
+Requirement already satisfied: MarkupSafe>=0.23 in /usr/lib/python2.7/dist-packages (from jinja2->notebook->jupyter)
+Requirement already satisfied: ptyprocess in /usr/lib/python2.7/dist-packages (from terminado>=0.3.3; sys_platform != "win32"->notebook->jupyter)
+Requirement already satisfied: html5lib!=0.9999,!=0.99999,<0.99999999,>=0.999 in /usr/local/lib/python2.7/dist-packages (from bleach->nbconvert->jupyter)
+Collecting configparser>=3.5; python_version == "2.7" (from entrypoints>=0.2.2->nbconvert->jupyter)
+Collecting scandir; python_version < "3.5" (from pathlib2; python_version == "2.7" or python_version == "3.3"->ipython>=4.0.0->ipykernel->jupyter)
+Collecting functools32; python_version == "2.7" (from jsonschema!=2.5.0,>=2.4->nbformat->notebook->jupyter)
+Installing collected packages: scandir, pathlib2, pickleshare, simplegeneric, decorator, ipython-genutils, traitlets, backports.shutil-get-terminal-size, pygments, wcwidth, prompt-toolkit, ipython, singledispatch, backports-abc, tornado, python-dateutil, pyzmq, jupyter-core, jupyter-client, ipykernel, jupyter-console, qtconsole, functools32, jsonschema, nbformat, mistune, testpath, jinja2, configparser, entrypoints, pandocfilters, nbconvert, terminado, notebook, widgetsnbextension, ipywidgets, jupyter
+Successfully installed backports-abc-0.5 backports.shutil-get-terminal-size-1.0.0 configparser-3.5.0 decorator-4.1.2 entrypoints-0.2.3 functools32-3.2.3.post2 ipykernel-4.6.1 ipython-5.5.0 ipython-genutils-0.2.0 ipywidgets-7.0.1 jinja2-2.9.6 jsonschema-2.6.0 jupyter-1.0.0 jupyter-client-5.1.0 jupyter-console-5.2.0 jupyter-core-4.3.0 mistune-0.7.4 nbconvert-5.3.1 nbformat-4.4.0 notebook-5.1.0 pandocfilters-1.4.2 pathlib2-2.3.0 pickleshare-0.7.4 prompt-toolkit-1.0.15 pygments-2.2.0 python-dateutil-2.6.1 pyzmq-16.0.2 qtconsole-4.3.1 scandir-1.5 simplegeneric-0.8.1 singledispatch-3.4.0.3 terminado-0.6 testpath-0.3.1 tornado-4.5.2 traitlets-4.3.2 wcwidth-0.1.7 widgetsnbextension-3.0.3
+a@A ~ $ jupyter notebook
+[I 13:18:27.142 NotebookApp] Writing notebook server cookie secret to /run/user/1000/jupyter/notebook_cookie_secret
+[I 13:18:27.165 NotebookApp] Serving notebooks from local directory: /home/a
+[I 13:18:27.165 NotebookApp] 0 active kernels
+[I 13:18:27.165 NotebookApp] The Jupyter Notebook is running at:
+[I 13:18:27.165 NotebookApp] http://localhost:8888/?token=a31c8d58a4466ad4ad749e1918931586363e863a2adef07d
+[I 13:18:27.165 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 13:18:27.166 NotebookApp] 
+    
+    Copy/paste this URL into your browser when you connect for the first time,
+    to login with a token:
+        http://localhost:8888/?token=a31c8d58a4466ad4ad749e1918931586363e863a2adef07d
+[I 13:18:27.520 NotebookApp] Accepting one-time-token-authenticated connection from 127.0.0.1
+[I 13:18:32.294 NotebookApp] Creating new notebook in 
+[I 13:18:32.387 NotebookApp] Writing notebook-signing key to /home/a/.local/share/jupyter/notebook_secret
+[I 13:18:33.565 NotebookApp] Kernel started: ab359153-ee42-4c30-a92b-df7f2b43b982
+[W 13:18:33.759 NotebookApp] 404 GET /nbextensions/widgets/notebook/js/extension.js?v=20170924131827 (127.0.0.1) 15.53ms referer=http://localhost:8888/notebooks/Untitled.ipynb?kernel_name=python2
+[I 13:18:34.202 NotebookApp] Adapting to protocol v5.1 for kernel ab359153-ee42-4c30-a92b-df7f2b43b982
+2017-09-24 13:19:02.375988: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.1 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-24 13:19:02.376018: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use SSE4.2 instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-24 13:19:02.376035: W tensorflow/core/platform/cpu_feature_guard.cc:45] The TensorFlow library wasn't compiled to use AVX instructions, but these are available on your machine and could speed up CPU computations.
+2017-09-24 13:19:02.415805: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:893] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2017-09-24 13:19:02.416066: I tensorflow/core/common_runtime/gpu/gpu_device.cc:955] Found device 0 with properties: 
+name: NVS 5400M
+major: 2 minor: 1 memoryClockRate (GHz) 0.95
+pciBusID 0000:01:00.0
+Total memory: 964.38MiB
+Free memory: 839.62MiB
+2017-09-24 13:19:02.416088: I tensorflow/core/common_runtime/gpu/gpu_device.cc:976] DMA: 0 
+2017-09-24 13:19:02.416106: I tensorflow/core/common_runtime/gpu/gpu_device.cc:986] 0:   Y 
+2017-09-24 13:19:02.416119: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+2017-09-24 13:19:28.713344: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+2017-09-24 13:19:42.750754: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+[I 13:20:33.583 NotebookApp] Saving file at /Untitled.ipynb
+2017-09-24 13:21:19.964729: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+2017-09-24 13:21:41.501452: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+2017-09-24 13:22:29.722890: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+[I 13:22:33.574 NotebookApp] Saving file at /Untitled.ipynb
+2017-09-24 13:22:44.190016: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+2017-09-24 13:23:36.732229: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+2017-09-24 13:23:59.481354: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+2017-09-24 13:24:21.575312: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1018] Ignoring visible gpu device (device: 0, name: NVS 5400M, pci bus id: 0000:01:00.0) with Cuda compute capability 2.1. The minimum required Cuda capability is 3.0.
+[I 13:24:33.574 NotebookApp] Saving file at /Untitled.ipynb
+
