@@ -14,6 +14,7 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 from PreData import RandItemMulti
+from Predict import DealBeta
 
 plt.close('all')
 
@@ -63,11 +64,17 @@ optBTL=trainBTL.minimize(costFunc)
 
 iniBTL=tf.global_variables_initializer()
 
-numRun=10
-costRec=np.zeros(numRun)
 
+
+zGiven=np.array([0,2,3,5,6,7,9,12,15,16,17])
+betaXGiven=np.sin(zGiven+np.random.random(np.size(zGiven)))+3
+betaYGiven=-np.sin(zGiven+np.random.random(np.size(zGiven)))+3
+
+numRun=1
+costRec=np.zeros(numRun)
 with tf.Session() as se:
     se.run(iniBTL)
+    
     
     for _ in xrange(numRun):
         dataLattice,dataBeam=RandItemMulti(numItem,numSample,numQuadHigh)
@@ -77,41 +84,6 @@ with tf.Session() as se:
         T2=se.run(costFunc,feed_dict={xInput:dataBeam.reshape(numItem,weightSize[0]),yInput:dataLattice.reshape(numItem,weightSize[-1])})
         costRec[_]=T2
         print str(np.round((np.float32(_)/np.float32(numRun))*100.))+'%'
-
-plt.close('all')
-plt.figure(1)
-x=np.linspace(0,numRun,numRun)
-plt.subplot(231)
-xRatioStart=0.
-xStart=np.int32(xRatioStart*numRun)
-plt.plot(x[xStart::],costRec[xStart::])
-
-plt.subplot(232)
-xRatioStart=0.3
-xStart=np.int32(xRatioStart*numRun)
-plt.plot(x[xStart::],costRec[xStart::])
-
-plt.subplot(233)
-xRatioStart=0.6
-xStart=np.int32(xRatioStart*numRun)
-plt.plot(x[xStart::],costRec[xStart::])
-
-plt.subplot(234)
-xRatioStart=0.8
-xStart=np.int32(xRatioStart*numRun)
-plt.plot(x[xStart::],costRec[xStart::])
-
-plt.subplot(235)
-xRatioStart=0.9
-xStart=np.int32(xRatioStart*numRun)
-plt.plot(x[xStart::],costRec[xStart::])
-
-plt.subplot(236)
-xRatioStart=0.90
-xStart=np.int32(xRatioStart*numRun)
-plt.plot(x[xStart::],costRec[xStart::])
-
-
 
 
 
