@@ -8,16 +8,7 @@ Function:
 
 """
 
-import matplotlib.pyplot as plt
-#import tensorflow as tf
 import numpy as np
-
-#from basicTF import Quad4D, Drift4D,TwissO4D
-
-plt.close('all')
-
-
-
 def MapQuad(K,L):
     K2=np.sqrt(np.abs(K*1.))
     K2_L=K2*L
@@ -137,58 +128,4 @@ def RandItemMulti(numItem,numSample,numQuadHigh):
         dataBeam[iItem,:,:]=dataBeamSingle
     return dataLattice,dataBeam
 
-numItem=10
-numSample=1024
-numQuadHigh=20
-
-
-
-dataLattice,dataBeam=RandItemMulti(numItem,numSample,numQuadHigh)
-
-for iItem in range(numItem):
-    driftL=dataLattice[iItem,:,0]
-    quadK=dataLattice[iItem,:,1]
-    quadL=dataLattice[iItem,:,2]
-    
-    Z=dataBeam[iItem,:,0]
-    betaX=dataBeam[iItem,:,1]
-    betaY=dataBeam[iItem,:,2]    
-    flagEle=dataBeam[iItem,:,3] 
-    
-    
-    print('quadL------------------',len(quadL))
-    print(quadL)
-    print('quadK------------------',len(quadK))
-    print(quadK)
-    print('driftL------------------',len(driftL))
-    print(driftL)
-    print('Z------------------',len(Z))
-    print(Z)
-    print('betaX------------------',len(betaX))
-    print(betaX)
-    print('betaY------------------',len(betaY))
-    print(betaY)
-    
-
-    plt.figure(1)
-    plt.clf()
-    plt.plot(quadL,'b')
-    plt.hold
-    plt.plot(quadK,'r')
-    plt.plot(driftL,'g')
-    plt.plot(flagEle,'k-*')
-    plt.axis([-1,numQuadHigh+1,-1,4])
-    plt.show()
-    plt.pause(0.5)
-    
-    plt.figure(2)
-    plt.clf()
-    plt.subplot(121)
-    plt.plot(Z,betaX,'b')
-    plt.subplot(122)
-    plt.plot(Z,betaY,'r')
-    
-    
-    plt.show()
-    plt.pause(0.5)
 
