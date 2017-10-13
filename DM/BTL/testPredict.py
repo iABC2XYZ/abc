@@ -11,7 +11,7 @@ import numpy as np
 from scipy import interpolate
 import matplotlib.pyplot as plt
 
-
+plt.close('all')
 
 def MapQuad(K,L):
     K2=np.sqrt(np.abs(K*1.))
@@ -99,8 +99,8 @@ def RandItemSingle(numSample,numQuadHigh):
     numQuad=np.random.randint(0,high=numQuadHigh)
     
     flagEle=np.zeros([numSample])
-    flagEle[0:numQuad+1:2]=1     # D
-    flagEle[1:numQuad:2]=4     # Q
+    flagEle[0:numQuad*2+1:2]=1     # D
+    flagEle[1:numQuad*2:2]=4     # Q
     
     quadL,quadK,driftL=RandLatticeBPL(numQuad)
     
@@ -145,8 +145,8 @@ def DealBeta(zGiven,betaXGiven,betaYGiven,numSample,numQuad):
     betaY=interpY(Z)
     
     flagEle=np.zeros([numSample])
-    flagEle[0:numQuad+1:2]=1     # D
-    flagEle[1:numQuad:2]=4     # Q
+    flagEle[0:numQuad*2+1:2]=1     # D
+    flagEle[1:numQuad*2:2]=4     # Q
     
     dataBeam=np.zeros([numSample,4])
     
@@ -157,7 +157,7 @@ def DealBeta(zGiven,betaXGiven,betaYGiven,numSample,numQuad):
     
     return dataBeam
 
-
+'''
 zGiven=np.array([0,2,3,5,6,7,9,12,15,16,17])
 betaXGiven=np.sin(zGiven+np.random.random(np.size(zGiven)))+3
 betaYGiven=-np.sin(zGiven+np.random.random(np.size(zGiven)))+3
@@ -169,7 +169,7 @@ plt.plot(zGiven,betaXGiven)
 plt.plot(zGiven,betaYGiven)
 
 numSample=2**8
-numQuad=5
+numQuad=8
 dataBeam=DealBeta(zGiven,betaXGiven,betaYGiven,numSample,numQuad)
 
 Z=dataBeam[:,0]
@@ -184,7 +184,9 @@ plt.plot(Z,betaX)
 plt.plot(Z,betaY)
 
 plt.figure('flagEle')
-plt.plot(flagEle)
+plt.plot(flagEle,'-*')
+
+'''
 
 def DealUnpack(dataBeam,dataLattice):
     Z=dataBeam[0:2,0]
@@ -192,7 +194,7 @@ def DealUnpack(dataBeam,dataLattice):
     betaY=dataBeam[0:2,2]
     flagEle=dataBeam[:,3]
     
-    numQuad=np.sum(flagEle>0)
+    numQuad=(np.sum(flagEle>0)-1)/2
     
     numQuadHigh=len(dataLattice[:,0])
     
@@ -218,9 +220,10 @@ def DealUnpack(dataBeam,dataLattice):
     
 
 def RoundItemSingle(numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,driftL):
-    quadL=quadL*np.abs(1.+np.random.randn()/3.)
-    quadK=quadK*(1.+np.random.randn()/3.)
-    driftL=driftL*np.abs(1.+np.random.randn()/3.)
+    ratioChange=1./10.
+    quadL=quadL*np.abs(1.+np.random.randn()*ratioChange)
+    quadK=quadK*(1.+np.random.randn()*ratioChange)
+    driftL=driftL*np.abs(1.+np.random.randn()*ratioChange)
     
     Z,betaX,betaY=CalBTL(numSample,sigmaTx,sigmaTy,quadL,quadK,driftL)
     
@@ -233,8 +236,8 @@ def RoundItemSingle(numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,driftL):
     dataLattice[0:numQuad,2]=quadL
     
     flagEle=np.zeros([numSample])
-    flagEle[0:numQuad+1:2]=1     # D
-    flagEle[1:numQuad:2]=4     # Q
+    flagEle[0:numQuad*2+1:2]=1     # D
+    flagEle[1:numQuad*2:2]=4     # Q
     
     dataBeam[:,0]=Z
     dataBeam[:,1]=betaX
@@ -243,9 +246,6 @@ def RoundItemSingle(numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,driftL):
     
     return dataLattice,dataBeam
     
-
-    
-
 def RoundItemMulti(numItem,numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,driftL):
     dataLattice=np.zeros([numItem,numQuadHigh,3])
     dataBeam=np.zeros([numItem,numSample,4])
@@ -255,13 +255,37 @@ def RoundItemMulti(numItem,numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,dri
         dataBeam[iItem,:,:]=dataBeamSingle
     return dataLattice,dataBeam
 
-
-
-
 def RoundItemMultiPack(numItem,dataBeamSingle,dataLatticeSingle):
     numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,driftL=DealUnpack(dataBeamSingle,dataLatticeSingle)
     dataLattice,dataBeam=RoundItemMulti(numItem,numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,driftL)
     return dataLattice,dataBeam
+
+'''
+def Vector2MatDataLattice(dataLatticeVector,numQuad):
+    numQuadHigh=len(dataLatticeVector)/3
+    dataLattice=np.zeros((numQuadHigh,3))
+    
+    dataLattice[0:numQuad+1,0]=dataLatticeVector[0:numQuad+1]
+    dataLattice[0:numQuad,1]=dataLatticeVector[numQuadHigh:numQuadHigh+numQuad]
+    dataLattice[0:numQuad,2]=dataLatticeVector[numQuadHigh*2:numQuadHigh*numQuad]
+''' 
+
+    
+def CalLatticeSingle(dataBeam,dataLattice):
+    numSample,numQuadHigh,sigmaTx,sigmaTy,quadL,quadK,driftL=DealUnpack(dataBeam,dataLattice)
+    Z,betaX,betaY=CalBTL(numSample,sigmaTx,sigmaTy,quadL,quadK,driftL)
+    return Z,betaX,betaY
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
 
 
 

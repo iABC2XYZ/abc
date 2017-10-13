@@ -101,6 +101,24 @@ numRun=500
 se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
 se.run(iniBTL)
 
+costRec=[]
+for _ in xrange(numRun):
+    dataLattice,dataBeam=RandItemMulti(numItem,numSample,numQuadHigh)
+    se.run(optBTL,feed_dict={xInput:dataBeam.reshape(numItem,weightSize[0]),yInput:dataLattice.reshape(numItem,weightSize[-1])})
+    T2=se.run(costFunc,feed_dict={xInput:dataBeam.reshape(numItem,weightSize[0]),yInput:dataLattice.reshape(numItem,weightSize[-1])})
+    costRec.append(T2)
+    print str(np.round((np.float32(_)/np.float32(numRun))*100.))+'%'
+    plt.figure('cost')
+    numPlot=10
+    plt.clf()
+    plt.subplot(121)
+    plt.plot(costRec)
+    plt.subplot(122)
+    plt.plot(costRec[np.max([0,_-numPlot]):_],'-*')
+    title(_)
+    plt.pause(0.05)
+
+
 for _ in range(numRun):
     dataLatticeLearn=se.run(xOutputMat,feed_dict={xInput:dataBeamLearn.reshape(1,weightSize[0])})
     
@@ -150,23 +168,6 @@ se.close()
 print('END')
 
 
-'''
-numRun=1
-costRec=np.zeros(numRun)
-with tf.Session() as se:
-    se.run(iniBTL)
-    dataLatticeLearn=se.run(xOutput,feed_dict={xInput:dataBeamLearn.reshape(numItem,weightSize[0])})
-  
-    for _ in xrange(numRun):
-        dataLattice,dataBeam=RandItemMulti(numItem,numSample,numQuadHigh)
-       
-        #T1=se.run(costFunc,feed_dict={xInput:dataBeam.reshape(numItem,weightSize[0]),yInput:dataLattice.reshape(numItem,weightSize[-1])}) 
-        se.run(optBTL,feed_dict={xInput:dataBeam.reshape(numItem,weightSize[0]),yInput:dataLattice.reshape(numItem,weightSize[-1])})
-        T2=se.run(costFunc,feed_dict={xInput:dataBeam.reshape(numItem,weightSize[0]),yInput:dataLattice.reshape(numItem,weightSize[-1])})
-        costRec[_]=T2
-        print str(np.round((np.float32(_)/np.float32(numRun))*100.))+'%'
-
-    '''
 
 
 
