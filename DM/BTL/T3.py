@@ -14,7 +14,7 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 from PreData import RandItemMulti
-from Predict import DealBeta
+from Predict import DealBeta,RoundItemMultiPack
 
 plt.close('all')
 
@@ -66,16 +66,28 @@ iniBTL=tf.global_variables_initializer()
 
 
 
-zGiven=np.array([0,2,3,5,6,7,9,12,15,16,17])
-betaXGiven=np.sin(zGiven+np.random.random(np.size(zGiven)))+3
-betaYGiven=-np.sin(zGiven+np.random.random(np.size(zGiven)))+3
+zGivenLearn=np.array([0,2,3,5,6,7,9,12,15,16,17])
+betaXGivenLearn=np.sin(zGivenLearn+np.random.random(np.size(zGivenLearn)))+3
+betaYGivenLearn=-np.sin(zGivenLearn+np.random.random(np.size(zGivenLearn)))+3
+numQuadLearn=5
 
+zGivenValidate=np.array([0,1,2,4,6,9,11,14,16,19,21])
+betaXGivenValidate=np.sin(zGivenValidate-np.random.random(np.size(zGivenValidate)))+3
+betaYGivenValidate=-np.sin(zGivenValidate-np.random.random(np.size(zGivenValidate)))+3
+numQuadValidate=5
+
+dataBeamLearn=DealBeta(zGivenLearn,betaXGivenLearn,betaYGivenLearn,numSample,numQuadLearn)
+dataBeamValidate=DealBeta(zGivenLearn,betaXGivenLearn,betaYGivenLearn,numSample,numQuadValidate)
+
+print np.size(dataBeamLearn)
+
+'''
 numRun=1
 costRec=np.zeros(numRun)
 with tf.Session() as se:
     se.run(iniBTL)
-    
-    
+    dataLatticeLearn=se.run(xOutput,feed_dict={xInput:dataBeamLearn.reshape(numItem,weightSize[0])})
+  
     for _ in xrange(numRun):
         dataLattice,dataBeam=RandItemMulti(numItem,numSample,numQuadHigh)
        
@@ -85,7 +97,7 @@ with tf.Session() as se:
         costRec[_]=T2
         print str(np.round((np.float32(_)/np.float32(numRun))*100.))+'%'
 
-
+    '''
 
 
 
