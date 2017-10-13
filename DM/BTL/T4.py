@@ -29,9 +29,9 @@ def GenBias(shape):
 
 numItem=64
 numSample=2**8
-numQuadHigh=20
+numQuadHigh=5
 
-weightSize=[numSample*4,2**6,2**4,numQuadHigh*3]
+weightSize=[numSample*4,2**8,2**6,2**4,numQuadHigh*3]
 
 wFC1 = GenWeight([weightSize[0],weightSize[1]])
 bFC1=GenWeight([weightSize[1]])
@@ -42,6 +42,9 @@ bFC2=GenWeight([weightSize[2]])
 wFC3 = GenWeight([weightSize[2],weightSize[3]])
 bFC3=GenWeight([weightSize[3]])
 
+wFC4 = GenWeight([weightSize[3],weightSize[4]])
+bFC4=GenWeight([weightSize[4]])
+
 
 xInput=tf.placeholder(tf.float32,shape=[None,weightSize[0]])
 yInput=tf.placeholder(tf.float32,shape=[None,weightSize[-1]])
@@ -51,8 +54,10 @@ xAct1=tf.nn.relu(xFC1)
 xFC2=tf.matmul(xAct1,wFC2)+bFC2
 xAct2=tf.nn.relu(xFC2)
 xFC3=tf.matmul(xAct2,wFC3)+bFC3
+xAct3=tf.nn.relu(xFC3)
+xFC4=tf.matmul(xAct3,wFC4)+bFC4
 
-xFinal=xFC3
+xFinal=xFC4
 
 xOutput=xFinal
 yOutput=yInput
@@ -61,7 +66,7 @@ xOutputMat=tf.reshape(xOutput,(numQuadHigh,3))
 
 costFunc=tf.reduce_sum((yOutput-xOutput)**2)
 
-trainBTL=tf.train.AdamOptimizer(0.03)
+trainBTL=tf.train.AdamOptimizer(0.01)
 optBTL=trainBTL.minimize(costFunc)
 
 iniBTL=tf.global_variables_initializer()
@@ -97,10 +102,11 @@ plt.plot(zGivenLearn,betaYGivenLearn,'b')
 plt.title('Y')  
 
 
-numRun=500
+numRun=200
 se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
 se.run(iniBTL)
 
+'''
 costRec=[]
 for _ in xrange(numRun):
     dataLattice,dataBeam=RandItemMulti(numItem,numSample,numQuadHigh)
@@ -115,9 +121,9 @@ for _ in xrange(numRun):
     plt.plot(costRec)
     plt.subplot(122)
     plt.plot(costRec[np.max([0,_-numPlot]):_],'-*')
-    title(_)
+    plt.title(_)
     plt.pause(0.05)
-
+'''
 
 for _ in range(numRun):
     dataLatticeLearn=se.run(xOutputMat,feed_dict={xInput:dataBeamLearn.reshape(1,weightSize[0])})
