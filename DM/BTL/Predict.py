@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 
 
 def MapQuad(K,L):
+    # 生成四极铁的装配矩阵，其中K表示聚焦因子，L 表示四极铁的长度。
     K2=np.sqrt(np.abs(K*1.))
     K2_L=K2*L
     
