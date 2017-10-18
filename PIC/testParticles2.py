@@ -101,14 +101,6 @@ plt.show()
 
 
 
-def CosK(N):
-    k=np.linspace(0.5,N-0.5,N)
-    m=k
-    K,M=np.meshgrid(k,m)
-    KM=K*M
-    cosKM=np.cos(np.pi*KM/N)
-    cosKM*=np.sqrt(2./N)
-    return cosKM
 
 def SinK(N):
     k=np.linspace(1,N,N)
@@ -119,10 +111,7 @@ def SinK(N):
     sinKM*=np.sqrt(2./N)
     return sinKM
 
-def SinK_I(N):
-    sinKM=SinK(N)
-    sinKM*=1./(2.*(N+1))
-    return sinKM
+
 
 
 def EigDirichlet(N,dx):
@@ -130,11 +119,24 @@ def EigDirichlet(N,dx):
     Ek=-((2.*np.sin(np.pi*K/(2.*(N+1))))/dx)**2
     return Ek
 
-def EigNeumann(N,dx):
-    K=np.linspace(0,N-1,N)[:,np.newaxis]
-    Ek=-((2.*np.sin(np.pi*K/(2.*N)))/dx)**2
-    return Ek
 
+def ExpK(N):
+    k=np.linspace(0,N-1,N)
+    m=k
+    K,M=np.meshgrid(k,m)
+    KM=K*M
+    
+    cosKM=np.cos(2.*np.pi*KM/N)
+    sinKM=np.sin(2.*np.pi*KM/N)
+    
+    cosKM/=np.sqrt(N)
+    sinKM/=np.sqrt(N)
+    return cosKM,sinKM
+
+def EigPeriodic(N,dx):
+    K=np.linspace(0,N-1,N)[:,np.newaxis]
+    Ek=-((2.*np.sin(np.pi*K/N))/dx)**2
+    return Ek
 
 
 sinKX=SinK(xGrid)
@@ -172,25 +174,6 @@ print np.sum(u22),np.sum(rhoGrid),(np.sum(u22)-np.sum(rhoGrid))/np.sum(rhoGrid)
 #_______________________________________________________________________________
 
 
-plt.close('all')
-
-def ExpK(N):
-    k=np.linspace(0,N-1,N)
-    m=k
-    K,M=np.meshgrid(k,m)
-    KM=K*M
-    
-    cosKM=np.cos(2.*np.pi*KM/N)
-    sinKM=np.sin(2.*np.pi*KM/N)
-    
-    cosKM/=np.sqrt(N)
-    sinKM/=np.sqrt(N)
-    return cosKM,sinKM
-
-def EigPeriodic(N,dx):
-    K=np.linspace(0,N-1,N)[:,np.newaxis]
-    Ek=-((2.*np.sin(np.pi*K/N))/dx)**2
-    return Ek
 
 
 sinKX=SinK(xGrid)
@@ -234,107 +217,28 @@ surf = ax.plot_surface(xMidGrid,yMidGrid,u22, cmap=cm.coolwarm,linewidth=0, anti
 
 print np.sum(u22),np.sum(rhoGrid),(np.sum(u22)-np.sum(rhoGrid))/np.sum(rhoGrid)
 
-"""
-#___________________________________
-plt.close('all')
-
-
-sinKX=SinK(xGrid)
-sinKY=SinK(yGrid)
-
-Kx=EigDirichlet(xGrid,dx)
-Ky=EigDirichlet(yGrid,dy)
-
-kxGrid,kyGrid=np.meshgrid(Ky,Kx)
-
-kXYGrid=kxGrid+kyGrid
-
-A=sinKX
-B=sinKY
-E=np.diag(Kx[:,0])
-F=np.diag(Ky[:,0])
-X=rhoGrid
-
-ABT=np.matmul(A,B.T)
-AXBF=np.matmul(np.matmul(np.matmul(A,X),B.T),F.T)
-AEXB=np.matmul(np.matmul(np.matmul(A,E),X),B.T)
-
-u=np.matmul(ABT,AXBF+AEXB)
-
-
-u22=np.gradient(np.gradient(u,axis=0),axis=0)+np.gradient(np.gradient(u,axis=1),axis=1)
-u22/=(dx*dy)
-
-fig3=plt.figure(3)
-ax = fig3.gca(projection='3d')
-surf = ax.plot_surface(xMidGrid,yMidGrid,rhoGrid, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-
-
-fig3=plt.figure(20)
-ax = fig3.gca(projection='3d')
-surf = ax.plot_surface(xMidGrid,yMidGrid,u, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-
-fig3=plt.figure(31)
-ax = fig3.gca(projection='3d')
-surf = ax.plot_surface(xMidGrid,yMidGrid,u22, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-
-print np.sum(u22),np.sum(rhoGrid),(np.sum(u22)-np.sum(rhoGrid))/np.sum(rhoGrid)
 
 
 
 
-'''
-sinKX=SinK(xGrid)
-cosKY,sinKY=ExpK(yGrid)
-
-Kx=EigDirichlet(xGrid,dx)
-Ky=EigPeriodic(yGrid,dy)
-
-kxGrid,kyGrid=np.meshgrid(Ky,Kx)
-
-kXYGrid=kxGrid+kyGrid
-
-F=kXYGrid
-
-A=sinKX
-AA=np.matmul(A,A)
- 
-B=cosKY
-BB=np.matmul(B.T,B.T)
-
-C=sinKY
-CC=np.matmul(C.T,C.T)
-
-
-X=rhoGrid
-
-u=np.matmul(np.matmul(AA,X),(BB+CC))/F
-
-
-u22=np.gradient(np.gradient(u,axis=0),axis=0)+np.gradient(np.gradient(u,axis=1),axis=1)
-u22/=(dx*dy)
-
-fig3=plt.figure(3)
-ax = fig3.gca(projection='3d')
-surf = ax.plot_surface(xMidGrid,yMidGrid,rhoGrid, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-
-
-fig3=plt.figure(20)
-ax = fig3.gca(projection='3d')
-surf = ax.plot_surface(xMidGrid,yMidGrid,u, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-
-fig3=plt.figure(31)
-ax = fig3.gca(projection='3d')
-surf = ax.plot_surface(xMidGrid,yMidGrid,u22, cmap=cm.coolwarm,linewidth=0, antialiased=False)
-
-print
-
-'''
 
 
 
 
-print(np.diag(Kx[:,0]))
 
-"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
