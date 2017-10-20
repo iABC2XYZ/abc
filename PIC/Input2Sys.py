@@ -16,6 +16,8 @@ from RegFn import MM2M_6,MM2M_4
 from BetaGammaC import NP_Energy2BetaGammaC,NP_Energy2BetaC
 
 numPart=np.int64(numPart)
+xGrid,yGrid,zGrid=2**xGridLog,2**yGridLog,2**zGridLog
+
 
 if bunchFlag==True:
     xMin,xMax,yMin,yMax=MM2M_4(xMin,xMax,yMin,yMax)

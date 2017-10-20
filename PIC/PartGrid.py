@@ -13,7 +13,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
 
-from Input2Sys import x,y,z,xGridLog,yGridLog,zGridLog
+from Input2Sys import x,y,z,xGrid,yGrid,zGrid
 
 
 
@@ -32,7 +32,33 @@ if bunchFlag==True:   #3D   SSP
     pass
 
 if bunchFlag==False:   #2D   SS
+    dX=(xMax-xMin)/(xGrid+1.)
+    dY=(yMax-yMin)/(yGrid+1.)
     
+    partFlag=(x>=xMin) * (y>=yMin) * (x<xMax) * (y<yMax) 
+    xUse=x[partFlag]
+    xpUse=xp[partFlag]
+    yUse=y[partFlag]
+    ypUse=yp[partFlag]
+    
+    def InfXY(x,xMin,dX):
+    
+        inforX=(x-xMin)/dX
+        idX1=np.ceil(inforX)
+        idX2=idX1+1
+        
+        
+        
+        fracX=infX-intX
+        return intX,fracX
+    
+    intX,fracX=InfXY(xUse,xMin,dX)
+    intY,fracY=InfXY(yUse,yMin,dY)
+    
+    partGrid=np.zeros((xGrid,yGrid))
+    for iPart in range(len(intX)):
+        #partGrid[intX,int
+        pass
     
     
     pass
