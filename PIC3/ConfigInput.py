@@ -53,7 +53,7 @@ inforPart[:,0]=numChargeQ/ratioPart
 inforPart[0:-1,0]=np.round(inforPart[0:-1,0])
 inforPart[-1,0]=numPart-np.sum(inforPart[0:-1,0])
 
-print inforPart[:,0]
+#print inforPart[:,0]
 
 numPart=np.int64(numPart)
 X=np.zeros((numPart,1))
@@ -147,6 +147,18 @@ for iBeam in range(beamNum):
     numPartRec+=numPartBeam
 
 QReal=Q*ratioPart
+
+
+#
+#import matplotlib.pyplot as plt
+#plt.close('all')
+#plt.figure(1)
+#plt.subplot(221)
+#plt.plot(X,PX,'.')
+#plt.subplot(222)
+#plt.plot(Y,PY,'.')
+#plt.subplot(223)
+#plt.plot(Z,PZ,'.')
 
 
 
