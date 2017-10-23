@@ -186,30 +186,33 @@ muX_SecC6,muXP_SecC6,muY_SecC6,muYP_SecC6=0.,0.,0.,0.
 # Global Config -------------------------------------------
 numPart=1e4
 
+zBegin=0.
+spaceCharge,nStep,xGridLog,yGridLog,zGridLog='3D',5,4,4,4
+
 dTG=0.1
 freqMHzG=162.5
 xMinG,xMaxG,yMinG,yMaxG=-12,12,-12,12
-spaceChargeG,nStepG,xGridLogG,yGridLogG,zGridLogG='3D',5,4,4,4
-
 
 
 # Lattice  -------------------------------------------
 
 ele_1='drift'
-dT_1=0.2
-L_1=1000
+zStart_1,zEnd_1=0.,1000.
+#dT_1=0.2
 #freqMHz_1=162.5
 #xMin_1,xMax_1,yMin_1,yMax_1=-10,10,-10,10
-#spaceCharge_1,nStep_1,xGridLog_1,yGridLog_1,zGridLog_1='3D',5,4,4,4
 
-ele_2='EMField'
-dT_2=0.1
+ele_2='EFQ'
+zStart_2,zEnd_2=800.,2000.
+
+
+ele_3='EMField'
+zStart_2,zEnd_2=800.,2000.
 EMMod_2='3D'
 EMFieldLoc_2='EM.field'
+#dT_2=0.1
 #freqMHz_2=162.5
 #xMin_2,xMax_2,yMin_2,yMax_2=-10,10,-10,10
-#spaceCharge_2,nStep_2,xGridLog_2,yGridLog_2,zGridLog_2='3D',5,4,4,4
-
 
 
 

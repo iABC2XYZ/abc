@@ -183,43 +183,66 @@ dp_p_SecC6=0.01
 muX_SecC6,muXP_SecC6,muY_SecC6,muYP_SecC6=0.,0.,0.,0.
 
 
-# Global Config -------------------------------------------
+# config -------------------------------------------
 numPart=1e4
-
-dTG=0.1
-freqMHzG=162.5
-xMinG,xMaxG,yMinG,yMaxG=-12,12,-12,12
-spaceChargeG,nStepG,xGridLogG,yGridLogG,zGridLogG='3D',5,4,4,4
-
+zStart=0
+zEnd=160
 
 
 # Lattice  -------------------------------------------
 
-ele_1='drift'
-dT_1=0.2
-L_1=1000
-#freqMHz_1=162.5
-#xMin_1,xMax_1,yMin_1,yMax_1=-10,10,-10,10
-#spaceCharge_1,nStep_1,xGridLog_1,yGridLog_1,zGridLog_1='3D',5,4,4,4
+numSection=3
 
-ele_2='EMField'
-dT_2=0.1
+
+# Section1:  EM Field
+
+sectionID_1=1
+sectionKind_1='EMfield'
+zStart_1,zEnd_1=10,50
+xMin_1,xMax_1,yMin_1,yMax_1=-14,14,-14,14
+
+EMMod_1='3D'
+freqMHz_1=162.5
+dT_1=0.1
+EMField_1='EM.Field'
+
+SpaceChage_1='3D'
+nStep_1=5
+xGridLog_1,yGridLog_1,zGridLog_1=4,4,6
+
+
+# Section2:  EM Field
+
+sectionID_2=2
+sectionKind_2='EMfield'
+zStart_2,zEnd_2=40,80
+xMin_2,xMax_2,yMin_2,yMax_2=-14,14,-14,14
+
 EMMod_2='3D'
-EMFieldLoc_2='EM.field'
-#freqMHz_2=162.5
-#xMin_2,xMax_2,yMin_2,yMax_2=-10,10,-10,10
-#spaceCharge_2,nStep_2,xGridLog_2,yGridLog_2,zGridLog_2='3D',5,4,4,4
+freqMHz_2=162.5
+dT_2=0.1
+EMField_2='EM.Field'
+
+SpaceChage_2='3D'
+nStep_2=5
+xGridLog_2,yGridLog_2,zGridLog_2=4,4,6
 
 
+# Section3:  EM Field
 
+sectionID_3=3
+sectionKind_3='EMfield'
+zStart_3,zEnd_3=70,180
+xMin_3,xMax_3,yMin_3,yMax_3=-14,14,-14,14
 
+EMMod_3='3D'
+freqMHz_2=162.5
+dT_3=0.1
+EMField_3='EM.Field'
 
-
-
-
-
-
-
+SpaceChage_3='3D'
+nStep_3=5
+xGridLog_3,yGridLog_3,zGridLog_3=4,4,6
 
 
 

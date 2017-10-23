@@ -1,0 +1,27 @@
+# Lattice
+Name: My Lattice
+
+Section: test
+    Drift:
+        dT=0.2
+        L=1000
+        xMin,xMax,yMin,yMax=-10,10,-10,10
+        spaceCharge,nStep,xGrid,yGrid,zGrid='3D',5,4,4,4
+    EMField:
+        dT=0.1
+        EMMod='3D'
+        freqMHz=162.5
+        EMFieldLoc='EM.field'
+        xMin,xMax,yMin,yMax=-10,10,-10,10
+        spaceCharge,nStep,xGrid,yGrid,zGrid='3D',5,4,4,4
+
+    
+
+
+
+
+
+
+
+
+
