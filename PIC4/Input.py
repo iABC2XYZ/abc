@@ -186,7 +186,8 @@ muX_SecC6,muXP_SecC6,muY_SecC6,muYP_SecC6=0.,0.,0.,0.
 # Global Config -------------------------------------------
 numPart=1e4
 
-zBegin=0.
+zBegin=100
+zFinish=700.
 spaceCharge,nStep,xGridLog,yGridLog,zGridLog='3D',5,4,4,4
 
 dTG=0.1
@@ -202,12 +203,12 @@ zStart_1,zEnd_1=0.,1000.
 #freqMHz_1=162.5
 #xMin_1,xMax_1,yMin_1,yMax_1=-10,10,-10,10
 
-ele_2='EFQ'
+ele_2='rFQ'
 zStart_2,zEnd_2=800.,2000.
 
 
 ele_3='EMField'
-zStart_2,zEnd_2=800.,2000.
+zStart_3,zEnd_3=800.,2000.
 EMMod_2='3D'
 EMFieldLoc_2='EM.field'
 #dT_2=0.1
