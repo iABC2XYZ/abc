@@ -21,6 +21,8 @@ from Field import FieldExtern_AllPart
 
 from Windows import WindowDef,WindowInner,WindowLeft,WindowRight
 
+import numpy as np
+
 numPart=np.int64(numPart)
 
 i=1
@@ -41,11 +43,18 @@ for iEle in range(1,numEle+1):
 z0=zBegin/1000.
 zOver=zFinish/1000.
 
-spaceChargeStep=nStep
-iSpaceChargeStep=0
+
+if scStep==0:
+    scDoor=0
+else:
+    scDoor=1
+
+
+iScStep=0
 beamEnergyMain=beamEnergy
 while True:
-    iSpaceChargeStep+=1
+    iScStep+=1
+    
     startWindow,endWindow=WindowDef(z0,beamEnergy,freq)
     idInner=WindowInner(startWindow,endWindow,EleStart,EleEnd)
     idLeft=WindowLeft(startWindow,endWindow,EleStart,EleEnd)
