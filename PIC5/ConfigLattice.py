@@ -50,7 +50,46 @@ if scStep==0:
 else:
     scDoor=1
 
+energyWindow=beamEnergy
 
+
+iScStep=0
+#while True:
+iScStep+=1
+
+#获得ｗｉｎｄｏｗ的起始位置
+startWindow,endWindow=WindowDef(z0,energyWindow,freq)
+#判断ｗｉｎｄｏｗ是否在某个场中，还是在边界上
+# 不论束流是在某场区内还是在边界上，其实内场的计算方法都是一样的，但是外场不一样，因此区别只在内场。
+idInner=WindowInner(startWindow,endWindow,EleStart,EleEnd)
+idLeft=WindowLeft(startWindow,endWindow,EleStart,EleEnd)
+idRight=WindowRight(startWindow,endWindow,EleStart,EleEnd)
+
+### 计算场　　首先开辟空间，用来存储数据
+Ex,Ey,Ez,Bx,By,Bz=np.zeros([numPart,1]),np.zeros([numPart,1]),np.zeros([numPart,1]), \
+                             np.zeros([numPart,1]),np.zeros([numPart,1]),np.zeros([numPart,1])
+        
+
+## 计算外场　
+# window 在某个场区内　　　　：　所有带电粒子是同步的
+if idInner[0]!=0:         
+    # 可能有多个外场，即场有叠加
+    for idEle in idInner:
+        exEx,exEy,exEz,exBx,exBy,exBz=FieldExtern_AllPart(idEle)
+        Ex,Ey,Ez,Bx,By,Bz=FieldAdd(Ex,Ey,Ez,Bx,By,Bz,exEx,exEy,exEz,exBx,exBy,exBz)
+
+#　没有标记，认为是漂移管真空区　　　：　所有带电粒子是同步的，场都为　０   
+if (idInner[0]==0) and (idLeft[0]==0) and (idRight[0]==0):   
+    pass
+
+# 边界区域，粒子不是同步的。有的在这个场区，有的在那个场区，需要对每一个粒子进行考究，
+# 之后根据每一个粒子所处的位置，进行计算场。但是每一个粒子也都有可能处于不同的场区域内。
+if (idLeft[0]!=0) or (idRight[0]!=0):
+    pass  
+
+
+
+"""
 iScStep=0
 beamEnergyMain=beamEnergy
 while True:
@@ -210,7 +249,7 @@ for iEle in range(1,numEle+1):
         pass
         
 '''
-
+"""
 
 
 

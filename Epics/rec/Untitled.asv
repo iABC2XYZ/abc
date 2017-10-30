@@ -1,0 +1,39 @@
+clear;
+clc;
+close all;
+
+cd 'C:\Users\A\Desktop\rec'
+rec=importdata('Rec.dat');
+
+for i = 1:25
+    figure(i)
+    hist(rec(:,i),1000)
+end
+
+
+
+E=rec(:,25);
+Emean=mean(E);
+Estd=std(E);
+
+x=1:length(E);
+figure(101)
+plot(x,E,'b.')
+hold on
+flagE=find((E<Emean-Estd*3) + (E>Emean+Estd*3));
+plot(x(flagE),E(flagE),'r.')
+
+for i = 1:25
+    figure(i)
+    plot(rec(:,i),1000)
+end
+
+
+
+
+
+
+
+
+
+

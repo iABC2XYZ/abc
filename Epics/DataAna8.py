@@ -39,7 +39,7 @@ def conv2d(x, W):
 
 
 
-exData=np.loadtxt('/home/p/ABC/abc/Epics/Rec.dat')
+exData=np.loadtxt('/home/e/ABC/abc/Epics/Rec.dat')
 
 
 bpm=tf.placeholder(tf.float32,shape=(None,5,2))
@@ -50,7 +50,7 @@ xInput=bpm
 yInput=cHV
 
 #
-nChan1=100
+nChan1=200
 
 w1= GenWeight([1,2,nChan1])
 b1=GenBias([nChan1])
@@ -63,19 +63,19 @@ n2=nChan1/nChan2
 x2=tf.reshape(x1,(-1,5,n2,nChan2))
 
 #
-nChan3=5
+nChan3=13
 w3= GenWeight([1,1,nChan2,nChan3])
 b3=GenBias([nChan3])
 x3=tf.nn.relu(conv2d(x2, w3)+b3)
 
 #
-nChan4=5
+nChan4=13
 w4= GenWeight([2,2,nChan2,nChan4])
 b4=GenBias([nChan4])
 x4=tf.nn.relu(conv2d(x2, w4)+b4)
 
 #
-nChan5=5
+nChan5=13
 w5= GenWeight([3,3,nChan2,nChan5])
 b5=GenBias([nChan5])
 x5=tf.nn.relu(conv2d(x2, w5)+b5)
@@ -84,25 +84,38 @@ x5=tf.nn.relu(conv2d(x2, w5)+b5)
 x6=tf.concat((tf.concat((x3,x4),axis=3),x5),axis=3)
 
 #
-nChan7=1
+nChan7=5
 w7= GenWeight([3,3,nChan3+nChan4+nChan5,nChan7])
 b7=GenBias([nChan7])
 x7=tf.nn.relu(conv2d(x6, w7)+b7)
 
 
 #
-x8=tf.reshape(x7,(-1,5*n2))
+x8=tf.reshape(x7,(-1,5*n2*nChan7))
 
 #
-w9=GenWeight([5*n2,14])
+w9=GenWeight([5*n2*nChan7,14])
 b9=GenBias([14])
 x9=tf.matmul(x8,w9)+b9
+
+
+#
+n9_2=250
+w9_2=GenWeight([5*n2*nChan7,n9_2])
+b9_2=GenBias([n9_2])
+x9_2=tf.nn.relu(tf.matmul(x8,w9_2)+b9_2)
+
+#
+w10_2=GenWeight([n9_2,14])
+b10_2=GenBias([14])
+x10_2=tf.matmul(x9_2,w10_2)+b10_2
+
 
 
 
 ##
 
-xFinal=x9
+xFinal=x10_2
 
 xOutput=tf.reshape(xFinal,(-1,14))
 yOutput=tf.reshape(yInput,(-1,14))
@@ -111,7 +124,7 @@ yOutput=tf.reshape(yInput,(-1,14))
 lossFn=tf.reduce_mean(tf.square(xOutput-yOutput))
 
 
-trainBPM=tf.train.AdamOptimizer(0.01)
+trainBPM=tf.train.AdamOptimizer(0.005)
 optBPM=trainBPM.minimize(lossFn)
 
 iniBPM=tf.global_variables_initializer()
@@ -126,9 +139,9 @@ se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
 se.run(iniBPM)
 
 
-nIt=1e5
-sizeRow=20
-stepLossRec=600
+nIt=2e4
+sizeRow=100
+stepLossRec=50
 nLossRec=np.int32(nIt/stepLossRec+1)
 
 lossRec=np.zeros((nLossRec))
@@ -144,10 +157,38 @@ for i in range(np.int32(nIt)):
         iRec+=1
 
         print lossRecTmp
-                
+        
+        '''        
         plt.figure(1)
         plt.hold
         plt.plot(iRec,lossRecTmp,'*b')
+        if iRec==15:
+            plt.close(plt.figure(1))
+        #if iRec>6:
+        #    plt.plot(iRec,np.mean(lossRec[5:iRec]),'*r')  
+        if iRec>15:
+            plt.plot(iRec,np.mean(lossRec[iRec-15:iRec]),'go')  
+        '''
+        
+        plt.figure('lossRec')
+        numPlot=30
+        plt.clf()
+        if iRec<=numPlot:
+            xPlot=np.linspace(0,iRec-1,iRec)
+            yPlot=lossRec[0:iRec:]
+            yPlotMean=np.cumsum(yPlot)/(xPlot+1)
+            
+
+        else:
+            xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
+            yPlot=lossRec[iRec-numPlot:iRec:]
+            yPlotMean[0:-1:]=yPlotMean[1::]
+            yPlotMean[-1]=np.mean(yPlot)
+
+        plt.hold
+        plt.plot(xPlot,yPlot,'*b')
+        plt.plot(xPlot,yPlotMean,'go')
+            
         plt.grid('on')
         plt.title(i)
         plt.pause(0.05)
