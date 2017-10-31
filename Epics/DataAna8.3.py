@@ -20,12 +20,10 @@ def GenBias(shape):
     return tf.Variable(initial)
 
 
-
-
 def getDataRow(exData,sizeRow):
     numEx=np.shape(exData)[0]
-    idChoose1=np.random.randint(0,high=numEx,size=(sizeRow))
-    idChoose2=np.random.randint(0,high=numEx,size=(sizeRow))
+    idChoose1=np.random.randint(1,high=numEx,size=(sizeRow))
+    idChoose2=idChoose1-1
     yCHV1=np.reshape(exData[idChoose1,0:14],(sizeRow,7,2))
     xBPM1=np.reshape(exData[idChoose1,14:24],(sizeRow,5,2))
     yCHV2=np.reshape(exData[idChoose2,0:14],(sizeRow,7,2))
@@ -44,7 +42,7 @@ def conv2d(x, W):
 
 
 
-exData=np.loadtxt('/home/e/ABC/abc/Epics/Rec.dat')
+exData=np.loadtxt('/home/p/ABC/abc/Epics/Rec.dat')
 
 
 bpm=tf.placeholder(tf.float32,shape=(None,5,2))
@@ -55,7 +53,7 @@ xInput=bpm
 yInput=cHV
 
 #
-nChan1=200
+nChan1=100
 
 w1= GenWeight([1,2,nChan1])
 b1=GenBias([nChan1])
@@ -68,19 +66,19 @@ n2=nChan1/nChan2
 x2=tf.reshape(x1,(-1,5,n2,nChan2))
 
 #
-nChan3=13
+nChan3=5
 w3= GenWeight([1,1,nChan2,nChan3])
 b3=GenBias([nChan3])
 x3=tf.nn.relu(conv2d(x2, w3)+b3)
 
 #
-nChan4=13
+nChan4=5
 w4= GenWeight([2,2,nChan2,nChan4])
 b4=GenBias([nChan4])
 x4=tf.nn.relu(conv2d(x2, w4)+b4)
 
 #
-nChan5=13
+nChan5=5
 w5= GenWeight([3,3,nChan2,nChan5])
 b5=GenBias([nChan5])
 x5=tf.nn.relu(conv2d(x2, w5)+b5)
@@ -116,8 +114,6 @@ b10_2=GenBias([14])
 x10_2=tf.matmul(x9_2,w10_2)+b10_2
 
 
-
-
 ##
 
 xFinal=x10_2
@@ -129,17 +125,11 @@ yOutput=tf.reshape(yInput,(-1,14))
 lossFn=tf.reduce_mean(tf.square(xOutput-yOutput))
 
 
-trainBPM_1=tf.train.AdamOptimizer(0.05)
-optBPM_1=trainBPM_1.minimize(lossFn)
 
-trainBPM_2=tf.train.AdamOptimizer(0.01)
-optBPM_2=trainBPM_2.minimize(lossFn)
+trainBPM=tf.train.AdamOptimizer(0.01)
+optBPM=trainBPM.minimize(lossFn)
 
-trainBPM_3=tf.train.AdamOptimizer(0.005)
-optBPM_3=trainBPM_3.minimize(lossFn)
 
-trainBPM_4=tf.train.AdamOptimizer(0.001)
-optBPM_4=trainBPM_4.minimize(lossFn)
 
 iniBPM=tf.global_variables_initializer()
 
@@ -150,96 +140,96 @@ try:
 except:
     pass
 #se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
-with tf.device("/cpu:2"):
-    se=tf.Session()
-    se.run(iniBPM)
+se=tf.Session()
+se.run(iniBPM)
+
+
+
+nIt=2e4
+sizeRow=50
+stepLossRec=50
+nLossRec=np.int32(nIt/stepLossRec+1)
+
+lossRec=np.zeros((nLossRec))
+
+iRec=0
+for i in range(np.int32(nIt)):
+    xBPM,yCHV=getDataRow(exData,sizeRow)
+    se.run(optBPM,feed_dict={bpm:xBPM,cHV:yCHV})
     
-    
-    nIt=2e7
-    sizeRow=100
-    stepLossRec=50
-    nLossRec=np.int32(nIt/stepLossRec+1)
-    
-    lossRec=np.zeros((nLossRec))
-    
-    iRec=0
-    for i in range(np.int32(nIt)):
-        xBPM,yCHV=getDataRow(exData,sizeRow)
-        se.run(optBPM_4,feed_dict={bpm:xBPM,cHV:yCHV})
+    if i % stepLossRec==0:
+        lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
+        lossRec[iRec]=lossRecTmp
+        iRec+=1
+
+        print lossRecTmp
         
-        if i % stepLossRec==0:
-            lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
-            lossRec[iRec]=lossRecTmp
-            iRec+=1
-    
-            print lossRecTmp
+        plt.figure('8.3-lossRec')
+        numPlot=30
+        plt.clf()
+        if iRec<=numPlot:
+            xPlot=np.linspace(0,iRec-1,iRec)
+            yPlot=lossRec[0:iRec:]
+            yPlotMean=np.cumsum(yPlot)/(xPlot+1)
             
-            plt.figure('8.3-lossRec')
-            numPlot=30
-            plt.clf()
-            if iRec<=numPlot:
-                xPlot=np.linspace(0,iRec-1,iRec)
-                yPlot=lossRec[0:iRec:]
-                yPlotMean=np.cumsum(yPlot)/(xPlot+1)
-                
-    
-            else:
-                xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
-                yPlot=lossRec[iRec-numPlot:iRec:]
-                yPlotMean[0:-1:]=yPlotMean[1::]
-                yPlotMean[-1]=np.mean(yPlot)
-    
-            plt.hold
-            plt.plot(xPlot,yPlot,'*b')
-            plt.plot(xPlot,yPlotMean,'go')
-                
-            plt.grid('on')
-            plt.title(i)
-            plt.pause(0.05)
+
+        else:
+            xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
+            yPlot=lossRec[iRec-numPlot:iRec:]
+            yPlotMean[0:-1:]=yPlotMean[1::]
+            yPlotMean[-1]=np.mean(yPlot)
+
+        plt.hold
+        plt.plot(xPlot,yPlot,'*b')
+        plt.plot(xPlot,yPlotMean,'go')
             
-            
-            xBPM,yCHV=getDataRow(exData,1)
-            yCHV_Cal=se.run(xFinal,feed_dict={bpm:xBPM})
-            plt.figure('8.3-2')
-            plt.clf()
-            plt.hold
-            plt.plot(np.reshape(yCHV[0,:],(14)),'bd')
-            plt.plot(yCHV_Cal[0,:],'rd')        
-            plt.title(i)
-            plt.pause(0.05)
+        plt.grid('on')
+        plt.title(i)
+        plt.pause(0.05)
         
         
-    #se.close()
+        xBPM,yCHV=getDataRow(exData,1)
+        yCHV_Cal=se.run(xFinal,feed_dict={bpm:xBPM})
+        plt.figure('8.3-2')
+        plt.clf()
+        plt.hold
+        plt.plot(np.reshape(yCHV[0,:],(14)),'bd')
+        plt.plot(yCHV_Cal[0,:],'rd')        
+        plt.title(i)
+        plt.pause(0.05)
     
     
-    xBPMReal_1=np.ones((5,2))*0.
-    xBPMReal_2=np.ones((5,2))*3.
-    xBPMReal_3=np.ones((5,2))*(-3.)
-    xBPMReal_4=np.ones((5,2))
-    xBPMReal_4[:,0]=xBPMReal_4[:,0]*3.
-    xBPMReal_4[:,1]=xBPMReal_4[:,1]*(-3.)
-    
-    xBPMReal=np.zeros((4,5,2))
-    xBPMReal[0,:,:]=xBPMReal_1
-    xBPMReal[1,:,:]=xBPMReal_2
-    xBPMReal[2,:,:]=xBPMReal_3
-    xBPMReal[3,:,:]=xBPMReal_4
-    
-    yCHV_Cal4Real=se.run(xFinal,feed_dict={bpm:xBPMReal})
-    
-    yCHV_Cal4Real_1=np.reshape(yCHV_Cal4Real[0,::],(7,2))
-    yCHV_Cal4Real_2=np.reshape(yCHV_Cal4Real[1,::],(7,2))
-    yCHV_Cal4Real_3=np.reshape(yCHV_Cal4Real[2,::],(7,2))
-    yCHV_Cal4Real_4=np.reshape(yCHV_Cal4Real[3,::],(7,2))
-    
-    print '----------------- yCHV_Cal4Real_1 --------------------------'
-    print yCHV_Cal4Real_1
-    print '----------------- yCHV_Cal4Real_2 --------------------------'
-    print yCHV_Cal4Real_2
-    print '----------------- yCHV_Cal4Real_3 --------------------------'
-    print yCHV_Cal4Real_3
-    print '----------------- yCHV_Cal4Real_4 --------------------------'
-    print yCHV_Cal4Real_4
+#se.close()
+
+
+xBPMReal_1=np.ones((5,2))*0.
+xBPMReal_2=np.ones((5,2))*3.
+xBPMReal_3=np.ones((5,2))*(-3.)
+xBPMReal_4=np.ones((5,2))
+xBPMReal_4[:,0]=xBPMReal_4[:,0]*3.
+xBPMReal_4[:,1]=xBPMReal_4[:,1]*(-3.)
+
+xBPMReal=np.zeros((4,5,2))
+xBPMReal[0,:,:]=xBPMReal_1
+xBPMReal[1,:,:]=xBPMReal_2
+xBPMReal[2,:,:]=xBPMReal_3
+xBPMReal[3,:,:]=xBPMReal_4
+
+yCHV_Cal4Real=se.run(xFinal,feed_dict={bpm:xBPMReal})
+
+yCHV_Cal4Real_1=np.reshape(yCHV_Cal4Real[0,::],(7,2))
+yCHV_Cal4Real_2=np.reshape(yCHV_Cal4Real[1,::],(7,2))
+yCHV_Cal4Real_3=np.reshape(yCHV_Cal4Real[2,::],(7,2))
+yCHV_Cal4Real_4=np.reshape(yCHV_Cal4Real[3,::],(7,2))
+
+print '----------------- yCHV_Cal4Real_1 --------------------------'
+print yCHV_Cal4Real_1
+print '----------------- yCHV_Cal4Real_2 --------------------------'
+print yCHV_Cal4Real_2
+print '----------------- yCHV_Cal4Real_3 --------------------------'
+print yCHV_Cal4Real_3
+print '----------------- yCHV_Cal4Real_4 --------------------------'
+print yCHV_Cal4Real_4
 
 
 

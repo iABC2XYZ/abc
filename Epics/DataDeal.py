@@ -95,7 +95,7 @@ se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
 se.run(iniBPM)
 
 
-nIt=2e4
+nIt=2e5
 sizeRow=30
 stepLossRec=50
 nLossRec=np.int32(nIt/stepLossRec+1)
