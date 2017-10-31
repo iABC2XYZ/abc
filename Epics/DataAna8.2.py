@@ -133,7 +133,7 @@ optBPM_2=trainBPM_2.minimize(lossFn)
 trainBPM_3=tf.train.AdamOptimizer(0.005)
 optBPM_3=trainBPM_3.minimize(lossFn)
 
-trainBPM_4=tf.train.AdamOptimizer(0.008)
+trainBPM_4=tf.train.AdamOptimizer(0.001)
 optBPM_4=trainBPM_4.minimize(lossFn)
 
 iniBPM=tf.global_variables_initializer()
@@ -158,7 +158,7 @@ lossRec=np.zeros((nLossRec))
 iRec=0
 for i in range(np.int32(nIt)):
     xBPM,yCHV=getDataRow(exData,sizeRow)
-    se.run(optBPM_3,feed_dict={bpm:xBPM,cHV:yCHV})
+    se.run(optBPM_4,feed_dict={bpm:xBPM,cHV:yCHV})
     
     if i % stepLossRec==0:
         lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
