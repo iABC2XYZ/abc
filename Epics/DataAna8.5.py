@@ -21,12 +21,16 @@ def GenBias(shape):
 
 
 
-
 def getDataRow(exData,sizeRow):
     numEx=np.shape(exData)[0]
-    idChoose=np.random.randint(0,high=numEx,size=(sizeRow))
-    yCHV=np.reshape(exData[idChoose,0:14],(sizeRow,7,2))
-    xBPM=np.reshape(exData[idChoose,14:24],(sizeRow,5,2))
+    idChoose1=np.random.randint(1,high=numEx,size=(sizeRow))
+    idChoose2=idChoose1-1
+    yCHV1=np.reshape(exData[idChoose1,0:14],(sizeRow,7,2))
+    xBPM1=np.reshape(exData[idChoose1,14:24],(sizeRow,5,2))
+    yCHV2=np.reshape(exData[idChoose2,0:14],(sizeRow,7,2))
+    xBPM2=np.reshape(exData[idChoose2,14:24],(sizeRow,5,2))
+    yCHV=yCHV1-yCHV2
+    xBPM=xBPM1-xBPM2
     return xBPM,yCHV
 
 
