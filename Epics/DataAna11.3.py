@@ -65,15 +65,20 @@ b1=GenBias([34])
 x1=tf.nn.relu(tf.matmul(xInput,w1)+b1)
 
 #
+w2= GenWeight([34,34])
+b2=GenBias([34])
+x2=tf.nn.relu(tf.matmul(x1,w2)+b2)
 
-w2= GenWeight([34,14])
-b2=GenBias([14])
-x2=tf.matmul(x1,w2)+b2
+#
+
+w3= GenWeight([34,14])
+b3=GenBias([14])
+x3=tf.matmul(x2,w3)+b3
 
 
 ##
 
-xFinal=x2
+xFinal=x3
 
 xOutput=tf.reshape(xFinal,(-1,14))
 yOutput=tf.reshape(yInput,(-1,14))
@@ -163,7 +168,7 @@ for i in range(np.int32(nIt)):
     
     
 ######################   FINAL PLOT -------------
- plotFolder='./11.2/'       
+plotFolder='./11.3/'       
 import os
 if not os.path.exists(plotFolder):
     os.makedirs(plotFolder)
