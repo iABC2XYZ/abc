@@ -47,7 +47,7 @@ def conv2d(x, W):
     return tf.nn.conv2d(x, W, strides=[1,1,1,1], padding="SAME")
 
 
-nameFolder='/home/e/ABC/abc/Epics/'
+nameFolder='/home/node1/Templates/ABC/abc/Epics/'
 exData=np.loadtxt(nameFolder+'Rec.dat')
 
 
@@ -60,13 +60,13 @@ yInput=cHV
 
 #
 
-w1= GenWeight([34,34])
-b1=GenBias([34])
+w1= GenWeight([34,200])
+b1=GenBias([200])
 x1=tf.nn.relu(tf.matmul(xInput,w1)+b1)
 
 #
 
-w2= GenWeight([34,14])
+w2= GenWeight([200,14])
 b2=GenBias([14])
 x2=tf.matmul(x1,w2)+b2
 
@@ -163,7 +163,7 @@ for i in range(np.int32(nIt)):
     
     
 ######################   FINAL PLOT -------------
- plotFolder='./11.2/'       
+plotFolder='./11.2/'       
 import os
 if not os.path.exists(plotFolder):
     os.makedirs(plotFolder)
