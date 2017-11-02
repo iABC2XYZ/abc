@@ -24,6 +24,7 @@ print A
 if True:
     pass
 elif True:
+    pass
     
 
 
