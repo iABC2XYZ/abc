@@ -49,6 +49,7 @@ def conv2d(x, W):
 
 nameFolder='/home/e/ABC/abc/Epics/'
 exData=np.loadtxt(nameFolder+'Rec.dat')
+testData=np.loadtxt(nameFolder+'testRec.dat')
 
 
 bpm=tf.placeholder(tf.float32,shape=(None,34))
@@ -119,6 +120,7 @@ stepLossRec=50
 nLossRec=np.int32(nIt/stepLossRec+1)
 
 lossRec=np.zeros((nLossRec))
+lossTestRec=np.zeros((nLossRec))
 
 iRec=0
 for i in range(np.int32(nIt)):
@@ -128,13 +130,21 @@ for i in range(np.int32(nIt)):
     if i % stepLossRec==0:
         lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
         lossRec[iRec]=lossRecTmp
-        iRec+=1
+        
 
-        print lossRecTmp
+        #testBPM,testCHV=getDataRow(testData,np.shape(testData)[0])
+        testBPM,testCHV=getDataRow(testData,sizeRow)
+        lossTestRecTmp=se.run(lossFn,feed_dict={bpm:testBPM,cHV:testCHV})
+        lossTestRec[iRec]=lossTestRecTmp
+        
+        iRec+=1
+        
+        print lossRecTmp,lossTestRecTmp
         
         plt.figure('lossRec')
         numPlot=30
         plt.clf()
+        plt.subplot(1,2,1)
         if iRec<=numPlot:
             xPlot=np.linspace(0,iRec-1,iRec)
             yPlot=lossRec[0:iRec:]
@@ -152,20 +162,52 @@ for i in range(np.int32(nIt)):
         plt.plot(xPlot,yPlotMean,'go')
             
         plt.grid('on')
-        plt.title(i)
+        plt.title('Train  '+str(i))
+        
+        #
+        plt.subplot(1,2,2)
+        
+        if iRec<=numPlot:
+            xPlotT=np.linspace(0,iRec-1,iRec)
+            yPlotT=lossTestRec[0:iRec:]
+            yPlotMeanT=np.cumsum(yPlotT)/(xPlotT+1)
+            
+
+        else:
+            xPlotT=np.linspace(iRec-numPlot,iRec-1,numPlot)
+            yPlotT=lossTestRec[iRec-numPlot:iRec:]
+            yPlotMeanT[0:-1:]=yPlotMeanT[1::]
+            yPlotMeanT[-1]=np.mean(yPlotT)
+
+        plt.hold
+        plt.plot(xPlotT,yPlotT,'*b')
+        plt.plot(xPlotT,yPlotMeanT,'go')
+            
+        plt.grid('on')
+        plt.title('Test  '+str(i))
+        
         plt.pause(0.05)
+        
+        
         
         
         xBPM,yCHV=getDataRow(exData,1)
         yCHV_Cal=se.run(xFinal,feed_dict={bpm:xBPM})
-        plt.figure(2)
+        testBPM,testCHV=getDataRow(testData,1)
+        testCHV_Cal=se.run(xFinal,feed_dict={bpm:testBPM})
+        plt.figure('EX')
         plt.clf()
+        plt.subplot(121)
         plt.hold
         plt.plot(np.reshape(yCHV[0,:],(14)),'bd')
         plt.plot(yCHV_Cal[0,:],'rd')        
         plt.title(i)
-        plt.pause(0.05)
-    
+        plt.subplot(122)
+        plt.hold
+        plt.plot(np.reshape(testCHV[0,:],(14)),'bd')
+        plt.plot(testCHV_Cal[0,:],'rd')        
+        plt.title(i)
+        plt.pause(0.05)   
     
     
     
@@ -180,8 +222,9 @@ else:
 
 
 plt.close('all')
-lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
-nameFig=plotFolder+'lossRecSave'
+# Train Plot
+xBPM,yCHV=getDataRow(exData,sizeRow)
+nameFig=plotFolder+'Loss Train RecSave'
 fig=plt.figure(nameFig)
 numPlot=30
 plt.clf()
@@ -207,12 +250,51 @@ fig.savefig(nameFig)
 
 xBPM,yCHV=getDataRow(exData,1)
 yCHV_Cal=se.run(xFinal,feed_dict={bpm:xBPM})
-nameFig=plotFolder+'trainSave'
+nameFig=plotFolder+'train Ex. Save'
 plt.figure(nameFig)
 plt.clf()
 plt.hold
 plt.plot(np.reshape(yCHV[0,:],(14)),'bd')
 plt.plot(yCHV_Cal[0,:],'rd')        
+plt.title(nameFig)
+nameFig+='.png'
+plt.savefig(nameFig)
+
+# Test Plot
+plt.close('all')
+testBPM,testCHV=getDataRow(testData,np.shape(testData)[0])
+nameFig=plotFolder+'Loss Test RecSave'
+fig=plt.figure(nameFig)
+numPlot=30
+plt.clf()
+if iRec<=numPlot:
+    xPlot=np.linspace(0,iRec-1,iRec)
+    yPlot=lossTestRec[0:iRec:]
+    yPlotMean=np.cumsum(yPlot)/(xPlot+1)
+    
+else:
+    xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
+    yPlot=lossTestRec[iRec-numPlot:iRec:]
+    yPlotMean[0:-1:]=yPlotMean[1::]
+    yPlotMean[-1]=np.mean(yPlot)
+
+plt.hold
+plt.plot(xPlot,yPlot,'*b')
+plt.plot(xPlot,yPlotMean,'go')
+plt.grid('on')
+plt.title(nameFig)
+nameFig+='.png'
+fig.savefig(nameFig)
+
+
+xBPMT,yCHVT=getDataRow(exData,1)
+yCHVT_Cal=se.run(xFinal,feed_dict={bpm:xBPMT})
+nameFig=plotFolder+'Test Ex. Save'
+plt.figure(nameFig)
+plt.clf()
+plt.hold
+plt.plot(np.reshape(yCHVT[0,:],(14)),'bd')
+plt.plot(yCHVT_Cal[0,:],'rd')        
 plt.title(nameFig)
 nameFig+='.png'
 plt.savefig(nameFig)
@@ -224,7 +306,7 @@ plt.savefig(nameFig)
     
     
     
-testData=np.loadtxt(nameFolder+'testRec.dat')
+
 
 testBPM,testCHV=getDataRow(testData,np.shape(testData)[0])
 testCHVCal=np.reshape(se.run(xFinal,feed_dict={bpm:testBPM}),np.shape(testCHV))
