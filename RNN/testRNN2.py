@@ -11,7 +11,7 @@ import tensorflow as tf
 import numpy as np
 from tensorflow.contrib import rnn
 from tensorflow.examples.tutorials.mnist import input_data
-import input_data
+
 
 # 设置 GPU 按需增长
 config = tf.ConfigProto()
@@ -64,6 +64,7 @@ mlstm_cell = rnn.MultiRNNCell([lstm_cell] * layer_num, state_is_tuple=True)
 # **步骤5：用全零来初始化state
 init_state = mlstm_cell.zero_state(batch_size, dtype=tf.float32)
 
+'''
 # **步骤6：方法一，调用 dynamic_rnn() 来让我们构建好的网络运行起来
 # ** 当 time_major==False 时， outputs.shape = [batch_size, timestep_size, hidden_size] 
 # ** 所以，可以取 h_state = outputs[:, -1, :] 作为最后输出
@@ -86,7 +87,7 @@ with tf.variable_scope('RNN'):
         (cell_output, state) = mlstm_cell(X[:, timestep, :], state)
         outputs.append(cell_output)
 h_state = outputs[-1]
-
+'''
 
 
 
