@@ -65,16 +65,18 @@ b1=GenBias([34])
 x1=tf.nn.relu(tf.matmul(xInput,w1)+b1)
 
 #
-w2= GenWeight([34,34])
-b2=GenBias([34])
+w2= GenWeight([34,200])
+b2=GenBias([200])
 x2=tf.nn.relu(tf.matmul(x1,w2)+b2)
 
 #
 
-w3= GenWeight([34,14])
+w3= GenWeight([200,14])
 b3=GenBias([14])
 x3=tf.matmul(x2,w3)+b3
 
+#
+tf.nn.dropout(x3,0.5)
 
 ##
 
