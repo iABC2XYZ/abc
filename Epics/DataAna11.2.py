@@ -12,6 +12,9 @@ import matplotlib.pyplot as plt
 
 plt.close('all')
 
+
+    
+
 def GenWeight(shape):
     initial = tf.truncated_normal(shape, stddev=1.)
     return tf.Variable(initial)
@@ -21,17 +24,19 @@ def GenBias(shape):
 
 
 
-def getDataRow(exData,sizeRow):
+def getDataRow(exData,sizeRow,numMem=1):
     numEx=np.shape(exData)[0]
-    idChoose1=np.random.randint(1,high=numEx,size=(sizeRow))
-    idChoose2=idChoose1-1
-    yCHV1=np.reshape(exData[idChoose1,0:14],(sizeRow,7,2))
-    xBPM1=np.reshape(exData[idChoose1,14:24],(sizeRow,5,2))
-    yCHV2=np.reshape(exData[idChoose2,0:14],(sizeRow,7,2))
-    xBPM2=np.reshape(exData[idChoose2,14:24],(sizeRow,5,2))
-    yCHV=yCHV1-yCHV2
-    xBPM=xBPM1-xBPM2
-    return xBPM,yCHV
+    idChoose1=np.random.randint(0,high=numEx-numMem,size=(sizeRow))
+    idChoose2=idChoose1+numMem
+    yCHV1=np.reshape(exData[idChoose1,0:14],(sizeRow,14))
+    xBPM1=np.reshape(exData[idChoose1,14:24],(sizeRow,10))
+    yCHV2=np.reshape(exData[idChoose2,0:14],(sizeRow,14))
+    xBPM2=np.reshape(exData[idChoose2,14:24],(sizeRow,10))
+    # x: 当前电流yCHV1  [14]，当前位置xBPM1 [１０]，需要改变到的位置xBPM２　【１０】
+    # y: 需要改变到的电流yCHV1　【１４】
+    X=np.hstack((xBPM1,xBPM2,yCHV1))
+    Y=yCHV2
+    return X,Y
 
 
 
@@ -46,80 +51,29 @@ nameFolder='/home/e/ABC/abc/Epics/'
 exData=np.loadtxt(nameFolder+'Rec.dat')
 
 
-bpm=tf.placeholder(tf.float32,shape=(None,5,2))
-cHV=tf.placeholder(tf.float32,shape=(None,7,2))
+bpm=tf.placeholder(tf.float32,shape=(None,34))
+cHV=tf.placeholder(tf.float32,shape=(None,14))
 
 
 xInput=bpm
 yInput=cHV
 
 #
-nChan1=200
 
-w1= GenWeight([1,2,nChan1])
-b1=GenBias([nChan1])
-x1=tf.nn.relu(conv1d(xInput, w1)+b1)
-
-#
-nChan2=1
-
-n2=nChan1/nChan2
-x2=tf.reshape(x1,(-1,5,n2,nChan2))
+w1= GenWeight([34,34])
+b1=GenBias([34])
+x1=tf.nn.relu(tf.matmul(xInput,w1)+b1)
 
 #
-nChan3=13
-w3= GenWeight([1,1,nChan2,nChan3])
-b3=GenBias([nChan3])
-x3=tf.nn.relu(conv2d(x2, w3)+b3)
 
-#
-nChan4=13
-w4= GenWeight([2,2,nChan2,nChan4])
-b4=GenBias([nChan4])
-x4=tf.nn.relu(conv2d(x2, w4)+b4)
-
-#
-nChan5=13
-w5= GenWeight([3,3,nChan2,nChan5])
-b5=GenBias([nChan5])
-x5=tf.nn.relu(conv2d(x2, w5)+b5)
-
-#
-x6=tf.concat((tf.concat((x3,x4),axis=3),x5),axis=3)
-
-#
-nChan7=5
-w7= GenWeight([3,3,nChan3+nChan4+nChan5,nChan7])
-b7=GenBias([nChan7])
-x7=tf.nn.relu(conv2d(x6, w7)+b7)
-
-
-#
-x8=tf.reshape(x7,(-1,5*n2*nChan7))
-
-#
-w9=GenWeight([5*n2*nChan7,14])
-b9=GenBias([14])
-x9=tf.matmul(x8,w9)+b9
-
-
-#
-n9_2=250
-w9_2=GenWeight([5*n2*nChan7,n9_2])
-b9_2=GenBias([n9_2])
-x9_2=tf.nn.relu(tf.matmul(x8,w9_2)+b9_2)
-
-#
-w10_2=GenWeight([n9_2,14])
-b10_2=GenBias([14])
-x10_2=tf.matmul(x9_2,w10_2)+b10_2
-
-
+w2= GenWeight([34,14])
+b2=GenBias([14])
+x2=tf.matmul(x1,w2)+b2
 
 
 ##
 
-xFinal=x10_2
+xFinal=x2
 
 xOutput=tf.reshape(xFinal,(-1,14))
 yOutput=tf.reshape(yInput,(-1,14))
@@ -205,10 +159,13 @@ for i in range(np.int32(nIt)):
         plt.title(i)
         plt.pause(0.05)
     
-##
+    
+    
+    
+######################   FINAL PLOT -------------------
 plt.close('all')
 lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
-nameFig='lossRecSave'
+nameFig='F_lossRecSave'
 fig=plt.figure(nameFig)
 numPlot=30
 plt.clf()
@@ -234,7 +191,7 @@ fig.savefig(nameFig)
 
 xBPM,yCHV=getDataRow(exData,1)
 yCHV_Cal=se.run(xFinal,feed_dict={bpm:xBPM})
-nameFig='trainSave'
+nameFig='F_trainSave'
 plt.figure(nameFig)
 plt.clf()
 plt.hold
@@ -260,15 +217,15 @@ testCHVCal=np.reshape(se.run(xFinal,feed_dict={bpm:testBPM}),np.shape(testCHV))
 for i in range(7):
     for j in range(2):
         if j==0:
-            nameFigure='Test x: '+str(i+1)
+            nameFigure='F_Test x: '+str(i+1)
         else:
-            nameFigure='Test y: '+str(i+1)
+            nameFigure='F_Test y: '+str(i+1)
         
         plt.figure(nameFigure)
         plt.clf()
         plt.hold
-        plt.plot(testCHV[:,i,j],'r.')
-        plt.plot(testCHVCal[:,i,j],'b.')
+        plt.plot(testCHV[:,i+j*7],'r.')
+        plt.plot(testCHVCal[:,i+j*7],'b.')
         plt.title(nameFigure)
         nameFig=nameFigure+'.png'
         plt.savefig(nameFig)
@@ -277,14 +234,14 @@ for i in range(7):
 for i in range(7):
     for j in range(2):
         if j==0:
-            nameFigure='Ratio Test x: '+str(i+1)
+            nameFigure='F_Ratio Test x: '+str(i+1)
         else:
-            nameFigure='Ratio Test y: '+str(i+1)
+            nameFigure='F_Ratio Test y: '+str(i+1)
         
         plt.figure(nameFigure)
         plt.clf()
         plt.hold
-        plt.plot((testCHV[:,i,j]-testCHVCal[:,i,j])/testCHV[:,i,j],'r.')
+        plt.plot((testCHV[:,i+j*7]-testCHVCal[:,i+j*7])/testCHV[:,i+j*7],'r.')
         nameFig=nameFigure+'.png'
         plt.savefig(nameFig)
   
