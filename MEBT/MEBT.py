@@ -35,7 +35,6 @@ def MapDrift(L):
     M=np.array([[1.,L],[0.,1.]])
     return M
 
-
 def RandSigma(betaMax):
     betaT=np.random.random()*betaMax
     alphaT=np.random.random()*np.sign(np.random.random()-0.5)
