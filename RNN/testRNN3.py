@@ -71,5 +71,5 @@ def RNN(X, weights, biases):
 
 
 pred = RNN(x, weights, biases)
-#cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
-#train_op = tf.train.AdamOptimizer(lr).minimize(cost)
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
+train_op = tf.train.AdamOptimizer(lr).minimize(cost)
