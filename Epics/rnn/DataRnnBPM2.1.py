@@ -13,11 +13,8 @@ plt.close('all')
 
 
 
-numEpoch=10000
-learningRate=0.1
-
-sizeRow = 100
-stepLossRec = 50
+numEpoch=1000
+learningRate=0.3
 
 depthRNN=8
 
@@ -105,15 +102,16 @@ except:
 se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
 se.run(iniRNN)
 
-
-
-nLossRec = np.int32(numEpoch / stepLossRec + 1)
+nIt = 2e7
+sizeRow = 100
+stepLossRec = 50
+nLossRec = np.int32(nIt / stepLossRec + 1)
 
 lossRec = np.zeros((nLossRec))
 lossTestRec = np.zeros((nLossRec))
 
 iRec = 0
-for i in range(np.int32(numEpoch)):
+for i in range(np.int32(nIt)):
     xBPM, yCHV = getDataRow(dataTrain, sizeRow)
     se.run(optRNN, feed_dict={bpm: xBPM, cHV: yCHV})
 
