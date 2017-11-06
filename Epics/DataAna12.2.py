@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 
 plt.close('all')
 
-plotFolder='./12.1/'  
+plotFolder='./12.2/'  
     
 
 def GenWeight(shape):
@@ -61,19 +61,21 @@ yInput=cHV
 
 #
 
-w1= GenWeight([34,34])
-b1=GenBias([34])
-x1=tf.nn.relu(tf.matmul(xInput,w1)+b1)
+numX1=20
+w1= GenWeight([34,numX1])
+b1=GenBias([numX1])
+x1=tf.atan(tf.matmul(xInput,w1)+b1)
 
 #
-w2= GenWeight([34,100])
-b2=GenBias([100])
-x2=tf.nn.relu(tf.matmul(x1,w2)+b2)
+numX2=20
+w2= GenWeight([numX1,numX2])
+b2=GenBias([numX2])
+x2=tf.atan(tf.matmul(x1,w2)+b2)
 
 #
-
-w3= GenWeight([100,14])
-b3=GenBias([14])
+numX3=14
+w3= GenWeight([numX2,numX3])
+b3=GenBias([numX3])
 x3=tf.matmul(x2,w3)+b3
 
 #
@@ -90,17 +92,9 @@ yOutput=tf.reshape(yInput,(-1,14))
 lossFn=tf.sqrt(tf.reduce_mean(tf.square(xOutput-yOutput)))
 
 
-trainBPM_1=tf.train.AdamOptimizer(0.05)
-optBPM_1=trainBPM_1.minimize(lossFn)
 
-trainBPM_2=tf.train.AdamOptimizer(0.01)
-optBPM_2=trainBPM_2.minimize(lossFn)
-
-trainBPM_3=tf.train.AdamOptimizer(0.005)
-optBPM_3=trainBPM_3.minimize(lossFn)
-
-trainBPM_4=tf.train.AdamOptimizer(0.001)
-optBPM_4=trainBPM_4.minimize(lossFn)
+trainBPM=tf.train.AdamOptimizer(0.005)
+optBPM=trainBPM.minimize(lossFn)
 
 iniBPM=tf.global_variables_initializer()
 
@@ -125,7 +119,7 @@ lossTestRec=np.zeros((nLossRec))
 iRec=0
 for i in range(np.int32(nIt)):
     xBPM,yCHV=getDataRow(exData,sizeRow)
-    se.run(optBPM_4,feed_dict={bpm:xBPM,cHV:yCHV})
+    se.run(optBPM,feed_dict={bpm:xBPM,cHV:yCHV})
     
     if i % stepLossRec==0:
         lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
@@ -250,8 +244,13 @@ if iRec<=numPlot:
 else:
     xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
     yPlot=lossRec[iRec-numPlot:iRec:]
-    yPlotMean[0:-1:]=yPlotMean[1::]
-    yPlotMean[-1]=np.mean(yPlot)
+    yPlotMean=np.zeros(np.int32(numPlot))
+
+    for iPlot in range(numPlot):
+        meanStart=iRec-(numPlot-iPlot)-numMean
+        meanEnd=iRec-(numPlot-iPlot)
+        
+        yPlotMean[iPlot]=np.mean(lossRec[meanStart:meanEnd])
 
 plt.hold
 plt.plot(xPlot,yPlot,'*b')
@@ -287,10 +286,15 @@ if iRec<=numPlot:
     yPlotMean=np.cumsum(yPlot)/(xPlot+1)
     
 else:
-    xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
-    yPlot=lossTestRec[iRec-numPlot:iRec:]
-    yPlotMean[0:-1:]=yPlotMean[1::]
-    yPlotMean[-1]=np.mean(yPlot)
+    xPlotT=np.linspace(iRec-numPlot,iRec-1,numPlot)
+    yPlotT=lossTestRec[iRec-numPlot:iRec:]
+    yPlotMeanT=np.zeros(np.int32(numPlot))
+
+    for iPlot in range(numPlot):
+        meanTStart=iRec-(numPlot-iPlot)-numMean
+        meanTEnd=iRec-(numPlot-iPlot)
+        
+        yPlotMeanT[iPlot]=np.mean(lossTestRec[meanTStart:meanTEnd])
 
 plt.hold
 plt.plot(xPlot,yPlot,'*b')
