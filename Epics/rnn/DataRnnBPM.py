@@ -13,13 +13,18 @@ plt.close('all')
 
 
 
+<<<<<<< HEAD
 numEpoch=10000
 learningRate=0.1
 
 sizeRow = 100
 stepLossRec = 50
+=======
+numEpoch=200000
+learningRate=0.1
 
-depthRNN=8
+>>>>>>> 02dfc6d746e9f061c4d8e34111f7bbeafe09d051
+
 
 numInput=10
 numOutput=14
@@ -41,6 +46,14 @@ def getDataRow(exData,sizeRow):
     xBPM=np.reshape(exData[idChoose,14:24],(sizeRow,10))
     return xBPM,yCHV
 
+def getDataRow_inOrder(exData,sizeRow,idOrder):
+    numEx=np.shape(exData)[0]
+    idChoose=np.random.randint(0,high=numEx,size=(sizeRow))
+    yCHV=np.reshape(exData[idChoose,0:14],(sizeRow,14))
+    xBPM=np.reshape(exData[idChoose,14:24],(sizeRow,10))
+    return xBPM,yCHV,idOrder
+
+
 
 dataTrain=np.loadtxt(nameFolder+'recTrain.dat')
 dataTest=np.loadtxt(nameFolder+'recTest.dat')
@@ -56,7 +69,7 @@ yInput=cHV
 
 
 #
-numX1=10
+numX1=12
 w1=GenWeight((numInput,numX1))
 b1=GenBias((numX1))
 x1 = [tf.nn.xw_plus_b(xInput, w1, b1)]
@@ -65,7 +78,8 @@ x1 = [tf.nn.xw_plus_b(xInput, w1, b1)]
 
 #
 
-numX2=12
+numX2=15
+depthRNN=1
 w2=GenWeight((numX1,numX2))
 b2=GenBias((numX2))
 
@@ -78,7 +92,7 @@ x2 = tf.nn.relu(tf.nn.xw_plus_b(statesSeries[-1], w2, b2))
 numX3=14
 w3=GenWeight((numX2,numX3))
 b3=GenBias((numX3))
-x3=tf.nn.xw_plus_b(x2, w3, b3)
+x3=tf.nn.dropout(tf.nn.xw_plus_b(x2, w3, b3),keep_prob=0.8)
 
 
 #
@@ -106,7 +120,12 @@ se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
 se.run(iniRNN)
 
 
+<<<<<<< HEAD
 
+=======
+sizeRow = 100
+stepLossRec = 50
+>>>>>>> 02dfc6d746e9f061c4d8e34111f7bbeafe09d051
 nLossRec = np.int32(numEpoch / stepLossRec + 1)
 
 lossRec = np.zeros((nLossRec))
@@ -176,8 +195,9 @@ for i in range(np.int32(numEpoch)):
         plt.grid('on')
         plt.title('Test  ' + str(i))
 
-        plt.pause(0.05)
+        plt.pause(0.01)
 
+        '''
         xBPM, yCHV = getDataRow(dataTrain, 1)
         yCHV_Cal = se.run(xFinal, feed_dict={bpm: xBPM})
         testBPM, testCHV = getDataRow(dataTest, 1)
@@ -196,6 +216,7 @@ for i in range(np.int32(numEpoch)):
         plt.title(i)
         #plt.show()
         plt.pause(0.05)
+        '''
 
 
 print("E")
