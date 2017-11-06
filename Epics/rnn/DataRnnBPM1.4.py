@@ -15,14 +15,14 @@ plt.close('all')
 numEpoch=200000
 learningRate=0.01
 
-numRNNHiddenLayer=128
-numRNNCell=1
+rnnSize=128
+rnnDepth=20
 
 numInput=10
 numOutput=14
 
 
-nameFolder='/home/p/ABC/abc/Epics/rnn/'
+nameFolder='/home/e/ABC/abc/Epics/rnn/'
 
 def GenWeight(shape):
     initial = tf.truncated_normal(shape, stddev=1.)
@@ -49,25 +49,34 @@ xInput=bpm
 yInput=cHV
 
 ##
-numRNNOutput=10
-wRNN=GenWeight((numRNNHiddenLayer,numRNNOutput))
-bRNN=GenBias((numRNNOutput))
 
-def RNN(xRNN, wRNN, bRNN):
+def RNN(numInput,rnnSize,rnnDepth):
 
-    x=tf.reshape(xRNN,[-1,numInput])
-    lstmCellBasic = tf.contrib.rnn.BasicLSTMCell(numRNNHiddenLayer, forget_bias=1.0)
-    lstmCellMulti = tf.contrib.rnn.MultiRNNCell([lstmCellBasic]*np.int32(numRNNCell))
-    outputs, states = tf.contrib.rnn.static_rnn(lstmCellMulti, x, dtype=tf.float32)
-    result=tf.matmul(outputs[-1], wRNN) + bRNN
+    wRNNpre=GenWeight((numInput,rnnSize))
+    bRNNpre=GenBias((rnnSize))
+    rnnInput=[tf.nn.xw_plus_b(xInput,wRNNpre,bRNNpre)]
 
-    return result
+    wRNN=GenWeight((rnnSize,rnnSize))
+    bRNN=GenBias((rnnSize))
+    cellLSTM = tf.nn.rnn_cell.LSTMCell(rnnSize, state_is_tuple=True)
+    cellRNN=tf.contrib.rnn.MultiRNNCell([cellLSTM] * rnnDepth)
+    outRNN, stateRNN = tf.contrib.rnn.static_rnn(cellRNN, rnnInput, dtype=tf.float32)
+    rnnOutput=tf.nn.xw_plus_b(outRNN[-1],wRNN,bRNN)
+    xRnnOutput=tf.nn.relu(rnnOutput)
+
+    return xRnnOutput
+
+xRnnOutput=RNN(numInput,rnnSize,rnnDepth)
+
+##
+wFinal = GenWeight((rnnSize, numOutput))
+bFinal = GenBias((numOutput))
+xFinal=tf.nn.xw_plus_b(xRnnOutput,wFinal,bFinal)
 
 
-
-logits = RNN(xInput, wRNN, bRNN)
-
-
+##
+xOutput=tf.reshape(xFinal,(-1,numOutput))
+yOutput=tf.reshape(yInput,(-1,numOutput))
 
 
 

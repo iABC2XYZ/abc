@@ -19,8 +19,8 @@ config.gpu_options.allow_growth = True
 sess = tf.Session(config=config)
 
 # 首先导入数据，看一下数据的形式
-mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
-print mnist.train.images.shape
+#mnist = input_data.read_data_sets('MNIST_data', one_hot=True)
+#print mnist.train.images.shape
 
 #----------------------------------------------------------------------
 
@@ -44,12 +44,15 @@ _X = tf.placeholder(tf.float32, [None, 784])
 y = tf.placeholder(tf.float32, [None, class_num])
 keep_prob = tf.placeholder(tf.float32)
 
+
+
+
 #-----------------------------------------------------------------------
 
 # 把784个点的字符信息还原成 28 * 28 的图片
 # 下面几个步骤是实现 RNN / LSTM 的关键
 ####################################################################
-# **步骤1：RNN 的输入shape = (batch_size, timestep_size, input_size) 
+# **步骤1：RNN 的输入shape = (batch_size, timestep_size, input_size)
 X = tf.reshape(_X, [-1, 28, 28])
 
 # **步骤2：定义一层 LSTM_cell，只需要说明 hidden_size, 它会自动匹配输入的 X 的维度
@@ -58,20 +61,20 @@ lstm_cell = rnn.BasicLSTMCell(num_units=hidden_size, forget_bias=1.0, state_is_t
 # **步骤3：添加 dropout layer, 一般只设置 output_keep_prob
 lstm_cell = rnn.DropoutWrapper(cell=lstm_cell, input_keep_prob=1.0, output_keep_prob=keep_prob)
 
+
 # **步骤4：调用 MultiRNNCell 来实现多层 LSTM
 mlstm_cell = rnn.MultiRNNCell([lstm_cell] * layer_num, state_is_tuple=True)
-
-
-
 
 # **步骤5：用全零来初始化state
 init_state = mlstm_cell.zero_state(batch_size, dtype=tf.float32)
 
 
+
+
 # **步骤6：方法一，调用 dynamic_rnn() 来让我们构建好的网络运行起来
-# ** 当 time_major==False 时， outputs.shape = [batch_size, timestep_size, hidden_size] 
+# ** 当 time_major==False 时， outputs.shape = [batch_size, timestep_size, hidden_size]
 # ** 所以，可以取 h_state = outputs[:, -1, :] 作为最后输出
-# ** state.shape = [layer_num, 2, batch_size, hidden_size], 
+# ** state.shape = [layer_num, 2, batch_size, hidden_size],
 # ** 或者，可以取 h_state = state[-1][1] 作为最后输出
 # ** 最后输出维度是 [batch_size, hidden_size]
 # outputs, state = tf.nn.dynamic_rnn(mlstm_cell, inputs=X, initial_state=init_state, time_major=False)
@@ -92,14 +95,12 @@ init_state = mlstm_cell.zero_state(batch_size, dtype=tf.float32)
 #h_state = outputs[-1]
 #
 # 我当然要用 方法一，调用 dynamic_rnn()
-#outputs, state = tf.nn.dynamic_rnn(mlstm_cell, inputs=X, initial_state=init_state, time_major=False)
+#
 #h_state = outputs[:, -1, :]
 
-outputs, state = tf.nn.dynamic_rnn(mlstm_cell, X, initial_state=init_state, time_major=False)
+outputs, state = tf.nn.dynamic_rnn(mlstm_cell, inputs=X, initial_state=init_state, time_major=True)
 
 
 
-
-
-
+print('END')
 

@@ -8,8 +8,8 @@ import tensorflow as tf
 
 NUM_EPOCHS = 1000
 LEARNING_RATE = 0.3
-N_HIDDEN_2 = 10
-RNN_SIZE = 10
+N_HIDDEN_2 = 13
+RNN_SIZE = 13
 DEPTH = 10
 TIMESTEPS = 12
 START_LEARNING_RATE = 0.08
@@ -43,8 +43,10 @@ inputs_series = [tf.nn.xw_plus_b(batchX_placeholder, weights['input'], biases['i
 
 lstm_cell = tf.contrib.rnn.GRUCell(RNN_SIZE)
 stack_lstm = tf.contrib.rnn.MultiRNNCell([lstm_cell] * DEPTH)
-#states_series, current_state = tf.contrib.rnn.static_rnn(stack_lstm, inputs_series, dtype=tf.float32)
 states_series, current_state = tf.contrib.rnn.static_rnn(stack_lstm, inputs_series, dtype=tf.float32)
+#states_series, current_state = tf.nn.dynamic_rnn(stack_lstm, inputs_series, dtype=tf.float32)
+print('-----------------------------------')
+print(states_series[-1])
 layer1 = tf.nn.relu(tf.nn.xw_plus_b(states_series[-1], weights['h1'], biases['b1']))
 prediction = tf.nn.xw_plus_b(layer1, weights['out'], biases['out'])
 
