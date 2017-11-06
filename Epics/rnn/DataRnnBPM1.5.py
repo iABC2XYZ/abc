@@ -13,15 +13,15 @@ plt.close('all')
 
 
 numEpoch=200000
-batchSize= 100
+batchSize= 50
 
-stepRec = 500
+stepRec = 200
 
 
 learningRate=0.05
 
-rnnSize=32
-rnnDepth=2
+rnnSize=16
+rnnDepth=1
 
 numInput=10
 numOutput=14
@@ -76,7 +76,7 @@ def RNN(numInput,rnnSize,rnnDepth):
     wRNN=GenWeight((rnnSize,rnnSize))
     bRNN=GenBias((rnnSize))
     cellLSTM = tf.nn.rnn_cell.LSTMCell(rnnSize, state_is_tuple=True)
-    cellRNN=tf.contrib.rnn.MultiRNNCell([cellLSTM] * rnnDepth)
+    cellRNN=tf.nn.rnn_cell.DropoutWrapper(tf.contrib.rnn.MultiRNNCell([cellLSTM] * rnnDepth),output_keep_prob=0.5)
     outRNN, stateRNN = tf.contrib.rnn.static_rnn(cellRNN, rnnInput, dtype=tf.float32)
     rnnOutput=tf.nn.xw_plus_b(outRNN[-1],wRNN,bRNN)
     xRnnOutput=tf.nn.relu(rnnOutput)
@@ -158,7 +158,7 @@ for i in range(np.int32(numEpoch)):
         plt.plot(lossRecMean, 'r.')
 
         plt.grid('on')
-        plt.title(str(i)+'            lossTrain                                                lossTest')
+        plt.title(str(i)+'       lossTrain           lossTest')
         plt.subplot(122)
         plt.plot(lossTestRec, 'b.')
         plt.plot(lossTestRecMean,'r.')
