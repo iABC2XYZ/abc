@@ -85,6 +85,7 @@ numEpoch=2e7
 numBatch=100
 numPlot=80
 numPlotStep=100
+learningRate=5e-5
 
 
 #
@@ -105,10 +106,10 @@ xOutput=tf.reshape(xFinal,(-1,numOutput))
 yOutput=tf.reshape(yInput,(-1,numOutput))
 
 
-lossFn=tf.losses.mean_squared_error(xOutput,yOutput)     
+lossFn=tf.sqrt(tf.losses.mean_squared_error(xOutput,yOutput))     
 
 
-trainBPM=tf.train.AdamOptimizer(0.005)
+trainBPM=tf.train.AdamOptimizer(learningRate)
 optBPM=trainBPM.minimize(lossFn)
 
 iniBPM=tf.global_variables_initializer()
@@ -124,6 +125,7 @@ se.run(iniBPM)
 
 lossRec=[]
 lossRecMean=[]
+
 for iEpoch in range(np.int32(numEpoch)):
     xBPM,yCHV=getDataRow(exData,numBatch)
     se.run(optBPM,feed_dict={xInput:xBPM,yInput:yCHV})
@@ -145,212 +147,50 @@ for iEpoch in range(np.int32(numEpoch)):
         plt.grid('on')
         plt.pause(0.01)
     
-    
-
-
-'''
-print np.shape(xBPM)
-print np.shape(yCHV)
-'''
-
-'''
-nIt=2e7
-sizeRow=100
-stepLossRec=50
-nLossRec=np.int32(nIt/stepLossRec+1)
-
-lossRec=np.zeros((nLossRec))
-lossTestRec=np.zeros((nLossRec))
-
-iRec=0
-for i in range(np.int32(nIt)):
-    xBPM,yCHV=getDataRow(exData,sizeRow)
-    se.run(optBPM_4,feed_dict={bpm:xBPM,cHV:yCHV})
-    
-    if i % stepLossRec==0:
-        lossRecTmp=se.run(lossFn,feed_dict={bpm:xBPM,cHV:yCHV})
-        lossRec[iRec]=lossRecTmp
         
+        #xBPMEx=np.array([0,-2,-2,-2,-2,0,1,1,1,1])[:,np.newaxis].T
+        xBPMEx=np.array([0,1.56824205393,3.11142945232,3.86897583945,4.66700936151,0,2.09661528113,1.15367116991,1.12618083973,2.16402881327])[:,np.newaxis].T
 
-        #testBPM,testCHV=getDataRow(testData,np.shape(testData)[0])
-        testBPM,testCHV=getDataRow(testData,sizeRow)
-        lossTestRecTmp=se.run(lossFn,feed_dict={bpm:testBPM,cHV:testCHV})
-        lossTestRec[iRec]=lossTestRecTmp
-        
-        iRec+=1
-        
-        print lossRecTmp,lossTestRecTmp
-        
-        plt.figure('lossRec')
-        numPlot=30
-        plt.clf()
-        plt.subplot(1,2,1)
-        if iRec<=numPlot:
-            xPlot=np.linspace(0,iRec-1,iRec)
-            yPlot=lossRec[0:iRec:]
-            yPlotMean=np.cumsum(yPlot)/(xPlot+1)
-            
-
+        #xBPMEx=np.array([0,0,0,0,0,0,0,0,0,0])[:,np.newaxis].T
+        yCHVEx=se.run(xOutput,feed_dict={xInput:xBPMEx})
+        rYCHVEx=np.sqrt(np.sum(yCHVEx**2))
+        if not vars().has_key('rYCHVExRec'):
+            rYCHVExRec=[]
         else:
-            xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
-            yPlot=lossRec[iRec-numPlot:iRec:]
-            yPlotMean[0:-1:]=yPlotMean[1::]
-            yPlotMean[-1]=np.mean(yPlot)
-
-        plt.hold
-        plt.plot(xPlot,yPlot,'*b')
-        plt.plot(xPlot,yPlotMean,'go')
-            
-        plt.grid('on')
-        plt.title('Train  '+str(i))
+            rYCHVExRec.append(rYCHVEx)
+        if len(rYCHVExRec)>numPlot:
+            rYCHVExRec.pop(0)
         
-        #
-        plt.subplot(1,2,2)
-        
-        if iRec<=numPlot:
-            xPlotT=np.linspace(0,iRec-1,iRec)
-            yPlotT=lossTestRec[0:iRec:]
-            yPlotMeanT=np.cumsum(yPlotT)/(xPlotT+1)
-            
-
-        else:
-            xPlotT=np.linspace(iRec-numPlot,iRec-1,numPlot)
-            yPlotT=lossTestRec[iRec-numPlot:iRec:]
-            yPlotMeanT[0:-1:]=yPlotMeanT[1::]
-            yPlotMeanT[-1]=np.mean(yPlotT)
-
-        plt.hold
-        plt.plot(xPlotT,yPlotT,'*b')
-        plt.plot(xPlotT,yPlotMeanT,'go')
-            
-        plt.grid('on')
-        plt.title('Test  '+str(i))
-        
-        plt.pause(0.05)
-        
-        
-        
-        
-        xBPM,yCHV=getDataRow(exData,1)
-        yCHV_Cal=se.run(xFinal,feed_dict={bpm:xBPM})
-        testBPM,testCHV=getDataRow(testData,1)
-        testCHV_Cal=se.run(xFinal,feed_dict={bpm:testBPM})
-        plt.figure('EX')
+        plt.figure('rYCHVExRec')
         plt.clf()
-        plt.subplot(121)
-        plt.hold
-        plt.plot(np.reshape(yCHV[0,:],(14)),'bd')
-        plt.plot(yCHV_Cal[0,:],'rd')        
-        plt.title(i)
-        plt.subplot(122)
-        plt.hold
-        plt.plot(np.reshape(testCHV[0,:],(14)),'bd')
-        plt.plot(testCHV_Cal[0,:],'rd')        
-        plt.title(i)
-        plt.pause(0.05)   
-    
-    
-    
-######################   FINAL PLOT -------------
-plotFolder='./11.3/'       
-import os
-if not os.path.exists(plotFolder):
-    os.makedirs(plotFolder)
-else:
-     plotFolder=plotFolder[0:-1]+'Temp/' 
-     os.makedirs(plotFolder)
-
-
-plt.close('all')
-# Train Plot
-xBPM,yCHV=getDataRow(exData,sizeRow)
-nameFig=plotFolder+'Loss Train RecSave'
-fig=plt.figure(nameFig)
-numPlot=30
-plt.clf()
-if iRec<=numPlot:
-    xPlot=np.linspace(0,iRec-1,iRec)
-    yPlot=lossRec[0:iRec:]
-    yPlotMean=np.cumsum(yPlot)/(xPlot+1)
-    
-else:
-    xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
-    yPlot=lossRec[iRec-numPlot:iRec:]
-    yPlotMean[0:-1:]=yPlotMean[1::]
-    yPlotMean[-1]=np.mean(yPlot)
-
-plt.hold
-plt.plot(xPlot,yPlot,'*b')
-plt.plot(xPlot,yPlotMean,'go')
-plt.grid('on')
-plt.title(nameFig)
-nameFig+='.png'
-fig.savefig(nameFig)
-
-
-xBPM,yCHV=getDataRow(exData,1)
-yCHV_Cal=se.run(xFinal,feed_dict={bpm:xBPM})
-nameFig=plotFolder+'train Ex. Save'
-plt.figure(nameFig)
-plt.clf()
-plt.hold
-plt.plot(np.reshape(yCHV[0,:],(14)),'bd')
-plt.plot(yCHV_Cal[0,:],'rd')        
-plt.title(nameFig)
-nameFig+='.png'
-plt.savefig(nameFig)
-
-# Test Plot
-plt.close('all')
-testBPM,testCHV=getDataRow(testData,np.shape(testData)[0])
-nameFig=plotFolder+'Loss Test RecSave'
-fig=plt.figure(nameFig)
-numPlot=30
-plt.clf()
-if iRec<=numPlot:
-    xPlot=np.linspace(0,iRec-1,iRec)
-    yPlot=lossTestRec[0:iRec:]
-    yPlotMean=np.cumsum(yPlot)/(xPlot+1)
-    
-else:
-    xPlot=np.linspace(iRec-numPlot,iRec-1,numPlot)
-    yPlot=lossTestRec[iRec-numPlot:iRec:]
-    yPlotMean[0:-1:]=yPlotMean[1::]
-    yPlotMean[-1]=np.mean(yPlot)
-
-plt.hold
-plt.plot(xPlot,yPlot,'*b')
-plt.plot(xPlot,yPlotMean,'go')
-plt.grid('on')
-plt.title(nameFig)
-nameFig+='.png'
-fig.savefig(nameFig)
-
-
-xBPMT,yCHVT=getDataRow(exData,1)
-yCHVT_Cal=se.run(xFinal,feed_dict={bpm:xBPMT})
-nameFig=plotFolder+'Test Ex. Save'
-plt.figure(nameFig)
-plt.clf()
-plt.hold
-plt.plot(np.reshape(yCHVT[0,:],(14)),'bd')
-plt.plot(yCHVT_Cal[0,:],'rd')        
-plt.title(nameFig)
-nameFig+='.png'
-plt.savefig(nameFig)
-
-
-'''
-
-
-
-
-
-
-
-
-
-
+        plt.plot(rYCHVExRec,'b')
+        plt.title(iEpoch)
+        plt.grid('on')
+        plt.pause(0.01)
+        
+        plt.figure('Ex')
+        if iEpoch % numPlotStep*5==0:
+            plt.clf()
+        plt.hold('on')
+        plt.plot(yCHVEx.T,'b*')
+        plt.title(iEpoch)
+        plt.grid('on')
+        plt.pause(0.01)
+        
+        
+        wSum=np.sum(se.run(w1))
+        if not vars().has_key('wRec'):
+            wRec=[]
+        else:
+            wRec.append(wSum)
+        if len(wRec)>numPlot:
+            wRec.pop(0)
+        plt.figure('w')
+        plt.clf()
+        plt.plot(wRec,'b')
+        plt.title(iEpoch)
+        plt.grid('on')
+        plt.pause(0.01)
 
 
 
