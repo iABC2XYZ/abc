@@ -13,7 +13,8 @@ jiangpeiyong@impcas.ac.cn
 
 import tensorflow as tf
 import numpy as np
-
+import shutil
+import os
 
 def GenWeight(shape):
     initial = tf.truncated_normal(shape, stddev=1.)
@@ -39,9 +40,81 @@ def getDataRow(exData,sizeRow,):
 
 
 nameFolder='/home/e/ABC/abc/BPM/Paper/'
-exData=np.loadtxt(nameFolder+'Rec_1106_2046.dat')
+try:
+    kk
+    nameData=nameFolder+'Rec_1106_2046.dat'
+    nameDataBK=nameFolder+'Rec_1106_2046.dat.bk'
+    exData=np.loadtxt(nameData)
+except:
+
+    nameData=nameFolder+'Rec_1106_2046.dat'
+    nameDataBK=nameFolder+'Rec_1106_2046.dat.bk'
+    if not os.path.exists(nameDataBK):
+        os.system('cp '+nameData+' '+nameDataBK)
+    
+    fidWrite=open(nameData,'w+')
+    with open(nameDataBK) as fid:
+        for line in fid:
+            line=line.strip("\n")
+            line=line.expandtabs()
+            line=line.strip()
+            
+            lineWrite=''
+            idSpace=line.find(' ')
 
 
+            while idSpace>0:
+                lineChoose=line[0:idSpace].strip()
+                if len(lineChoose)>20:
+                    numLineChoose=len(lineChoose)
+                    if numLineChoose % 2==0:
+                        if  not lineChoose.find('-'):
+                            lineChoose=lineChoose[0:numLineChoose/2]+' '+lineChoose[numLineChoose/2::]
+                        else:
+                            nSplit=lineChoose.find('-')
+                            lineChoose=lineChoose[0:nSplit]+' '+lineChoose[nSplit::]
+                            
+                                
+                    else:
+                        if lineChoose[0]=='-':
+                            lineChoose=lineChoose[0:(numLineChoose+1)/2]+' '+lineChoose[(numLineChoose+1)/2::]
+                        elif lineChoose.find('-')>0:
+                            nSplit=lineChoose.find('-')
+                            lineChoose=lineChoose[0:nSplit]+' '+lineChoose[nSplit::]   
+                        else:
+                            nDot1=lineChoose.index('.')
+                            nDot2=lineChoose.rindex('.')
+                            if nDot1==1:
+                                lineChoose=lineChoose[0:nDot2-1]+' '+lineChoose[nDot2-1::]
+                            if nDot1==3:
+                                lineChoose=lineChoose[0:nDot2-2]+' '+lineChoose[nDot2-2::]
+                            
+                lineWrite+=(lineChoose+' ')
+                            
+                line=line[idSpace::]
+                line=line.strip()
+                idSpace=line.find(' ')
+
+                
+            lineWrite+='\n'
+            print lineWrite
+            fidWrite.writelines(lineWrite)
+
+                
+
+                
+    fidWrite.close()
+    exData=np.loadtxt(nameData)
+    print exData
+            #print line
+            #print lineWrite
+            
+
+'''    
+line='  100  '
+print line
+print line.strip()
+'''
 #
 '''
 numInput=10
