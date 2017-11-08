@@ -12,13 +12,13 @@ import matplotlib.pyplot as plt
 plt.close('all')
 
 
-numEpoch=200000
+numEpoch=2000000
 batchSize= 50
 
 stepRec = 200
 
 
-learningRate=0.05
+learningRate=0.01
 
 rnnSize=16
 rnnDepth=1
