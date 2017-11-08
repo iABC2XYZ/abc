@@ -15,6 +15,8 @@ import tensorflow as tf
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+plt.close('all')
+
 
 def GenWeight(shape):
     initial = tf.truncated_normal(shape, stddev=1.)
@@ -33,8 +35,13 @@ def getDataRow(exData,sizeRow,):
     xBPM1=np.reshape(exData[idChoose1,14:24],(sizeRow,10))
     yCHV2=np.reshape(exData[idChoose2,0:14],(sizeRow,14))
     xBPM2=np.reshape(exData[idChoose2,14:24],(sizeRow,10))
-    X=xBPM1-xBPM2
-    Y=yCHV1-yCHV2
+
+    dX=xBPM1-xBPM2
+    dY=yCHV1-yCHV2
+    
+    X=np.hstack((xBPM2,dX))
+    Y=dY
+    
     return X,Y
 
 
@@ -76,16 +83,17 @@ except:
     fidWrite.close()
     exData=np.loadtxt(nameData)
 
+#numExUse=100
+#exData=exData[np.random.randint(0,high=np.shape(exData)[0],size=(numExUse)),:]
 
-
-numInput=10
+numInput=20
 numOutput=14
 
 numEpoch=2e7
 numBatch=100
 numPlot=80
 numPlotStep=100
-learningRate=5e-5
+learningRate=1e-2
 
 
 #
@@ -93,13 +101,38 @@ xInput=tf.placeholder(tf.float32,shape=(None,numInput))
 yInput=tf.placeholder(tf.float32,shape=(None,numOutput))
 
 #
+numX1=100
+w1= GenWeight([numInput,numX1])
+b1=GenBias([numX1])
+x1=tf.nn.relu6(tf.nn.xw_plus_b(xInput,w1,b1))
 
-w1= GenWeight([numInput,numOutput])
-x1=tf.matmul(xInput,w1)
+#
+numX2=40
+w2= GenWeight([numX1,numX2])
+b2=GenBias([numX2])
+x2=tf.nn.relu6(tf.nn.xw_plus_b(x1,w2,b2))
+
+#
+numX3=40
+w3= GenWeight([numX2,numX3])
+b3=GenBias([numX3])
+x3=tf.nn.relu6(tf.nn.xw_plus_b(x2,w3,b3))
+
+#
+w4= GenWeight([numX3,numOutput])
+b4=GenBias([numOutput])
+x4=tf.nn.xw_plus_b(x3,w4,b4)
+
+
+##
+wNN= GenWeight([numX1,numOutput])
+bNN=GenBias([numOutput])
+xNN=tf.matmul(x1,wNN)
+
 
 
 #
-xFinal=x1
+xFinal=xNN
 
 #
 xOutput=tf.reshape(xFinal,(-1,numOutput))
@@ -132,6 +165,7 @@ for iEpoch in range(np.int32(numEpoch)):
     
     if iEpoch % numPlotStep==0:
         lossRecTmp=se.run(lossFn,feed_dict={xInput:xBPM,yInput:yCHV})
+        print lossRecTmp
         lossRec.append(lossRecTmp)
         lossRecMean.append(np.mean(lossRec))
         if len(lossRec)>numPlot:
@@ -149,30 +183,18 @@ for iEpoch in range(np.int32(numEpoch)):
     
         
         #xBPMEx=np.array([0,-2,-2,-2,-2,0,1,1,1,1])[:,np.newaxis].T
-        xBPMEx=np.array([0,1.56824205393,3.11142945232,3.86897583945,4.66700936151,0,2.09661528113,1.15367116991,1.12618083973,2.16402881327])[:,np.newaxis].T
+        xBPMEx_1=np.array([0,1.56824205393,3.11142945232,3.86897583945,4.66700936151,0,2.09661528113,1.15367116991,1.12618083973,2.16402881327])[:,np.newaxis].T
 
-        #xBPMEx=np.array([0,0,0,0,0,0,0,0,0,0])[:,np.newaxis].T
+        xBPMEx_2=np.array([0,0,0,0,0,0,0,0,0,0])[:,np.newaxis].T
+        xBPMEx=np.hstack((np.zeros((2,10)),np.vstack((xBPMEx_1,xBPMEx_2))))
         yCHVEx=se.run(xOutput,feed_dict={xInput:xBPMEx})
-        rYCHVEx=np.sqrt(np.sum(yCHVEx**2))
-        if not vars().has_key('rYCHVExRec'):
-            rYCHVExRec=[]
-        else:
-            rYCHVExRec.append(rYCHVEx)
-        if len(rYCHVExRec)>numPlot:
-            rYCHVExRec.pop(0)
-        
-        plt.figure('rYCHVExRec')
-        plt.clf()
-        plt.plot(rYCHVExRec,'b')
-        plt.title(iEpoch)
-        plt.grid('on')
-        plt.pause(0.01)
+
         
         plt.figure('Ex')
         if iEpoch % numPlotStep*5==0:
             plt.clf()
         plt.hold('on')
-        plt.plot(yCHVEx.T,'b*')
+        plt.plot(yCHVEx.T,'-*')
         plt.title(iEpoch)
         plt.grid('on')
         plt.pause(0.01)
@@ -193,7 +215,6 @@ for iEpoch in range(np.int32(numEpoch)):
         plt.pause(0.01)
 
 
-np.savetxt('w.dat',se.run(w1))
 
 
 

@@ -85,7 +85,7 @@ numEpoch=2e7
 numBatch=100
 numPlot=80
 numPlotStep=100
-learningRate=5e-5
+learningRate=5e-4
 
 
 #
@@ -93,13 +93,19 @@ xInput=tf.placeholder(tf.float32,shape=(None,numInput))
 yInput=tf.placeholder(tf.float32,shape=(None,numOutput))
 
 #
+numX1=20
+w1= GenWeight([numInput,numX1])
+b1=GenBias([numX1])
+x1=tf.nn.relu6(tf.nn.xw_plus_b(xInput,w1,b1))
 
-w1= GenWeight([numInput,numOutput])
-x1=tf.matmul(xInput,w1)
+#
+w2= GenWeight([numX1,numOutput])
+b2=GenBias([numOutput])
+x2=tf.nn.xw_plus_b(x1,w2,b2)
 
 
 #
-xFinal=x1
+xFinal=x2
 
 #
 xOutput=tf.reshape(xFinal,(-1,numOutput))
@@ -193,7 +199,6 @@ for iEpoch in range(np.int32(numEpoch)):
         plt.pause(0.01)
 
 
-np.savetxt('w.dat',se.run(w1))
 
 
 
