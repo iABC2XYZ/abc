@@ -39,12 +39,58 @@ for i in range(10,24):
     plt.pause(1)
 '''
 
+exDataMean=[]
+for i in range(14,24):
+    exDataMeanTmp= np.mean(exData[:,i])
+    exDataMean.append(exDataMeanTmp)
+    
 
-for i in range(0,24):
-    print -np.mean(exData[:,i])
+
+print "+"
+print str(np.round(np.array(exDataMean)*100.)/100.).replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ').replace(' ',',')
+
+print ('\n')
+
+exDataMean[0]=0.00
+exDataMean[7]=0.00
+
+print "-"
+print str(np.round(-np.array(exDataMean)*100.)/100.).replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ').replace(' ',',')
 
 
-[-1.86408430966,1.56824205393,3.11142945232,3.86897583945,4.66700936151,1.38253433488,2.09661528113,1.15367116991,1.12618083973,2.16402881327]
+##
+
+exDataMean=[]
+for i in range(14,24):
+    exDataMeanTmp= np.mean(exData[:,i])
+    exDataMean.append(exDataMeanTmp)
+
+bpms=exData[:,14:24]
+
+for i in range(10):
+    bpms[:,i]-=exDataMean[i]
+
+rBPM=[]
+for i in range(np.shape(bpms)[0]):
+    rBPM.append(np.sum(np.square(bpms[i,:])))
+
+idMinR=np.argmin(rBPM)
+
+print idMinR,rBPM[idMinR]
+
+print '---- I  -------'
+print (exData[idMinR,14:24])
+
+print exDataMean
+
+
+print  np.sum(np.square(exData[idMinR+1,14:24]-exDataMean))
+
+
+#plt.plot(rBPM)
+#plt.show()
+
+#print np.where(np.min(rBPM)==rBPM)
 
 
 

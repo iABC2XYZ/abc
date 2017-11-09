@@ -31,16 +31,14 @@ def getDataRow(exData,sizeRow,):
     numEx=np.shape(exData)[0]
     idChoose1=np.random.randint(0,high=numEx,size=(sizeRow))
     idChoose2=np.random.randint(0,high=numEx,size=(sizeRow))
+    idChoose2[0]=idChoose1[0]
     yCHV1=np.reshape(exData[idChoose1,0:14],(sizeRow,14))
     xBPM1=np.reshape(exData[idChoose1,14:24],(sizeRow,10))
     yCHV2=np.reshape(exData[idChoose2,0:14],(sizeRow,14))
     xBPM2=np.reshape(exData[idChoose2,14:24],(sizeRow,10))
 
-    dX=xBPM1-xBPM2
-    dY=yCHV1-yCHV2
-    
-    X=np.hstack((xBPM2,dX))
-    Y=dY
+    X=np.hstack((xBPM1,yCHV1,xBPM2))
+    Y=yCHV2
     
     return X,Y
 
@@ -86,7 +84,7 @@ except:
 #numExUse=100
 #exData=exData[np.random.randint(0,high=np.shape(exData)[0],size=(numExUse)),:]
 
-numInput=20
+numInput=34
 numOutput=14
 
 numEpoch=2e7
@@ -156,6 +154,7 @@ try:
 except:
     pass
 se= tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
+#se= tf.InteractiveSession()
 se.run(iniBPM)
 
 lossRec=[]
@@ -163,10 +162,8 @@ lossRecMean=[]
 
 for iEpoch in range(np.int32(numEpoch)):
     xBPM,yCHV=getDataRow(exData,numBatch)
-    xBPM[0,11::]=0.
-    yCHV[0,::]=0
     se.run(optBPM,feed_dict={xInput:xBPM,yInput:yCHV})
-    
+   
     if iEpoch % numPlotStep==0:
         lossRecTmp=se.run(lossFn,feed_dict={xInput:xBPM,yInput:yCHV})
         print lossRecTmp
@@ -186,18 +183,35 @@ for iEpoch in range(np.int32(numEpoch)):
         plt.pause(0.01)
     
         
-
-        xBPMEx=np.array([[1.86,-1.57,-3.11,-3.87,-4.67,-1.38,-2.1,-1.15,-1.13,-2.16,0.,1.57,3.11,3.87,4.67,1.38,2.1,-0.,1.13,2.16],\
-                         [1.86,-1.57,-3.11,-3.87,-4.67,-1.38,-2.1,-1.15,-1.13,-2.16,0,0,0,0,0,0.,0,0,0,0]])
         
-        yCHVEx=se.run(xOutput,feed_dict={xInput:xBPMEx})
+        xBPM1Ex_1=[[1.86,-1.57,-3.11,-3.87,-4.67,-1.38,-2.1,-1.15,-1.13,-2.16]]
+        yCHV1Ex_1=np.zeros((1,numOutput))
+        xBPM2Ex_1=[[1.86,0,0,0,0,-1.38,0,0,0,0]]
+
+        xBPM1Ex_2=[[1.86,-1.57,-3.11,-3.87,-4.67,-1.38,-2.1,-1.15,-1.13,-2.16]]
+        yCHV1Ex_2=np.zeros((1,numOutput))
+        xBPM2Ex_2=[[1.86,-1.57,-3.11,-3.87,-4.67,-1.38,-2.1,-1.15,-1.13,-2.16]]      
 
         
+        xBPM1Ex_3=[[1.86,-1.57,-3.11,-3.87,-4.67,-1.38,-2.1,-1.15,-1.13,-2.16]]
+        yCHV1Ex_3=np.zeros((1,numOutput))
+        xBPM2Ex_3=[[1.86,0,0,0,0,-1.38,0,0,0,0]]   
+
+        x_Ex_1=np.hstack((xBPM1Ex_1,yCHV1Ex_1,xBPM2Ex_1))
+        x_Ex_2=np.hstack((xBPM1Ex_2,yCHV1Ex_2,xBPM2Ex_2))
+        x_Ex=np.vstack((x_Ex_1,x_Ex_2))
+
+        y_Ex=se.run(xOutput,feed_dict={xInput:x_Ex})
+        y_Ex_1=y_Ex[0,:]-yCHV1Ex_1
+        y_Ex_2=y_Ex[1,:]-yCHV1Ex_2
+        
+  
         plt.figure('Ex')
         if iEpoch % numPlotStep*5==0:
             plt.clf()
         plt.hold('on')
-        plt.plot(yCHVEx.T,'-*')
+        plt.plot(y_Ex_1.T,'b-*')
+        plt.plot(y_Ex_2.T,'r-*')
         plt.title(iEpoch)
         plt.grid('on')
         plt.pause(0.01)
