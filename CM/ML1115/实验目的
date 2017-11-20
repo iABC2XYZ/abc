@@ -1,0 +1,178 @@
+实验平台：
+    ADS:  MEBT+CM1+CM2
+实验条件：
+    不加buncher
+    ACCT3:2.35 mA
+    10 us/ 1Hz
+    
+实验日期：
+    2017/11/15-11/16
+
+实验改变量：
+    MEBT_PS:DCH_06:ISet
+    MEBT_PS:DCV_06:ISet
+    MEBT_PS:DCH_07:ISet
+    MEBT_PS:DCV_07:ISet
+
+    HCM1_PS:DCH_01:Iset
+    HCM1_PS:DCV_01:Iset
+    HCM1_PS:DCH_02:Iset
+    HCM1_PS:DCV_02:Iset
+    HCM1_PS:DCH_03:Iset
+    HCM1_PS:DCV_03:Iset
+    HCM1_PS:DCH_04:Iset
+    HCM1_PS:DCV_04:Iset
+    HCM1_PS:DCH_05:Iset
+    HCM1_PS:DCV_05:Iset
+    HCM1_PS:DCH_06:Iset
+    HCM1_PS:DCV_06:Iset
+
+    HCM2_PS:DCH_01:Iset
+    HCM2_PS:DCV_01:Iset
+    HCM2_PS:DCH_02:Iset
+    HCM2_PS:DCV_02:Iset
+    HCM2_PS:DCH_03:Iset
+    HCM2_PS:DCV_03:Iset
+    HCM2_PS:DCH_04:Iset
+    HCM2_PS:DCV_04:Iset
+    HCM2_PS:DCH_05:Iset
+    HCM2_PS:DCV_05:Iset
+    HCM2_PS:DCH_06:Iset
+    HCM2_PS:DCV_06:Iset
+
+实验监测量：
+
+    BPM:2-X11
+    BPM:2-Y11
+    BPM:3-X11
+    BPM:3-Y11
+    BPM:4-X11
+    BPM:4-Y11
+    BPM:5-X11
+    BPM:5-Y11
+    BPM:6-X11
+    BPM:6-Y11
+
+
+本次实验目的：
+    CM1和CM2上的机器学习。使用了MEBT上部分数据    
+
+
+实验结果文件：   3872 条
+    trainCMData
+
+    文件解读：
+    
+    书写：bpmNow4W,psSetNow4W,psMonNow4W,psMainSet4W,iACCT3
+    与LIST.xlsx想匹配。
+
+BPM:1-X11	0		MEBT_PS:QUAD_01:IMon	0		MEBT_PS:DCH_01:Iset	12	-12	7	0
+BPM:1-Y11	0		MEBT_PS:QUAD_02:IMon	0		MEBT_PS:DCV_01:Iset	12	-12	7	0
+BPM:2-X11	1		MEBT_PS:QUAD_03:IMon	0		MEBT_PS:DCH_02:Iset	12	-12	7	0
+BPM:2-Y11	1		MEBT_PS:QUAD_04:IMon	0		MEBT_PS:DCV_02:Iset	12	-12	7	0
+BPM:3-X11	1		MEBT_PS:QUAD_05:IMon	1		MEBT_PS:DCH_03:Iset	12	-12	7	0
+BPM:3-Y11	1		MEBT_PS:QUAD_06:IMon	1		MEBT_PS:DCV_03:Iset	12	-12	7	0
+BPM:4-X11	1		MEBT_PS:QUAD_07:IMon	1		MEBT_PS:DCH_04:Iset	12	-12	7	0
+BPM:4-Y11	1		HCM1_PS:SOL_01:IMon	1		MEBT_PS:DCV_04:Iset	12	-12	7	0
+BPM:5-X11	1		HCM1_PS:SOL_02:IMon	1		MEBT_PS:DCH_05:Iset	12	-12	7	0
+BPM:5-Y11	1		HCM1_PS:SOL_03:IMon	1		MEBT_PS:DCV_05:Iset	12	-12	7	0
+BPM:6-X11	1		HCM1_PS:SOL_04:IMon	1		MEBT_PS:DCH_06:Iset	12	-12	7	1
+BPM:6-Y11	1		HCM1_PS:SOL_05:IMon	1		MEBT_PS:DCV_06:Iset	12	-12	7	1
+BPM:7-X11	1		HCM1_PS:SOL_06:Imon	1		MEBT_PS:DCH_07:Iset	12	-12	7	1
+BPM:7-Y11	1		HCM2_PS:SOL_01:IMon	1		MEBT_PS:DCV_07:Iset	12	-12	7	1
+BPM:8-X11	1		HCM2_PS:SOL_02:IMon	1		HCM1_PS:DCH_01:Iset	35	-35	4	1
+BPM:8-Y11	1		HCM2_PS:SOL_03:IMon	1		HCM1_PS:DCV_01:Iset	50	-50	4	1
+BPM:9-X11	1		HCM2_PS:SOL_04:IMon	1		HCM1_PS:DCH_02:Iset	50	-50	4	1
+BPM:9-Y11	1		HCM2_PS:SOL_05:IMon	1		HCM1_PS:DCV_02:Iset	50	-50	4	1
+BPM:10-X11	1		HCM2_PS:SOL_06:Imon	1		HCM1_PS:DCH_03:Iset	50	-50	4	1
+BPM:10-Y11	1		HCM3_PS:SOL_01:IMon	1		HCM1_PS:DCV_03:Iset	50	-50	4	1
+BPM:11-X11	1		HCM3_PS:SOL_02:IMon	1		HCM1_PS:DCH_04:Iset	50	-50	4	1
+BPM:11-Y11	1		HCM3_PS:SOL_03:IMon	1		HCM1_PS:DCV_04:Iset	50	-50	4	1
+BPM:12-X11	1		HCM3_PS:SOL_04:IMon	1		HCM1_PS:DCH_05:Iset	50	-50	4	1
+BPM:12-Y11	1		HCM3_PS:SOL_05:IMon	1		HCM1_PS:DCV_05:Iset	50	-50	4	1
+BPM:13-X11	1		HCM4_PS:SOL_01:IMon	1		HCM1_PS:DCH_06:Iset	50	-50	4	1
+BPM:13-Y11	1		HCM4_PS:SOL_02:IMon	1		HCM1_PS:DCV_06:Iset	50	-50	4	1
+BPM:14-X11	1		HCM4_PS:SOL_03:IMon	1		HCM2_PS:DCH_01:Iset	50	-50	4	1
+BPM:14-Y11	1		HCM4_PS:SOL_04:IMon	1		HCM2_PS:DCV_01:Iset	50	-50	4	1
+BPM:15-X11	1		HCM4_PS:SOL_05:IMon	1		HCM2_PS:DCH_02:Iset	50	-50	4	1
+BPM:15-Y11	1		HCM4_PS:SOL_06:Imon	1		HCM2_PS:DCV_02:Iset	50	-50	4	1
+BPM:16-X11	1		###################	0		HCM2_PS:DCH_03:Iset	50	-50	4	1
+BPM:16-Y11	1		###################	0		HCM2_PS:DCV_03:Iset	50	-50	4	1
+BPM:17-X11	1		###################	0		HCM2_PS:DCH_04:Iset	50	-50	4	1
+BPM:17-Y11	1		###################	0		HCM2_PS:DCV_04:Iset	50	-50	4	1
+BPM:18-X11	0		###################	0		HCM2_PS:DCH_05:Iset	50	-50	4	1
+BPM:18-Y11	0		###################	0		HCM2_PS:DCV_05:Iset	50	-50	4	1
+BPM:19-X11	0		###################	0		HCM2_PS:DCH_06:Iset	50	-50	4	1
+BPM:19-Y11	0		###################	0		HCM2_PS:DCV_06:Iset	50	-50	4	1
+BPM:20-X11	0		###################	0		HCM3_PS:DCH_01:Iset	50	-50	4	0
+BPM:20-Y11	0		###################	0		HCM3_PS:DCV_01:Iset	50	-50	4	0
+BPM:21-X11	0		###################	0		HCM3_PS:DCH_02:Iset	50	-50	4	0
+BPM:21-Y11	0		###################	0		HCM3_PS:DCV_02:Iset	50	-50	4	0
+BPM:22-X11	0		###################	0		HCM3_PS:DCH_03:Iset	50	-50	4	0
+BPM:22-Y11	0		###################	0		HCM3_PS:DCV_03:Iset	50	-50	4	0
+BPM:23-X11	0		###################	0		HCM3_PS:DCH_04:Iset	50	-50	4	0
+BPM:23-Y11	0		###################	0		HCM3_PS:DCV_04:Iset	50	-50	4	0
+BPM:24-X11	0		###################	0		HCM3_PS:DCH_05:Iset	50	-50	4	0
+BPM:24-Y11	0		###################	0		HCM3_PS:DCV_05:Iset	50	-50	4	0
+BPM:25-X11	0		###################	0		HCM4_PS:DCH_01:Iset	50	-50	4	0
+BPM:25-Y11	0		###################	0		HCM4_PS:DCV_01:Iset	50	-50	4	0
+BPM:26-X11	0		###################	0		HCM4_PS:DCH_02:Iset	50	-50	4	0
+BPM:26-Y11	0		###################	0		HCM4_PS:DCV_02:Iset	50	-50	4	0
+BPM:27-X11	0		###################	0		HCM4_PS:DCH_03:Iset	50	-50	4	0
+BPM:27-Y11	0		###################	0		HCM4_PS:DCV_03:Iset	50	-50	4	0
+BPM:28-X11	0		###################	0		HCM4_PS:DCH_04:Iset	50	-50	4	0
+BPM:28-Y11	0		###################	0		HCM4_PS:DCV_04:Iset	50	-50	4	0
+BPM:29-X11	0		###################	0		HCM4_PS:DCH_05:Iset	50	-50	4	0
+BPM:29-Y11	0		###################	0		HCM4_PS:DCV_05:Iset	50	-50	4	0
+BPM:30-X11	0		###################	0		HCM4_PS:DCH_06:Iset	50	-50	4	0
+BPM:30-Y11	0		###################	0		HCM4_PS:DCV_06:Iset	50	-50	4	0
+
+
+bpmNow4W,psSetNow4W,psMonNow4W,psMainSet4W,iACCT3：
+
+第一组量：
+bpmNow4W【0*2*1 + X*2*16 + 0*2*13】=2+32+26=X*60  前17个BPM是关注对象，即前17个BPM。后面是补零。
+
+    0.00 0.00 -2.74 2.46 -3.64 6.25 -4.13 3.46 -2.70 0.12 -5.30 -2.05 -3.05 -5.92 -3.02 1.13 -0.29 7.67 -0.42 4.16 2.95 1.92 -0.13 5.57 2.12 0.05 0.13 0.82 2.20 0.75 -5.47 0.20 -0.11 1.28  # 前17个BPM
+0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 #补零项
+
+第二组量：
+psSetNow4W 【[0:2*5+ X*2*2]+ [0*1*1+ X*1*1+ X*2*5]+[X*2*6]+[0*2*5]+[0*2*6]】=14+12+12+10+12
+
+0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 -10.40 -0.69 -0.85 6.01    # MEBT 14个DC  Set
+0.00 41.75 -7.43 45.54 -43.74 48.73 47.83 -12.88 -7.15 4.34 -28.07 -1.58     # CM1 12个DC  Set    CM1-DCH1坏了
+35.21 7.80 -9.03 -5.42 -4.19 30.01 -22.61 28.81 -31.59 36.47 -15.48 14.12    # CM2 12个DC  Set
+0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00                            # CM3 10个DC Set 补零
+0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00                  # CM4 12个DC Set 补零
+
+第三组量：
+psMonNow4W 【[0:2*5+ X*2*2]+ [0*1*1+ X*1*1+ X*2*5]+[X*2*6]+[0*2*5]+[0*2*6]】=14+12+12+10+12
+
+0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 -10.40 -0.69 -0.85 6.01     # MEBT 14个DC  Set
+0.00 41.74 -7.45 45.62 -43.75 48.71 47.83 -12.88 -7.15 4.34 -27.98 -1.59      # CM1 12个DC  Set    CM1-DCH1坏了
+35.28 7.80 -9.00 -5.38 -4.23 30.08 -22.52 28.89 -31.63 36.53 -15.39 14.08     # CM2 12个DC  Set
+0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00                             # CM3 10个DC Set 补零
+0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00                   # CM4 12个DC Set 补零
+
+第四组量：
+psMainSet4W【X*7+X*6+X*6+0*5+0*6】=7+6+6+5+6
+
+72.30 100.20 92.70 0.00 72.50 102.30 40.30    # MEBT: 7个Q  Set
+76.38 80.24 87.40 85.04 82.04 92.40           # CM1:  6个Sol   Set
+81.17 63.74 63.48 64.26 66.06 78.69           # CM2:  6个Sol   Set 
+0.00 0.00 0.00 0.00 0.00                      # CM3:  5个Sol   Set
+0.00 0.00 0.00 0.00 0.00 0.00                 # CM4:  6个Sol   Set
+
+第五组量：
+iACCT3 【X*1】
+2.39      # acct3
+
+
+
+
+
+
+
+
+
+
