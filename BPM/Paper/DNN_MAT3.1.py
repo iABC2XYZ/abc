@@ -26,7 +26,6 @@ def GenBias(shape):
     return tf.Variable(initial)
 
 
-
 def getDataRow(exData,sizeRow,):
     numEx=np.shape(exData)[0]
     idChoose1=np.random.randint(0,high=numEx,size=(sizeRow))
