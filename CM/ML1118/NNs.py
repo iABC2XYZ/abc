@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 plt.close('all')
 
 class DL:
-    def __init__(self,xData,yData,xAim,numHidden,batchSize,learningRate,numEpoch,numRec,numRecStep,numPreData,configX,configY,tpyeNN,typeLoss,typeTrain,configSession):
+    def __init__(self,xData,yData,xAim,numHidden,batchSize,learningRate,numEpoch,numRec,numRecStep,numPreData,configX,configY,tpyeNN,typeAct,typeLoss,typeTrain,configSession):
         self.numHidden=numHidden
         self.batchSize=batchSize
         self.learningRate=learningRate
@@ -88,6 +88,27 @@ class DL:
     def GetOutY(self):
         yOut=self.yIn
         return yOut
+
+    def FC(self):
+        numHidden.pop(numHidden.index(0))
+    
+        sizeLayer=numHidden
+        sizeLayer.insert(0,self.numInput)
+        sizeLayer.append(self.numOutput)
+        
+        numLayer=len(sizeLayer)
+        
+        wRec=[]
+        bRec=[]
+        for iLayer in range(numLayer-1):
+            numIn=sizeLayer[iLayer]
+            numOut=sizeLayer[iLayer+1]
+            w=self.GenWeight((numIn,numOut))
+            b=self.GenBias((numOut))
+            wRec.append(w)
+            bRec.append(b)
+            
+
 
     def Matrix(self):
         shapeM=(self.numInput,self.numOutput)
@@ -220,7 +241,7 @@ def GetData(fName):
 
 xData,yData=GetData(fName)
 xAim=-1
-numHidden=0
+numHidden=[0]
 batchSize=100
 learningRate=0.001
 numEpoch=50000
@@ -230,6 +251,7 @@ numPreData=1
 configX='x+dx'
 configY='y'
 tpyeNN='Matrix'
+typeAct='relu'
 typeLoss='mse'
 typeTrain='AdamOptimizer'
 configSession=''
@@ -237,7 +259,7 @@ configSession=''
 
 
 
-x=DL(xData,yData,xAim,numHidden,batchSize,learningRate,numEpoch,numRec,numRecStep,numPreData,configX,configY,tpyeNN,typeLoss,typeTrain,configSession)
+x=DL(xData,yData,xAim,numHidden,batchSize,learningRate,numEpoch,numRec,numRecStep,numPreData,configX,configY,tpyeNN,typeAct,typeLoss,typeTrain,configSession)
 
 x.Train()
 
