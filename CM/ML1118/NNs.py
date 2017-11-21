@@ -13,7 +13,7 @@ plt.close('all')
 
 class DL:
     def __init__(self,xData,yData,xAim,numHidden,batchSize,learningRate,numEpoch,numRec,numRecStep,numPreData,configX,configY,tpyeNN,typeAct,typeLoss,typeTrain,configSession):
-        self.numHidden=numHidden
+        self.numHidden=self.GetNumHidden(numHidden)
         self.batchSize=batchSize
         self.learningRate=learningRate
         self.numEpoch=numEpoch
@@ -22,6 +22,7 @@ class DL:
         self.numPreData= numPreData     
         
         self.typeNN=tpyeNN.lower()
+        self.typeAct=typeAct.lower()
         self.typeLoss=typeLoss.lower()
         self.typeTrain=typeTrain.lower()
         
@@ -64,20 +65,35 @@ class DL:
             numOutput=np.shape(yData)[1]
         elif self.configY=='y+dy':
             numOutput=np.shape(yData)[1]*2        
-        return numOutput        
+        return numOutput      
+    
+    def GetNumHidden(self,numHidden):
+        try:
+            if 0 in numHidden:
+                numHidden.pop(numHidden.index(0))
+            
+        except:
+            if numHidden==0:
+                numHidden=[]
+            else:
+                numHidden=[numHidden]
+        return numHidden
+            
+        
+
     
     def GenWeight(self,shape):
         initial = tf.truncated_normal(shape, stddev=1.)
         return tf.Variable(initial)
-    def GenBias(self,shape):
-        initial=self.GenWeight((1,shape(0)))
+    def GenBias(self,size):
+        initial=self.GenWeight((1,size))
         return initial[0,:]
             
     def GetOutX(self):
         if self.typeNN=='matrix':
             xOut= self.Matrix()
         if self.typeNN=='fc':
-            pass
+            xOut=self.FC()
         if self.typeNN=='cnn1D':
             pass
         if self.typeNN=='cnn2D':
@@ -90,9 +106,7 @@ class DL:
         return yOut
 
     def FC(self):
-        numHidden.pop(numHidden.index(0))
-    
-        sizeLayer=numHidden
+        sizeLayer=self.numHidden
         sizeLayer.insert(0,self.numInput)
         sizeLayer.append(self.numOutput)
         
@@ -101,14 +115,42 @@ class DL:
         wRec=[]
         bRec=[]
         for iLayer in range(numLayer-1):
-            numIn=sizeLayer[iLayer]
-            numOut=sizeLayer[iLayer+1]
+            if iLayer==0:
+                X=self.xIn
+            numIn=np.int32(sizeLayer[iLayer])
+            numOut=np.int32(sizeLayer[iLayer+1])
             w=self.GenWeight((numIn,numOut))
-            b=self.GenBias((numOut))
+            b=self.GenBias(numOut)
             wRec.append(w)
             bRec.append(b)
+            X=tf.nn.xw_plus_b(X,w,b)
             
+            if iLayer < numLayer-2:
+                X=self.Act(X)
+                
+        xOut=X
 
+        return xOut
+                
+                
+    def Act(self,X):
+        if self.typeAct=='relu':
+            xAct=tf.nn.relu(X)
+        if self.typeAct=='relu6':
+            xAct=tf.nn.relu6(X)
+        if self.typeAct=='sigmoid':
+            xAct=tf.nn.sigmoid(X)
+        if self.typeAct=='tanh':
+            xAct=tf.nn.tanh(X)
+        if self.typeAct=='elu':
+            xAct=tf.nn.elu(X)
+        if self.typeAct=='softplus':
+            xAct=tf.nn.softplus(X)
+        if self.typeAct=='softsign':
+            xAct=tf.nn.softsign(X)
+        return xAct
+    
+    
 
     def Matrix(self):
         shapeM=(self.numInput,self.numOutput)
@@ -119,6 +161,12 @@ class DL:
     def GetLoss(self):
         if self.typeLoss=='mse':
             loss=tf.losses.mean_squared_error(self.xOut,self.yOut)
+        if self.typeLoss=='cross_entropy':
+            #loss=tf.nn.softmax_cross_entropy_with_logits(self.xOut,self.yOut)
+            xSoft=tf.nn.softmax(self.xOut)
+            ySoft=tf.nn.softmax(self.yOut)
+            loss=-tf.reduce_mean(xSoft*tf.log(ySoft))
+            
         return loss
             
     def GetTrain(self):
@@ -183,6 +231,11 @@ class DL:
         
         lossRec=[]
         rYAimRec=[]
+        lossMeanRec=[]
+        rYAimMeanRec=[] 
+        
+        rYAimRelaRec=[]
+        rYAimRelaMeanRec=[]
         for iEpoch in range(self.numEpoch):
             X,Y=self.PreData()
             sess.run(self.opt,feed_dict={self.xIn:X,self.yIn:Y})
@@ -192,24 +245,37 @@ class DL:
                 lossRec.append(lossNow)
 
                 yAim=sess.run(self.xOut,feed_dict={self.xIn:self.xAim})[0]
-                rYAim=np.sum(np.square(yAim))
+                rYAim=np.sqrt(np.mean(np.square(yAim)))
                 rYAimRec.append(rYAim)
                 
+                lossMeanRec.append(np.mean(lossRec))
+                rYAimMeanRec.append(np.mean(rYAimRec))
+                
+                rYAimRelaRec.append(np.sqrt(np.mean(np.square(np.log(np.abs(yAim))))))
+                rYAimRelaMeanRec.append(np.mean(rYAimRelaRec))
                 if len(lossRec)>self.numRec:
                     lossRec.pop(0)
                     rYAimRec.pop(0)
+                    lossMeanRec.pop(0)
+                    rYAimMeanRec.pop(0)
+                    rYAimRelaRec.pop(0)
+                    rYAimRelaMeanRec.pop(0)
                 
                 
                 plt.figure('loss')
                 plt.clf()
-                plt.plot(lossRec,'-o')
+                plt.hold
+                plt.plot(lossRec,'b-o')
+                plt.plot(lossMeanRec,'g-o')
                 plt.grid('on')
                 plt.title(iEpoch)
                 plt.pause(0.01)
                 
                 plt.figure('rYAim')
                 plt.clf()
-                plt.plot(rYAimRec,'-o')
+                plt.hold
+                plt.plot(rYAimRec,'b-o')
+                plt.plot(rYAimMeanRec,'g-o')
                 plt.grid('on')
                 plt.title(iEpoch)
                 plt.pause(0.01)                
@@ -220,7 +286,25 @@ class DL:
                 plt.grid('on')
                 plt.title(iEpoch)
                 plt.pause(0.01)                
-            
+
+                plt.figure('yAim : Relative')
+                plt.clf()
+                yAimRela=np.sign(yAim)*np.log(np.abs(yAim))
+                plt.plot(yAimRela,'-o')
+                plt.grid('on')
+                plt.title(iEpoch)
+                plt.pause(0.01)    
+                
+                plt.figure('rYAim  : Relative')
+                plt.clf()
+                plt.hold
+                plt.plot(rYAimRelaRec,'b-o')
+                plt.plot(rYAimRelaMeanRec,'g-o')
+                plt.grid('on')
+                plt.title(iEpoch)
+                plt.pause(0.01)  
+                
+                
         sess.close()
             
         
@@ -241,7 +325,7 @@ def GetData(fName):
 
 xData,yData=GetData(fName)
 xAim=-1
-numHidden=[0]
+numHidden=10
 batchSize=100
 learningRate=0.001
 numEpoch=50000
@@ -250,7 +334,7 @@ numRecStep=50
 numPreData=1
 configX='x+dx'
 configY='y'
-tpyeNN='Matrix'
+tpyeNN='fc'
 typeAct='relu'
 typeLoss='mse'
 typeTrain='AdamOptimizer'
@@ -261,7 +345,12 @@ configSession=''
 
 x=DL(xData,yData,xAim,numHidden,batchSize,learningRate,numEpoch,numRec,numRecStep,numPreData,configX,configY,tpyeNN,typeAct,typeLoss,typeTrain,configSession)
 
+x.FC()
+
 x.Train()
+
+
+
 
 
 
