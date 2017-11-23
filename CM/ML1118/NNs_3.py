@@ -35,7 +35,7 @@ class DL:
 
 
     
-    def SetNN(self,numEpoch=10000,learningRate=0.001,batchSize=100,typeLoss='mse',typeTrain='adamoptimizer',configSession=''):
+    def SetNN(self,numEpoch=10000,learningRate=0.001,batchSize=100,typeLoss='mse',typeTrain='adamoptimizer',configSession='config=tf.ConfigProto(log_device_placement=True)'):
         self.numEpoch=np.int32(numEpoch)
         self.learningRate=learningRate
         self.batchSize=np.int32(batchSize)
@@ -308,10 +308,10 @@ class DL:
     
         
     def RunTrain(self):
-        if self.configSession=='':
-            sess=tf.Session()
+        if self.configSession=='+':
+            sess=tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
         else:
-            sess=tf.Session(self.configSession)
+            sess=tf.InteractiveSession(self.configSession)
         sess.run(tf.global_variables_initializer())
         
         lossRec=[]
@@ -466,23 +466,31 @@ fName='data1~2000'
 def GetData(fName):    
     data=np.loadtxt(fName)
     bpmData=data[:,0:12]
+    
     dcData=data[:,80:94]
     q1Data=data[:,140:143]
     q2Data=data[:,144:147]
-    psData=np.hstack((dcData,q1Data,q2Data))
-    return bpmData,psData
+    
+    #psData=np.hstack((dcData,q1Data,q2Data))
+    
+    xData=np.hstack((bpmData,q1Data,q2Data))
+    yData=dcData
+    
+    return xData,yData
     
 xData,yData=GetData(fName)
+
+
 
 
 #print np.shape(xData)
 #print np.shape(yData)
 
 x=DL()
-x.SetData(xData,yData,'x+dx+z:[15,20]','y-z:[15,20]')
+x.SetData(xData,yData,'x','y')
 
 
-x.SetNN(numEpoch=1e9,learningRate=0.002)
+x.SetNN(numEpoch=1e8,learningRate=0.002,configSession='+')
 x.AddFC(0,'relu')
 x.AddFC(0,'')
 #x.AddCNN1D(D1_filter_width=3, D1_out_channels=5, D1_in_channels=0,typeAct='',stride=1, padding="SAME",reshape=0)
@@ -494,6 +502,7 @@ x.AddFC(0,'')
 x.Build()
 x.SetRec()
 
+xPre=np.zeros((1,))
 x.SetPre(xPre=-1)
 
 x.RunTrain()
@@ -503,11 +512,9 @@ x.RunTrain()
 
 
 
-print "END"
      
                 
 
-    
     
 
 
