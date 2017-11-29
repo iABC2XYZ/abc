@@ -481,8 +481,6 @@ def GetData(fName):
 xData,yData=GetData(fName)
 
 
-
-
 #print np.shape(xData)
 #print np.shape(yData)
 
