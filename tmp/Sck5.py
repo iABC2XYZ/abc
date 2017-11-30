@@ -477,7 +477,9 @@ class DL:
                 recLossTrainMean.append(np.mean(recLossTrain))
                 
                 recLossTest.append(lossTest)
-                recLossTestMean.append(np.mean(recLossTest))    
+                recLossTestMean.append(np.mean(recLossTest))   
+                
+
                 
                 if len(recLossTrain)>self.numRec:
                     recLossTrain.pop(0)
@@ -504,14 +506,52 @@ class DL:
                 plt.pause(0.1) 
                 
                 
+                yPre=sess.run(self.xOut,feed_dict={self.xIn:self.xPre})
+                yPre0=np.matmul(yPre[:,0].reshape(-1,1),np.ones((1,np.shape(yPre)[1])))
                 
                 
-                xTmp=sess.run(self.xOutRatio,feed_dict={self.xIn:xTrain,self.yIn:yTrain})
-                print np.shape(xTmp)
-                plt.figure('tmp')
+                yPreRatio=(yPre-yPre0)/yPre0
+                
+                fid=open('Ratio.pre','w+')
+                for iYPreRatio in yPreRatio:
+                    for jYPreRatio in iYPreRatio:
+                        fid.writelines('%.2f '%jYPreRatio)
+                    fid.writelines('\n')
+                fid.close()
+                        
+       
+                rYPreRatio=np.mean(yPreRatio)
+                               
+                recRYPre.append(rYPreRatio)
+                recRYPreMean.append(np.mean(recRYPre))
+                
+                if len(recRYPre)>self.numRec:
+                    recRYPre.pop(0)
+                    recRYPreMean.pop(0)                
+                
+                plt.figure('PRE Y')
                 plt.clf()
-                plt.plot(xTmp,'.')
-                plt.pause(0.1) 
+                plt.plot(yPre.T)
+                plt.title(iEpoch)
+                plt.pause(0.1)
+                
+                plt.figure('PRE Ratio')
+                plt.clf()
+                plt.plot(yPreRatio.T)
+                plt.title(iEpoch)
+                plt.pause(0.1)
+                
+                plt.figure('PRE R')
+                plt.clf()
+                plt.hold
+                plt.plot(recRYPre)
+                plt.plot(recRYPreMean)
+                plt.title(iEpoch)
+                plt.pause(0.1)                
+                                
+                
+                
+                
 
         
     def AddFC(self,numOutputLayer,typeAct=''):
@@ -592,10 +632,10 @@ x.SetPreList(mlPreList)
 x.SetDataConfig(configXData='dx',configYData='dy',numDiffData=None,numChangeData=2e5)
 
 x.SetNN(numEpoch=1e6,learningRate=0.002,configSession='+')
-x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=0)
-x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=0)
-x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=1)
-x.AddFC(0,'relu')
+#x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=0)
+#x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=0)
+#x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=1)
+x.AddFC(70,'relu')
 x.AddFC(0,'')
 
 x.Build()
