@@ -10,24 +10,42 @@ import numpy as np
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
+
 plt.close('all')
+
+import time
 
 
 
 class DL:
     def __init__(self):
         self.sizeHidden=[]
+        
+    def tic(self):
+        self.timeStart= time.clock()
+    def toc(self):
+        self.timeEnd= time.clock()
+        self.timeElapsed=self.timeEnd-self.timeStart
+        print('Time Elapsed %.5f s'%self.timeElapsed)
+        
+        
+    def SetTrainList(self,mlTrainList):
+        self.listTrain=mlTrainList
+    def SetTestList(self,mlTestList):
+        self.listTest=mlTestList
+    
+    def SetPreList(self,mlPreList):
+        self.listPre=mlPreList
 
-    def SetData(self,xData,yData,configXData='dx',configYData='dy',numDiffData=None):
-        self.xData=xData
-        self.yData=yData
+
+    def SetDataInit(self,configXData,configYData,numDiffData):
         self.configXData=configXData.lower()
         self.configYData=configYData.lower()
         self.GetZnum()
         self.sizeInput=self.GetSizeInput()
         self.sizeOutput=self.GetSizeOutput()
         self.numDiffData= numDiffData
-        self.numItem=np.shape(self.xData)[0]
+        self.numItem=np.shape(self.xTrain)[0]
         
         self.xIn=tf.placeholder(tf.float32,shape=(None,self.sizeInput))
         self.yIn=tf.placeholder(tf.float32,shape=(None,self.sizeOutput))
@@ -36,6 +54,50 @@ class DL:
         
         self.D1_in_channels=0       #会记录上次的D1_ｏｕｔ_channels
 
+        
+    def GetTrainData(self,fName):    
+        X=np.loadtxt(fName+'.train')
+        Y=np.loadtxt(fName+'.label')    
+        return X,Y
+    
+    def GetPreData(self,fName):
+        X=np.loadtxt(fName+'.pre')
+        return X
+
+
+    def SetDataConfig(self,configXData='dx',configYData='dy',numDiffData=None,numChangeData=None):
+        self.xTrain,self.yTrain=self.GetTrainData(self.listTrain[0])
+        self.xTest,self.yTest=self.GetTrainData(self.listTest[0])
+        self.xPre=self.GetPreData(self.listPre[0])
+        if numChangeData==None:
+            self.numChangeData=4000
+        else:
+            self.numChangeData=numChangeData
+        
+        self.SetDataInit(configXData,configYData,numDiffData)
+
+    def ChangeData(self):
+        numListTrain=len(self.listTrain)
+        if numListTrain>0:
+            iList=np.random.choice(numListTrain)
+            self.xTrain,self.yTrain=self.GetTrainData(self.listTrain[iList])
+
+        numListTest=len(self.listTest)
+        if numListTest>0:
+            iList=np.random.choice(numListTest)
+            self.xTest,self.yTest=self.GetTrainData(self.listTest[iList])   
+            
+        numListPre=len(self.listPre)
+        if numListPre>0:
+            iList=np.random.choice(numListPre)
+            self.xPre=self.GetPreData(self.listPre[iList]) 
+        
+
+    def SetData(self,xTrain,yTrain,configXData='dx',configYData='dy',numDiffData=None):     # 原来的那个
+        self.xTrain=xTrain
+        self.yTrain=yTrain
+        
+        self.SetDataInit(configXData,configYData,numDiffData)
 
     
     def SetNN(self,numEpoch=10000,learningRate=0.001,batchSize=100,typeLoss='mse',typeTrain='adamoptimizer',configSession='config=tf.ConfigProto(log_device_placement=True)'):
@@ -54,38 +116,15 @@ class DL:
     def SetRec(self,numRec=100,numRecStep=100):
         self.numRec=numRec
         self.numRecStep=numRecStep
-    '''
-    def SetPre(self,xPre=-1):
-        if type(xPre)==int:      #　作为开关使用的
-            if xPre==-1:         #  此时表示内部测试，即用数据内部特征测试
-                if self.configXData=='x':       #此时需要将ｘ全部校正到０，即ｘ＝０
-                    xPreTmp=np.zeros((1,self.sizeInput))
-                if self.configXData=='dx':      # 由于ｍｅａｎ上ｘ并不是０，因此为了将ｘ－>0，需要将ｄｘ变化量为　－ｍｅａｎ
-                    xMean=np.mean(self.xData,axis=0)[np.newaxis,:]
-                    xPreTmp=-xMean
-                if self.configXData=='x+dx':    #  综合前两个，意思是在当前ｍｅａｎ位置上，调到０，调幅－ｍｅａｎ
-                    xMean=np.mean(self.xData,axis=0)[np.newaxis,:]
-                    xPreTmp=np.hstack((xMean,-xMean))
-                self.xPre=xPreTmp
 
-
-        if type(xPre)==list:     #如果是个list，将这个list转化成numpy.ndarray，之后直接作为xPre
-            xPreTmp=np.array(xPre)
-            self.xPre=xPreTmp
-            
-        if type(xPre)==np.ndarray:  #如果这是一个数组，那么直接就是将数组作为xPre
-            xPreTmp=xPre
-            self.xPre=xPreTmp
-
-    '''
     def SetPre(self,xPre=-1):
         if type(xPre)==int:      #　作为开关使用的
             if xPre==-1:         #  此时表示内部测试，即用数据内部特征测试
                 if 'x+dx' in self.configXData:    #  综合前两个，意思是在当前ｍｅａｎ位置上，调到０，调幅－ｍｅａｎ
-                    xMean=np.mean(self.xData,axis=0)[np.newaxis,:]
+                    xMean=np.mean(self.xTrain,axis=0)[np.newaxis,:]
                     xPreTmp=np.hstack((xMean,-xMean))
                 elif 'dx' in self.configXData:      # 由于ｍｅａｎ上ｘ并不是０，因此为了将ｘ－>0，需要将ｄｘ变化量为　－ｍｅａｎ
-                    xMean=np.mean(self.xData,axis=0)[np.newaxis,:]
+                    xMean=np.mean(self.xTrain,axis=0)[np.newaxis,:]
                     xPreTmp=-xMean
                 elif 'x' in self.configXData:       #此时需要将ｘ全部校正到０，即ｘ＝０
                     xPreTmp=np.zeros((1,self.sizeInput))
@@ -93,7 +132,7 @@ class DL:
                 
                 
                 if self.zXPlusLen>0:
-                    yMean=np.mean(self.yData,axis=0)
+                    yMean=np.mean(self.yTrain,axis=0)
                     idChoose=range(self.zXPlusStart,self.zXPlusEnd)
                     yMeanChoose=(yMean[idChoose])[np.newaxis,:]
 
@@ -119,6 +158,7 @@ class DL:
     def Build(self):
         self.GetOutX()
         self.GetOutY()
+        self.PostProcess()
         self.GetLoss()
         self.GetTrain()
         self.GetOpt()        
@@ -138,6 +178,17 @@ class DL:
             ySoft=tf.nn.softmax(self.yOut)
             self.loss=-tf.reduce_mean(xSoft*tf.log(ySoft))
 
+    def Deal4Predict(self):
+        xOutMax=tf.reduce_max(self.xOut,axis=1)
+        self.xOutRatio=tf.div((xOutMax-self.xOut[-1,0]),self.xOut[-1,0])
+        
+        
+        
+        
+    def PostProcess(self):
+        self.Deal4Predict()
+    
+    
     
     def GetTrain(self):
         if self.typeTrain=='adamoptimizer':
@@ -192,20 +243,20 @@ class DL:
 
     def GetSizeInput(self):
         if 'x+dx' in self.configXData:
-            sizeInput=np.shape(xData)[1]*2+self.zXPlusLen-self.zXMinusLen
+            sizeInput=np.shape(xTrain)[1]*2+self.zXPlusLen-self.zXMinusLen
         elif 'dx' in self.configXData:
-            sizeInput=np.shape(xData)[1]+self.zXPlusLen-self.zXMinusLen
+            sizeInput=np.shape(xTrain)[1]+self.zXPlusLen-self.zXMinusLen
         elif 'x' in self.configXData:
-            sizeInput=np.shape(xData)[1]+self.zXPlusLen-self.zXMinusLen
+            sizeInput=np.shape(xTrain)[1]+self.zXPlusLen-self.zXMinusLen
         return sizeInput
 
     def GetSizeOutput(self):
         if 'y+dy' in  self.configYData:
-            sizeOutput=np.shape(yData)[1]*2+self.zYPlusLen-self.zYMinusLen
+            sizeOutput=np.shape(yTrain)[1]*2+self.zYPlusLen-self.zYMinusLen
         elif 'dy' in self.configYData:
-            sizeOutput=np.shape(yData)[1]+self.zYPlusLen-self.zYMinusLen
+            sizeOutput=np.shape(yTrain)[1]+self.zYPlusLen-self.zYMinusLen
         elif 'y' in self.configYData:
-            sizeOutput=np.shape(yData)[1]+self.zYPlusLen-self.zYMinusLen
+            sizeOutput=np.shape(yTrain)[1]+self.zYPlusLen-self.zYMinusLen
             
         return sizeOutput      
 
@@ -242,10 +293,10 @@ class DL:
             idChoose1=np.random.randint(0,high=self.numItem,size=(self.batchSize))
         else:
             idChoose1=idChoose2-self.numDiffData
-        x1=self.xData[idChoose1,:]
-        x2=self.xData[idChoose2,:]
-        y1=self.yData[idChoose1,:]
-        y2=self.yData[idChoose2,:]
+        x1=self.xTrain[idChoose1,:]
+        x2=self.xTrain[idChoose2,:]
+        y1=self.yTrain[idChoose1,:]
+        y2=self.yTrain[idChoose2,:]
         dx=x2-x1
         dy=y2-y1
 
@@ -287,26 +338,16 @@ class DL:
                 idStay.append(i)
             Y=Y[:,idStay]
             
-            
-            
-            
-
-            
-        
-        '''
-        if '+z:' in self.configXData:
-            strStart=self.configXData.index(':')
-            steEnd=self.configXData.index('-')
-            nStart=np.int32(self.configXData[strStart:steEnd])
-            print nStart
- 
-            X=x1
-        ''' 
-        
-        
-            
-
         return X,Y
+    
+    
+    def ReadyData(self,xData,yData):
+        idChoose=np.random.randint(0,high=self.numItem,size=(self.batchSize))
+        x=xData[idChoose,:]
+        y=yData[idChoose,:]
+        return x,y
+        
+
     
     
         
@@ -326,10 +367,6 @@ class DL:
         for iEpoch in range(self.numEpoch):
             X,Y=self.PreData()
             
-            #print np.shape(X)
-            #print np.shape(Y)
-            #print tf.shape(self.xIn)
-            #print tf.shape(self.yIn)
             
             sess.run(self.opt,feed_dict={self.xIn:X,self.yIn:Y})
             
@@ -383,6 +420,86 @@ class DL:
                 
         sess.close()           
         
+        
+    def Run(self):
+
+        if self.configSession=='+':
+            sess=tf.InteractiveSession(config=tf.ConfigProto(log_device_placement=True))
+        else:
+            sess=tf.InteractiveSession(self.configSession)
+        sess.run(tf.global_variables_initializer())
+        
+        recLossTrain=[]
+        recLossTest=[]
+
+        recLossTrainMean=[]
+        recLossTestMean=[]
+        
+        recRYPre=[]
+        recRYPreMean=[]
+
+        
+        for iEpoch in range(self.numEpoch):
+
+            if iEpoch % self.numChangeData==self.numChangeData-1:
+                self.ChangeData()
+
+
+            xTrain,yTrain=self.ReadyData(self.xTrain,self.yTrain)
+
+            sess.run(self.opt,feed_dict={self.xIn:xTrain,self.yIn:yTrain})
+            
+            
+            
+
+            if iEpoch % self.numRecStep==0:
+                xTest,yTest=self.ReadyData(self.xTest,self.yTest)
+                
+                lossTrain=sess.run(self.loss,feed_dict={self.xIn:xTrain,self.yIn:yTrain})
+                lossTest=sess.run(self.loss,feed_dict={self.xIn:xTest,self.yIn:yTest})
+                
+                
+                recLossTrain.append(lossTrain)
+                recLossTrainMean.append(np.mean(recLossTrain))
+                
+                recLossTest.append(lossTest)
+                recLossTestMean.append(np.mean(recLossTest))    
+                
+                if len(recLossTrain)>self.numRec:
+                    recLossTrain.pop(0)
+                    recLossTrainMean.pop(0)
+                    recLossTest.pop(0)
+                    recLossTestMean.pop(0)
+                
+                plt.figure('loss:Train')
+                plt.clf()
+                plt.hold
+                plt.plot(recLossTrain,'b-o')
+                plt.plot(recLossTrainMean,'g-o')            
+                plt.grid('on')
+                plt.title(iEpoch)
+                plt.pause(0.1)
+                
+                plt.figure('loss:Test')
+                plt.clf()
+                plt.hold
+                plt.plot(recLossTest,'r-o')
+                plt.plot(recLossTestMean,'m-o')                
+                plt.grid('on')
+                plt.title(iEpoch)
+                plt.pause(0.1) 
+                
+                
+                
+                
+                xTmp=sess.run(self.xOutRatio,feed_dict={self.xIn:xTrain,self.yIn:yTrain})
+                print np.shape(xTmp)
+                plt.figure('tmp')
+                plt.clf()
+                plt.plot(xTmp,'.')
+                plt.pause(0.1) 
+
+        
     def AddFC(self,numOutputLayer,typeAct=''):
         if numOutputLayer==0:
             numOutputLayer=self.sizeOutput
@@ -418,36 +535,44 @@ class DL:
         
         self.D1_in_channels=D1_out_channels
         
-        
-
-        
-        '''
-        X=self.X
-        X=tf.reshape()
-        
-        w=self.GenWeight((filter_width, in_channels, out_channels))
-        b=self.GenBias((out_channels))
-        X=self.conv1d(self.X,w,stride, padding)+b
-        self.X=self.Act(X,typeAct)
-        '''
 
         
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
 
-fName='dataML_0'
-def GetData(fName):    
-    data=np.loadtxt(fName)
-    x=data[:,0:150]
-    y=data[:,150::]
+mlTrainList=['ml_0','ml_1','ml_2','ml_3','ml_4','ml_5','ml_6','ml_7','ml_8','ml_9','ml_10',\
+       'ml_11','ml_12','ml_13','ml_14','ml_15','ml_16','ml_17','ml_18','ml_19','ml_20',\
+       'ml_21','ml_22','ml_23','ml_24','ml_25','ml_26','ml_27','ml_28','ml_29','ml_30',\
+       'ml_31','ml_32','ml_33','ml_34',\
+       ]
+
+mlTestList=['ml_35']
+
+mlPreList=['ml']
+
+
+def GetTrainData(fName):    
+    X=np.loadtxt(fName+'.train')
+    Y=np.loadtxt(fName+'.label')    
+    return X,Y
+
+
+
+def GetPreData(fName):
+    X=np.loadtxt(fName+'.pre')
+    return X
+
     
-    return x,y
-    
-xData,yData=GetData(fName)
+xTrain,yTrain=GetTrainData('ml_0')
+
+xPre=GetPreData(mlPreList[0])
+
 
 
 x=DL()
-x.SetData(xData,yData,'x','y')
-
+x.SetTrainList(mlTrainList)
+x.SetTestList(mlTestList)
+x.SetPreList(mlPreList)
+x.SetDataConfig(configXData='dx',configYData='dy',numDiffData=None,numChangeData=2e5)
 
 x.SetNN(numEpoch=1e6,learningRate=0.002,configSession='+')
 x.AddFC(0,'relu')
@@ -456,10 +581,7 @@ x.AddFC(0,'')
 x.Build()
 x.SetRec()
 
-xPre=np.zeros((1,))
-x.SetPre(xPre=-1)
-
-x.RunTrain()
+x.Run()
 
 
 
