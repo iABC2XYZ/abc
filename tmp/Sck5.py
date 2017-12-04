@@ -10,6 +10,7 @@ import numpy as np
 
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import os
 
 plt.close('all')
 
@@ -74,25 +75,93 @@ class DL:
             self.numChangeData=4000
         else:
             self.numChangeData=numChangeData
+            
+        if self.numChangeData<0:
+            self.listTrain.pop(0)
+            self.listTest.pop(0)
+            self.listPre.pop(0)
         
         self.SetDataInit(configXData,configYData,numDiffData)
 
+
+    def ChangeData_X(self,listX,flagType):
+        numX=len(listX)
+        if flagType.lower()=='train':
+            if numX>1:
+                iList=np.random.choice(numX)
+                x,y=self.GetTrainData(listX[iList])
+                if self.numChangeData<0:
+                    listX.pop(iList)
+                    x=np.vstack((self.xTrain,x))
+                    y=np.vstack((self.yTrain,y))
+                return x,y
+            else:
+                return self.xTrain,self.yTrain
+        
+        if flagType.lower()=='test':
+            if numX>1:
+                iList=np.random.choice(numX)
+    
+                x,y=self.GetTrainData(listX[iList])
+                if self.numChangeData<0:
+                    listX.pop(iList)
+                    x=np.vstack((self.xTest,x))
+                    y=np.vstack((self.yTest,y))
+                return x,y
+            else:
+                return self.xTest,self.yTest
+        
+        if flagType.lower()=='pre':
+            if numX>1:
+                iList=np.random.choice(numX)
+                x=self.GetPreData(listX[iList])
+                if self.numChangeData<0:
+                    listX.pop(iList)
+                    x=np.vstack((self.xPre,x))
+                return x
+            else:
+                return self.xPre
+    
+    def ChangeData(self):
+
+        #self.tic()
+        self.xTrain,self.yTrain=self.ChangeData_X(self.listTrain,flagType='train')
+        self.numItem=np.shape(self.xTrain)[0]
+        self.xTest,self.yTest=self.ChangeData_X(self.listTest,flagType='test')
+        self.xPre=self.ChangeData_X(self.listPre,flagType='pre')
+        #self.toc()
+        
+
+        
+        #print self.numItem
+        #print '-'*10
+        #print np.shape(self.xTrain)[0]
+        
+    '''
     def ChangeData(self):
         numListTrain=len(self.listTrain)
-        if numListTrain>0:
+        if numListTrain>1:
             iList=np.random.choice(numListTrain)
             self.xTrain,self.yTrain=self.GetTrainData(self.listTrain[iList])
+            
+            print self.listTrain[iList]
 
         numListTest=len(self.listTest)
-        if numListTest>0:
+        if numListTest>1:
             iList=np.random.choice(numListTest)
             self.xTest,self.yTest=self.GetTrainData(self.listTest[iList])   
             
+            #print self.listTest[iList]
+            
         numListPre=len(self.listPre)
-        if numListPre>0:
+        if numListPre>1:
             iList=np.random.choice(numListPre)
             self.xPre=self.GetPreData(self.listPre[iList]) 
-        
+            #print self.listPre[iList]
+    '''
+
+
+    
 
     def SetData(self,xTrain,yTrain,configXData='dx',configYData='dy',numDiffData=None):     # 原来的那个
         self.xTrain=xTrain
@@ -181,7 +250,13 @@ class DL:
                 xSoft=tf.nn.softmax(self.xOut)
                 ySoft=tf.nn.softmax(self.yOut)
                 self.loss=-tf.reduce_mean(xSoft*tf.log(ySoft))
+            if self.typeLoss=='mseratio':
+                diffXY=self.xOut-self.yOut
+                ratioXY=tf.div(diffXY,self.yOut)
+                self.loss=tf.reduce_sum(tf.square(ratioXY))/self.batchSize
+                
 
+                
     def Deal4Predict(self):
         xOutMax=tf.reduce_max(self.xOut,axis=1)
         self.xOutRatio=tf.div((xOutMax-self.xOut[-1,0]),self.xOut[-1,0])
@@ -293,6 +368,9 @@ class DL:
             xAct=tf.nn.softsign(X)
         if typeAct=='':
             xAct=X
+        if typeAct=='dropout_cnn':
+            xAct=tf.nn.dropout(X,0.5)
+        
         return xAct
 
         
@@ -351,7 +429,9 @@ class DL:
     
     
     def ReadyData(self,xData,yData):
-        idChoose=np.random.randint(0,high=self.numItem,size=(self.batchSize))
+        
+
+        idChoose=np.random.randint(0,high=np.shape(xData)[0],size=(self.batchSize))
         x=xData[idChoose,:]
         y=yData[idChoose,:]
         return x,y
@@ -430,7 +510,9 @@ class DL:
                 
         sess.close()           
         
-        
+    def SetRunPredict(self,numRunPreStep=5000):
+        self.numRunPreStep=numRunPreStep
+    
     def Run(self):
 
         if self.configSession=='+':
@@ -452,11 +534,15 @@ class DL:
         recRYPre=[]
         recRYPreMean=[]
 
-        
-        for iEpoch in range(self.numEpoch):
 
-            if iEpoch % self.numChangeData==self.numChangeData-1:
+        for iEpoch in range(self.numEpoch):
+            
+
+            if iEpoch % np.abs(self.numChangeData)==np.abs(self.numChangeData)-1:
                 self.ChangeData()
+                
+            
+
 
 
             xTrain,yTrain=self.ReadyData(self.xTrain,self.yTrain)
@@ -494,7 +580,7 @@ class DL:
                 plt.plot(recLossTrainMean,'g-o')            
                 plt.grid('on')
                 plt.title(iEpoch)
-                plt.pause(0.1)
+                plt.pause(0.01)
                 
                 plt.figure('loss:Test')
                 plt.clf()
@@ -503,24 +589,56 @@ class DL:
                 plt.plot(recLossTestMean,'m-o')                
                 plt.grid('on')
                 plt.title(iEpoch)
-                plt.pause(0.1) 
+                plt.pause(0.01) 
                 
+            if iEpoch % self.numRunPreStep==self.numRunPreStep-1:
                 
                 yPre=sess.run(self.xOut,feed_dict={self.xIn:self.xPre})
-                yPre0=np.matmul(yPre[:,0].reshape(-1,1),np.ones((1,np.shape(yPre)[1])))
-                
+                yPre0=np.matmul(self.xPre[:,-3].reshape(-1,1),np.ones((1,np.shape(yPre)[1])))  # -3: high
                 
                 yPreRatio=(yPre-yPre0)/yPre0
                 
                 fid=open('Ratio.pre','w+')
                 for iYPreRatio in yPreRatio:
                     for jYPreRatio in iYPreRatio:
-                        fid.writelines('%.2f '%jYPreRatio)
+                        fid.writelines('%.5f '%jYPreRatio)
                     fid.writelines('\n')
                 fid.close()
-                        
+                
+                yFit=yPreRatio.T
+                xFit=np.linspace(0,1,np.shape(yFit)[0])
+                pFit=np.polyfit(xFit,yFit,1)
+                kFit=pFit[0,:]
+                
+                numFitChoose=50
+                kFitChoose=[]
+                kFit_=np.copy(kFit)
+                for iFit in range(numFitChoose):
+                    argMax=np.argmax(kFit_)
+                    kFit_[argMax]=0.
+                    kFitChoose.append(argMax)
+                
+                xPreChoose=self.xPre[kFitChoose,2::5]
+                yPreChoose=yPre[kFitChoose,:]
+                allPreChoose=np.hstack((xPreChoose,yPreChoose))
+                plt.figure('allPreChoose')
+                plt.clf()
+                plt.plot(allPreChoose.T)
+                plt.pause(0.01)
+                
+                fidRead=open('ml.code','r')
+                fid=open('ml.code.Choose','w+')
+                iFitChoose=0
+                for iRead in fidRead:
+                    if iFitChoose in kFitChoose:
+                        fid.writelines(iRead)
+                    iFitChoose+=1
+                
+                fidRead.close()
+                fid.close()
+    
        
-                rYPreRatio=np.mean(yPreRatio)
+                rYPreRatio=np.std(yPreRatio)
                                
                 recRYPre.append(rYPreRatio)
                 recRYPreMean.append(np.mean(recRYPre))
@@ -533,13 +651,13 @@ class DL:
                 plt.clf()
                 plt.plot(yPre.T)
                 plt.title(iEpoch)
-                plt.pause(0.1)
+                plt.pause(0.01)
                 
                 plt.figure('PRE Ratio')
                 plt.clf()
                 plt.plot(yPreRatio.T)
                 plt.title(iEpoch)
-                plt.pause(0.1)
+                plt.pause(0.01)
                 
                 plt.figure('PRE R')
                 plt.clf()
@@ -547,11 +665,25 @@ class DL:
                 plt.plot(recRYPre)
                 plt.plot(recRYPreMean)
                 plt.title(iEpoch)
-                plt.pause(0.1)                
+                plt.pause(0.01)                
                                 
                 
+                ##
+                xyPre=np.hstack((self.xPre[:,2::5],yPre))
+                plt.figure('PRE ALL')
+                plt.clf()
+                plt.hold
+                plt.plot(xyPre[0:3,:].T)
+                plt.title(iEpoch)
+                plt.pause(0.01)                
                 
-                
+                xyPreMean=np.mean(xyPre,0)
+                plt.figure('PRE ALL Mean')
+                plt.clf()
+                plt.hold
+                plt.plot(xyPreMean)
+                plt.title(iEpoch)
+                plt.pause(0.01)                                                  
 
         
     def AddFC(self,numOutputLayer,typeAct=''):
@@ -565,6 +697,13 @@ class DL:
             self.X=self.Act(X,typeAct)
             
             self.numOutputLayer4FC=numOutputLayer
+            
+    def AddMatrix(self):
+        with tf.name_scope('Matrix'):
+            w=self.GenWeight((self.sizeInput,self.sizeOutput))
+            self.X=tf.matmul(self.X,w)
+            
+          
 
     def conv1d(self,x, W,stride, padding):
         return tf.nn.conv1d(x,W,stride, padding)
@@ -592,9 +731,109 @@ class DL:
             
             self.D1_in_channels=D1_out_channels
             
+        
+    def AddCNN1D_MultiChannel(self,D1_filter_width, D1_out_channels, D1_in_channels=0,typeAct='',stride=1, padding="SAME",reshape=0):
+        with tf.name_scope('CNN1D__MultiChannel'):
+            if D1_in_channels==0 and self.D1_in_channels==0:
+                self.X=tf.expand_dims(self.X, -1)
+                self.D1_in_channels=1
+            
+            if D1_in_channels!=0:
+                self.D1_in_channels=D1_in_channels
+                
+            if len(D1_filter_width)==1:
+                D1_out_channelsNow=D1_out_channels[0]
+                w=self.GenWeight((D1_filter_width[0], self.D1_in_channels, D1_out_channelsNow))
+                b=self.GenBias((D1_out_channelsNow))
+                X=self.conv1d(self.X,w,stride, padding)+b
+                XAct=self.Act(X,typeAct) 
+                
+                D1_out_channels_=D1_out_channelsNow
+                
+            if len(D1_filter_width)>1:
+                    
+                XActList=[]
+                D1_out_channelsList=[]
+                D1_out_channels_=0
+                
+                for iNow in range(len(D1_filter_width)):
+                    
+                    D1_filter_widthNow=D1_filter_width[iNow]
+
+                    if len(D1_out_channels)==1:
+                        D1_out_channelsNow=D1_out_channels[0]
+                    if len(D1_out_channels)>1:
+                        D1_out_channelsNow=D1_out_channels[iNow]
+                        
+                    D1_out_channels_+=D1_out_channelsNow
+                        
+                    D1_out_channelsList.append(D1_out_channelsNow)
+                    
+                    wNow=self.GenWeight((D1_filter_widthNow,self.D1_in_channels, D1_out_channelsNow))
+                    bNow=self.GenBias((D1_out_channelsNow))
+                    XNow=self.conv1d(self.X,wNow,stride, padding)+bNow
+                    XActNow=self.Act(XNow,typeAct)
+
+                    XActList.append(XActNow)
+                    
+                    
+                for iNow in range(len(D1_filter_width)):
+                    if iNow==0:
+                        XAct=XActList[iNow]
+                    else:
+                        XActTmp=XActList[iNow]
+                        
+                        XAct=tf.concat((XAct,XActTmp),axis=2)
+                    
+  
+            
+            if reshape==1:
+                self.numOutputLayer4FC=self.numOutputLayer4FC*D1_out_channels_
+                XAct=tf.reshape(XAct,(-1,self.numOutputLayer4FC))
+            
+            self.X=XAct
+                
+            
+            self.D1_in_channels=D1_out_channels_
+
+
+
+        pass
+        '''
+         with tf.name_scope('CNN1D__MultiChannel'):
+        
+            if D1_in_channels==0 and self.D1_in_channels==0:
+                self.X=tf.expand_dims(self.X, -1)
+                self.D1_in_channels=1
+            
+            if D1_in_channels!=0:
+                self.D1_in_channels=D1_in_channels
+            
+            
+                
+            w=self.GenWeight((D1_filter_width, self.D1_in_channels, D1_out_channels))
+            b=self.GenBias((D1_out_channels))
+            X=self.conv1d(self.X,w,stride, padding)+b
+            self.X=self.Act(X,typeAct)
+    
+            
+            if reshape==1:
+                self.numOutputLayer4FC=self.numOutputLayer4FC*D1_out_channels
+                self.X=tf.reshape(self.X,(-1,self.numOutputLayer4FC))
+                
+            
+            self.D1_in_channels=D1_out_channels   
+            
+            pass
+        '''
+    
+        
 
         
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
+        
+os.system('rm -fr ./logs')
+        
 
 mlTrainList=['ml_0','ml_1','ml_2','ml_3','ml_4','ml_5','ml_6','ml_7','ml_8','ml_9','ml_10',\
        'ml_11','ml_12','ml_13','ml_14','ml_15','ml_16','ml_17','ml_18','ml_19','ml_20',\
@@ -607,39 +846,29 @@ mlTestList=['ml_35']
 mlPreList=['ml']
 
 
-def GetTrainData(fName):    
-    X=np.loadtxt(fName+'.train')
-    Y=np.loadtxt(fName+'.label')    
-    return X,Y
-
-
-
-def GetPreData(fName):
-    X=np.loadtxt(fName+'.pre')
-    return X
-
-    
-xTrain,yTrain=GetTrainData('ml_0')
-
-xPre=GetPreData(mlPreList[0])
-
 
 
 x=DL()
 x.SetTrainList(mlTrainList)
 x.SetTestList(mlTestList)
 x.SetPreList(mlPreList)
-x.SetDataConfig(configXData='dx',configYData='dy',numDiffData=None,numChangeData=2e5)
+x.SetDataConfig(configXData='dx',configYData='dy',numDiffData=None,numChangeData=-2000)
 
-x.SetNN(numEpoch=1e6,learningRate=0.002,configSession='+')
-#x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=0)
-#x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=0)
-#x.AddCNN1D(D1_filter_width=3, D1_out_channels=1, D1_in_channels=0,typeAct='relu',stride=1, padding="SAME",reshape=1)
-x.AddFC(70,'relu')
+
+x.SetNN(numEpoch=1e8,learningRate=0.005,batchSize=80,typeLoss='mseRatio',configSession='+')
+x.AddCNN1D_MultiChannel(D1_filter_width=[8,5], D1_out_channels=[10], D1_in_channels=0,typeAct='tanh',stride=1, padding="SAME",reshape=0)
+x.AddCNN1D(D1_filter_width=8, D1_out_channels=10, D1_in_channels=0,typeAct='tanh',stride=1, padding="SAME",reshape=0)
+x.AddCNN1D(D1_filter_width=8, D1_out_channels=10, D1_in_channels=0,typeAct='tanh',stride=1, padding="SAME",reshape=0)
+x.AddCNN1D(D1_filter_width=8, D1_out_channels=10, D1_in_channels=0,typeAct='tanh',stride=1, padding="SAME",reshape=1)
+x.AddFC(40,'dropout_cnn')
 x.AddFC(0,'')
+#x.AddMatrix()
 
 x.Build()
-x.SetRec()
+x.SetRec(numRec=100,numRecStep=100)
+x.SetRunPredict(numRunPreStep=5000)
+
+os.system('tensorboard --logdir="logs/"')
 
 x.Run()
 
